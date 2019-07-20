@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight } from 'react-native';
 
 class LoginScreen extends Component {
+  constructor(props){
+    super(props)
+    const state={
+      Email_Mobile:"",
+      Password:""
+    }
+  }
+
+
+  signIn(){
+    //TODO 
+    //make api call and check response
+
+  }
+ 
+  
     render() {
         return (
             <View className="container" style={styles.container}>
@@ -14,21 +30,38 @@ class LoginScreen extends Component {
                     <View className="form" style={[styles.form]}>
                             <View className="input-row" style={styles.inputRow}>
                                 <Text>Email or Mobile</Text>
-                                <TextInput style={[styles.inputline,styles.input]}/>
+                                <TextInput onSubmitEditing={()=>this.passwordInput.focus()} returnKeyType="next" style={[styles.inputline,styles.input]}/>
                             </View>
                             <View className="input-row" style={styles.inputRow} >
                                 <Text>Password</Text>
-                                <TextInput secureTextEntry={true} style={[styles.inputline,styles.input]} />
-                                <Text style={[styles.rightalign,{marginTop:10,marginBottom:10}]}>Forgot Password?</Text>
+                                <TextInput ref={passwordInput=>this.passwordInput=passwordInput} returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input]} />
+                                <TouchableOpacity onPress={()=>this.props.navigation.push("ForgetPassword")} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
+                                  <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
+                                </TouchableOpacity>
                             </View> 
-                            <Button  color="#00C569" title="Sign in"></Button>
+                            <TouchableOpacity style={styles.customBtn} onPress={()=>{
+                              this.props.navigation.push('HomeStack')
+                            }}>
+                               <Text style={{color:"white",fontWeight:"bold"}}>Sign In</Text>
+                            </TouchableOpacity>
+
+                            <Text style={[styles.centerAlign,{marginTop:10,marginBottom:10}]}>-OR-</Text>
+                            <TouchableOpacity onPress={()=>this.props.navigation.push('SignWithOTP')} style={[styles.customBtn]}>
+                              <Text style={{color:"white",fontWeight:"bold"}}>Sign In With OTP</Text>
+                            </TouchableOpacity>
+
                     </View>
                    </View> 
                  <View>
                  <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20}]}>-OR-</Text>
                 </View>
                 <View>
-                  <Button title="SING UP" color="#FF3D00"/>
+                <TouchableOpacity onPress={()=>{
+                    this.props.navigation.push("SignUP") 
+                   }}
+                 style={[styles.customBtn,{borderColor:"#e74c3c",backgroundColor:"#e74c3c"}]}>
+                    <Text style={{color:"white",fontWeight:"bold"}}>Sign Up</Text>
+                </TouchableOpacity>
                 </View>
               </View>
              
@@ -89,8 +122,21 @@ const styles = StyleSheet.create({
     Buttonred:{
        backgroundColor:"red",
        alignSelf:"stretch"    
+    },
+    btn:{
+     marginTop:5
+    },
+    customBtn:{
+      display:"flex",
+      justifyContent:"center",
+      alignItems:"center", 
+      borderWidth:2,
+      borderRadius:5,
+      borderColor:"#2ecc71",
+      backgroundColor:"#2ecc71",
+      paddingTop:5,
+      paddingBottom:5
     }
-  
 });
 
 export default LoginScreen;

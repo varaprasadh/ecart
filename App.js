@@ -1,9 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import SignUpScreen from "./screens/login/SignUpScreen";
+import LoginStack from './screens/login/LoginStack';
+import { createAppContainer,createStackNavigator } from 'react-navigation';
+import HomeStack from "./screens/Home/HomeStack";
 
-export default function App() {
-  return (
-    <SignUpScreen/>   
-  );
-}
+const rootStack=createStackNavigator({
+  LoginStack:LoginStack,
+  HomeStack:HomeStack
+},{
+  initialRouteName:"LoginStack",
+  headerMode:"none"
+})
+
+const App=createAppContainer(rootStack);
+
+export default App;
