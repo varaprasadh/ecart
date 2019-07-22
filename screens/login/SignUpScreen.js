@@ -22,7 +22,7 @@ class SignUpScreen extends Component {
         }
       this.validate=this.validate.bind(this);
       this.signUP=this.signUP.bind(this);
-      
+       
     }
      
 
@@ -127,20 +127,25 @@ class SignUpScreen extends Component {
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label} >Mobile</Text>
-                                        <Input 
-                                        ref={mobile=>this.mobile=mobile}
-                                        style={[styles.inputline,styles.input]}
-                                        textContentType="telephoneNumber"
-                                        keyboardType="number-pad"
-                                        returnKeyType="next"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({mobile:text});
-                                            this.validate();
-                                            this.email._root.focus()
-                                            }
-                                        } 
-                                        onChangeText={text=>this.setState({mobile:text})}
-                                        />
+                                        <View style={{display:"flex",flexDirection:"row"}}>
+                                            <Input value="+965"
+                                              style={[styles.inputline,styles.input,{flex:1,backgroundColor:"#ecf0f1"}]}
+                                              disabled />
+                                            <Input 
+                                            ref={mobile=>this.mobile=mobile}
+                                            style={[styles.inputline,styles.input,{flex:4}]}
+                                            textContentType="telephoneNumber"
+                                            keyboardType="number-pad"
+                                            returnKeyType="next"
+                                            onSubmitEditing={({nativeEvent:{text}})=>{
+                                                this.setState({mobile:text});
+                                                this.validate();
+                                                this.email._root.focus()
+                                                }
+                                            } 
+                                            onChangeText={text=>this.setState({mobile:text})}
+                                            />
+                                        </View>
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label} >Email</Text>

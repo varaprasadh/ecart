@@ -23,7 +23,7 @@ class MyClass extends Component {
         if(text.length>0 && current != 6){
             this.inputrefs[current].focus();
         }
-        if(current==6){
+        if(current==6 || this.passcodes.join('').length==6){
             this.validateOTP();
         }
     }
@@ -31,6 +31,7 @@ class MyClass extends Component {
           let otpString=this.passcodes.join("");
           //dosomething with otpstring
           console.log(otpString);
+          this.inputrefs[5].blur();
           
     }
     handleKeyPress(event,current){
@@ -41,7 +42,6 @@ class MyClass extends Component {
         }
         else if(key==="Backspace" && current > 1 ){
             this.inputrefs[current-2].focus(); 
-
         }
     }
     componentDidMount(){
