@@ -1,10 +1,6 @@
-//import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
-import {Input,Card, Col} from 'native-base';
-import { Colors } from 'react-native-paper';
+import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input} from 'react-native';
 
-// create a component
 class MyClass extends Component {
      
     constructor(props){
@@ -17,14 +13,16 @@ class MyClass extends Component {
     }
 
     componentDidMount(){
-        this.input._root.focus();
+        this.input.focus();
     }
+
+  
     handleChange(text){ 
           this.setState({
               number:text
           },()=>{
-           if( this.state.number.length==10 ){
-               this.input._root.blur();
+           if( this.state.number.length==10 ){ 
+               this.input.blur();
                //enable submit button
                this.setState({
                    submit_disabled:false
@@ -37,30 +35,34 @@ class MyClass extends Component {
           });
     
     }
+ 
 
-    render() {
+    render() { 
         return (
             <View style={styles.container}>
+                
                 <View style={styles.card}>
-                   
                       <View style={{width:200}}>
                         <Text style={styles.text}>Enter your registered mobile number</Text>
                       </View>
-                      <View style={{display:"flex",flexDirection:"row",}}>
-                        <Input 
-                          value="+965" disabled 
-                          style={[styles.inputline,styles.input, 
-                            {flex:2,backgroundColor:"#ecf0f1",paddingLeft:1,paddingRight:0,textAlign:"center"}]} 
-                         />
-                        <Input 
-                         ref={input=>this.input=input}
-                         style={[styles.inputline,styles.input,{flex:4}]} 
-                         onSubmitEditing={()=>this.input._root.blur()}
-                         returnKeyType="go"
-                         keyboardType="number-pad"
-                         onChangeText={this.handleChange}
-                         />
+                      <View 
+                       style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
+                       > 
+                            <Input 
+                            value="+965" disabled 
+                            style={[
+                                {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
+                            />
+                            <Input 
+                            style={{flex:3,fontSize:20,}}
+                            ref={input=>this.input=input}
+                            onSubmitEditing={()=>this.input.blur()}
+                            returnKeyType="go"
+                            keyboardType="number-pad"
+                            onChangeText={this.handleChange}
+                            />
                       </View>
+                     
                       <TouchableOpacity disabled={this.state.submit_disabled} 
                         style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
                         <Text style={{fontSize:20,color:"white",elevation:6}}>Get OTP</Text>
@@ -71,7 +73,6 @@ class MyClass extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -79,21 +80,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ecf0f1',
     },
-    input:{
-        fontSize:20,
-        paddingRight:10,
-        paddingTop:1,
-        paddingLeft:10,
-    },
+   
     inputline:{
          borderWidth:1,
-         borderColor:"#7f8c8d",
+         borderColor:"#2ecc71",
          borderRadius: 5,
     },
     text:{
         fontSize:20,
         marginBottom:20,
-        textAlign:"center"
+        textAlign:"justify",
+        textTransform:"capitalize"
     },
     btn:{
         paddingBottom:5,

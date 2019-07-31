@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 // import { createBottomTabNavigator } from 'react-navigation';
 import {createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import WishList from "./WishList";
-import Profile from "./Profile";
+import WishList from "./WishList"; 
+import Profile from "./ProfileScreens/Profile"; 
 import Cart from "./Cart";
 import Explore from "./Explore";
 import {Ionicons} from '@expo/vector-icons'
@@ -30,7 +30,7 @@ const HomeStack =createMaterialBottomTabNavigator({
         )
       }  
     },
-    Profile:{
+    Profile:{ 
         screen:Profile,
         navigationOptions: {  
             tabBarLabel: 'profile',
@@ -49,7 +49,7 @@ const HomeStack =createMaterialBottomTabNavigator({
           }
     }
 },{
-    initialRouteName:"Explore",
+    initialRouteName:"Profile",
     activeTintColor: '#2ecc71',
     shifting: true,
     order:["Explore","WishList","Cart","Profile"],

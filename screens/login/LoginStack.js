@@ -9,15 +9,14 @@ import SignWithOTP from "./SignWithOTP";
 import ForgetPassword from "./ForgetPassword";
 
 
-
 const LoginStack =createStackNavigator({
-    Login:LoginScreen,
+    Login:LoginScreen, 
     SignUP:SignUpScreen,
     OTP:OTPScreen,
     SignWithOTP:SignWithOTP,
     ForgetPassword:ForgetPassword
 },{
-    initialRouteName:"ForgetPassword", 
+    initialRouteName:"SignWithOTP", 
     headerMode:"none"
 })
 

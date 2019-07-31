@@ -1,27 +1,27 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import Header from "../../major_components/Header";
 // create a component
-class Explore extends Component {
+class OrderHistory extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Explore</Text>
+               <Header backbutton title="Order History" goBack={this.props.navigation.goBack.bind(this)} />
             </View>
-        );
+        );  
     }
 }
 
-// define your styles
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#2c3e50',
+        paddingTop:20
     },
-});
+}); 
 
 //make this component available to the app
-export default Explore;
+export default OrderHistory;

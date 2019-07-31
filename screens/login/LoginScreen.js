@@ -71,6 +71,8 @@ class LoginScreen extends Component {
 }
 
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -84,10 +86,11 @@ const styles = StyleSheet.create({
       padding:10,
       marginTop: 100
     },
-    signinContainer:{
+    signinContainer:{ 
         padding:10,
         backgroundColor:"#FFFFFF",
-        borderRadius: 10
+        borderRadius: 10,
+        elevation:3
     },
     title:{
         fontWeight:"bold",

@@ -63,9 +63,7 @@ class SignUpScreen extends Component {
             } else{
                 console.log("false",key);
                 validFlag=false;
-                break;            
-              
-                
+                break;             
             }
          }
      }
@@ -127,13 +125,15 @@ class SignUpScreen extends Component {
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label} >Mobile</Text>
-                                        <View style={{display:"flex",flexDirection:"row"}}>
+                                        <View 
+                                         style={[styles.inputline,styles.input,{flex:4},{display:"flex",flexDirection:"row",paddingLeft:0}]}
+                                        >
                                             <Input value="+965"
-                                              style={[styles.inputline,styles.input,{flex:1,backgroundColor:"#ecf0f1"}]}
+                                              style={[{flex:1,backgroundColor:"#ecf0f1",textAlign:"center"}]}
                                               disabled />
                                             <Input 
                                             ref={mobile=>this.mobile=mobile}
-                                            style={[styles.inputline,styles.input,{flex:4}]}
+                                            style={[{flex:4}]}
                                             textContentType="telephoneNumber"
                                             keyboardType="number-pad"
                                             returnKeyType="next"
@@ -221,6 +221,7 @@ class SignUpScreen extends Component {
     }
 }
 
+
 // define your styles
 const styles = StyleSheet.create({
     container: {
@@ -237,7 +238,8 @@ const styles = StyleSheet.create({
         width:"100%",
         padding:10,
         marginTop: 20,
-        backgroundColor:"#fff"
+        backgroundColor:"#fff",
+        elevation:1
       },
       input:{
         fontSize:20,

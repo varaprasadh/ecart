@@ -36,7 +36,7 @@ class ForgetPassword extends Component {
                         style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
                         <Text style={{fontSize:20,color:"white",elevation:6}}>Confirm</Text>
                 </TouchableOpacity>
-            </View>
+            </View>   
         </View>
         );
     }
