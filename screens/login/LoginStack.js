@@ -16,7 +16,7 @@ const LoginStack =createStackNavigator({
     SignWithOTP:SignWithOTP,
     ForgetPassword:ForgetPassword
 },{
-    initialRouteName:"SignWithOTP", 
+    initialRouteName:"OTP", 
     headerMode:"none"
 })
 

@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { getCurrentFrame } from 'expo/build/AR';
 import { TabHeading } from 'native-base';
 
-// create a component
 class MyClass extends Component {
     
     constructor(props){

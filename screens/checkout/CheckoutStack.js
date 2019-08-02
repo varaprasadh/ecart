@@ -11,7 +11,8 @@ const CheckoutStack=createStackNavigator({
     CheckAddress:CheckAddress,
     CheckPayment:CheckPayment,
     CheckSummery:CheckSummery
-},{ initialRouteName:"CheckPayment",
+},{
+    //  initialRouteName:"CheckPayment",
     headerMode:"none"
 })
 

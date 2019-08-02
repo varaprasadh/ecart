@@ -6,14 +6,15 @@ import {createMaterialBottomTabNavigator } from 'react-navigation-material-botto
 import WishList from "./WishList"; 
 import Profile from "./ProfileScreens/Profile"; 
 import Cart from "./Cart";
-import Explore from "./Explore";
+// import Explore from "./Explore";
+import ExploreStack from "./ExploreStack"
 import {Ionicons} from '@expo/vector-icons'
 
 // create a component
 
 const HomeStack =createMaterialBottomTabNavigator({
     Explore:{
-      screen:Explore,
+      screen:ExploreStack,
       navigationOptions: {  
         tabBarLabel: 'explore',
         tabBarIcon: ({ tintColor }) => (
@@ -49,7 +50,7 @@ const HomeStack =createMaterialBottomTabNavigator({
           }
     }
 },{
-    initialRouteName:"Profile",
+    initialRouteName:"Explore",
     activeTintColor: '#2ecc71',
     shifting: true,
     order:["Explore","WishList","Cart","Profile"],

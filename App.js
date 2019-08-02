@@ -21,7 +21,7 @@ const rootStack=createStackNavigator({
   OrderHistory:OrderHistory,
   Checkout:CheckoutStack
 },{
-  initialRouteName:"LoginStack",
+  initialRouteName:"HomeStack",
   headerMode:"none"
 })
 
