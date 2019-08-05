@@ -15,7 +15,9 @@ export class Categories extends Component {
         return (
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.heading}>Categories</Text>
+                    <Text style={styles.heading}>
+                        {this.props.sub?"Sub Categories":"Categories"}
+                    </Text>
                 </View>
                 <View style={styles.svWrapper}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>

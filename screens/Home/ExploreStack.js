@@ -10,7 +10,7 @@ const ExplorStack =createStackNavigator({
     ExploreCategory:CategoryMain,
     ExploreProduct:ProductMain
 },{
-    initialRouteName:"ExploreMain",
+    // initialRouteName:"ExploreCategory",
     headerMode:"none"
 });
 

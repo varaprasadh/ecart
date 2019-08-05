@@ -4,7 +4,7 @@ import { View, Text, StyleSheet,StatusBar ,ScrollView,FlatList} from 'react-nati
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Categories from "./components/Categories";
-import Product_Explore from "./components/Product_Explore";
+import Products from "./components/Products";
 
 // create a component
 class Explore extends Component {
@@ -32,32 +32,29 @@ class Explore extends Component {
        
    }
 
-    render() {
-        return (
+    render() { 
+        return ( 
+           
             
                <Wrapper>
                 <SearchBar onChangeText={this.onSearchChange.bind(this)}/>
                 <ScrollView >
                     <Categories
                        onCategorySelected={this.onCategorySelected.bind(this)} />
-                    <Text style={styles.label}> Latest Products</Text>   
-
-                       <FlatList
-                           data={[{key:'1'},{key:'2'},{key:'3'},{key:'4'}]}
-                            numColumns={2}
-                            contentContainerStyle={styles.productContainer}
-                           renderItem={(item)=> (
-                           <Product_Explore 
-                                onProductSelect={this.onProductSelect.bind(this)}
-                                key={item.key} />)}
+                       <Products
+                           onProductSelect={this.onProductSelect.bind(this)}
                        />
-                     
                 </ScrollView>
               </Wrapper>
            
         );
     }
 }
+
+
+
+
+
 
 // define your styles
 const styles = StyleSheet.create({
@@ -67,12 +64,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
     },
-    productContainer:{
-        flex:1,
-        // flexDirection:"row",
-        // flexWrap:"wrap",
-        alignItems:"center"
-    },
+
     label:{
         fontWeight:"bold",
         fontSize:25,

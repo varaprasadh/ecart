@@ -14,9 +14,9 @@ class Profile extends Component {
 
        }
        this.logout=this.logout.bind(this);
-   }
+   } 
    componentDidMount(){
-    this.props.navigation.push("ShippingAddress");
+     this.props.navigation.push("OrderHistory");
    }
 
    logout(){
@@ -26,9 +26,13 @@ class Profile extends Component {
         return (
             <View style={styles.container}>
                <Header title="Profile"/>
-               <View style={{alignItems:"center"}}>
+               <View style={{flexDirection:"row",marginVertical:10,borderBottomWidth:2,borderBottomColor:"#7f8c8d"}}>
                    <Image style={styles.pro_Icon} source={require("./images/boy.png")}/>
-                   <Text style={{fontSize:30,textAlign:"center",marginTop:20}}>John Doe</Text>
+                   <View style={styles.details}>
+                       <Text style={styles.name}>john doe</Text>
+                       <Text style={styles.mobile}>9988773344</Text>
+                       <Text style={styles.email}>johndoen@test.com</Text>
+                   </View>
                 </View>
                 <View>
                    <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("EditProfile")} >
@@ -81,7 +85,24 @@ const styles = StyleSheet.create({
         fontSize:18,
         paddingVertical:15,
         marginLeft:20
+    },
+    details:{
+        alignSelf:"flex-start",
+        paddingVertical:20,
+        paddingHorizontal:10,
+    },
+    name:{
+     color:"#34495e",
+     fontSize:20,
+     fontWeight:"bold",
+   },
+    email:{
+      fontSize:16
+    },
+    mobile:{
+      fontSize:16
     }
+
 });
 
 

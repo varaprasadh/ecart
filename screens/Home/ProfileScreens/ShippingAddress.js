@@ -74,7 +74,7 @@ class ShippingAddress extends Component {
        
         return (
             <View style={styles.container}>
-            <Header backbutton title="Shipping Address" goBack={this.props.navigation.goBack.bind(this)} />
+            <Header backbutton title="Shipping Address" backHandler={this.props.navigation.goBack.bind(this)} />
             <ScrollView style={{flex:1}}>
             { this.state.addresses.map((obj,index)=>{
             // console.log("update",obj,index)

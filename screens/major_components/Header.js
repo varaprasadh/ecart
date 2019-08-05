@@ -16,7 +16,7 @@ class Header extends Component {
         return (
             <View style={styles.container}>
               <View style={styles.row}>
-               {this.props.backbutton?( <TouchableWithoutFeedback onPress={this.props.goBack} 
+               {this.props.backbutton?( <TouchableWithoutFeedback onPress={this.props.backHandler} 
                 style={{flex:1,paddingRight:20}}>
                 <Image source={require("./Icon_Arrow-Left.png")} />
                </TouchableWithoutFeedback>):(null)

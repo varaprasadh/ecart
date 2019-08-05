@@ -7,21 +7,39 @@ class ForgetPassword extends Component {
     constructor(props){
         super(props);
         this.state={
-            submit_disabled:true
+            submit_disabled:true,
+            password1:'',
+            password2:''
         }
+        this.validate=this.validate.bind(this);
+
     }
 
+   validate(key,value){
+    this.setState({
+        [key]:value
+    },()=>{
+        let {password1,password2}=this.state;
+        this.setState({
+            submit_disabled:!(password1==password2 && password1!=''&& password1.length>4)
+        })
+    })
+   }
+   changePassword(){
+       
+   }
     render() {
         return (
         <View style={styles.container}>
             <View style={[styles.card]}>
-               <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset your Password</Text>     
+               <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View className="input-row" style={styles.inputRow}>
                     <Text style={styles.label} >Password</Text>
                     <Input 
                         ref={password=>this.password=password}
                         style={[styles.inputline,styles.input]}
                         secureTextEntry={true}
+                        onChangeText={text=>this.validate("password1",text)}
                         returnKeyType="next"/>
                 </View>
                 <View className="input-row" style={styles.inputRow}>
@@ -29,10 +47,13 @@ class ForgetPassword extends Component {
                         <Input
                             ref={c_password=>this.c_password=c_password}
                             style={[styles.inputline,styles.input]}
+                            onChangeText={text=>this.validate("password2",text)}
                             secureTextEntry={true}
                             returnKeyType="go"/> 
                 </View>
-                <TouchableOpacity disabled={this.state.submit_disabled} 
+                <TouchableOpacity 
+                    onPress={this.changePassword.bind(this)} 
+                    disabled={this.state.submit_disabled} 
                         style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
                         <Text style={{fontSize:20,color:"white",elevation:6}}>Confirm</Text>
                 </TouchableOpacity>

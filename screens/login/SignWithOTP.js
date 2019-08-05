@@ -16,7 +16,8 @@ class MyClass extends Component {
         this.input.focus();
     }
 
-  
+   
+
     handleChange(text){ 
           this.setState({
               number:text
@@ -42,25 +43,26 @@ class MyClass extends Component {
             <View style={styles.container}>
                 
                 <View style={styles.card}>
+                      <View><Text style={styles.label}>Verification</Text></View>
                       <View style={{width:200}}>
                         <Text style={styles.text}>Enter your registered mobile number</Text>
                       </View>
                       <View 
                        style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
                        > 
-                            <Input 
-                            value="+965" disabled 
-                            style={[
-                                {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
-                            />
-                            <Input 
-                            style={{flex:3,fontSize:20,}}
-                            ref={input=>this.input=input}
-                            onSubmitEditing={()=>this.input.blur()}
-                            returnKeyType="go"
-                            keyboardType="number-pad"
-                            onChangeText={this.handleChange}
-                            />
+                        <Input 
+                        value="+965" disabled 
+                        style={[
+                            {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
+                        />
+                        <Input 
+                        style={{flex:3,fontSize:20,}}
+                        ref={input=>this.input=input}
+                        onSubmitEditing={()=>this.input.blur()}
+                        returnKeyType="go"
+                        keyboardType="number-pad"
+                        onChangeText={this.handleChange}
+                        />
                       </View>
                      
                       <TouchableOpacity disabled={this.state.submit_disabled} 
@@ -86,8 +88,9 @@ const styles = StyleSheet.create({
          borderColor:"#2ecc71",
          borderRadius: 5,
     },
+    label:{marginBottom:10, fontSize:25,fontWeight:"bold",paddingVertical:10,alignSelf:"flex-start"},
     text:{
-        fontSize:20,
+        fontSize:18,
         marginBottom:20,
         textAlign:"justify",
         textTransform:"capitalize"
