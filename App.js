@@ -7,6 +7,7 @@ import HomeStack from "./screens/Home/HomeStack";
 import EditProfile from "./screens/Home/ProfileScreens/EditProfile"
 import ShippingAddress from "./screens/Home/ProfileScreens/ShippingAddress";
 import OrderHistory from "./screens/Home/ProfileScreens/OrderHistory";
+import OrderItemDetail from "./screens/Home/ProfileScreens/OrderItemDetail";
 
 import CheckoutStack from "./screens/checkout/CheckoutStack";
 
@@ -19,9 +20,10 @@ const rootStack=createStackNavigator({
   EditProfile:EditProfile,
   ShippingAddress:ShippingAddress,
   OrderHistory:OrderHistory,
-  Checkout:CheckoutStack
+  Checkout:CheckoutStack,
+  OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName:"HomeStack",
+  initialRouteName:"Checkout",
   headerMode:"none"
 })
 

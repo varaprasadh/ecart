@@ -10,11 +10,13 @@ export default class OrderItem extends Component{
          index:props.data.index,
          id:props.data.productId,
          items:props.data.items.join(),
+         price:props.data.price
         }
     }
     render(){
         return (
         <TouchableWithoutFeedback
+         onPress={()=>this.props.onClick(this.state.id)}
         >
             <View style={styles.listContainer}>
                 <View style={{flex:1,alignItems:"center"}}>
@@ -23,12 +25,16 @@ export default class OrderItem extends Component{
                 <View style={styles.right}>
                     <View style={{flex:6}}>
                         <View style={styles.row}>
-                            <Text style={styles.label}>Order ID:</Text>
+                            <Text style={styles.label}>ID:</Text>
                             <Text style={styles.value}>{this.state.id}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.label}>Ordered Items:</Text>  
                             <Text style={styles.value} numberOfLines={1}>{this.state.items}</Text>  
+                        </View>
+                        <View style={styles.row}>
+                            <Text style={styles.label}>price:</Text>  
+                            <Text style={styles.price} numberOfLines={1}>{this.state.price}</Text>  
                         </View>
                     </View>
                     <View style={{flex:2,marginRight:10,alignItems:"center"}}>
@@ -58,6 +64,17 @@ const styles = StyleSheet.create({
         marginVertical:5
       
     },
+    price:{
+       backgroundColor:"#e67e22",
+       color:"#fff",
+       paddingHorizontal:20,
+       borderRadius:5,
+       textAlign:"center",
+       paddingVertical:3,
+       fontWeight:"bold",
+       marginHorizontal:10
+    
+    }, 
     row:{
         flexDirection:"row",alignItems:"center",
         marginBottom:5

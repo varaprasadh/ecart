@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,StatusBar,ScrollView,TextInput,TouchableOpacity} from 'react-native';
+import { 
+    View, 
+    Text,StyleSheet,
+    StatusBar,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+    KeyboardAvoidingView
+  } from 'react-native';
 import Header from "../major_components/Header";
 
 import Ship_AdressComponent from "../Home/ProfileScreens/components/Ship_AddressComponent";
-import ThreeAxisSensor from 'expo-sensors/build/ThreeAxisSensor';
+import Wrapper from "../Home/Wrapper";
 
 
 class CheckAddress extends Component {
@@ -17,6 +25,12 @@ class CheckAddress extends Component {
             },{
                 title:"Office Address"
             },
+            ,{
+                title:"Office Address"
+            }
+            ,{
+                title:"Office Address"
+            }
             ,{
                 title:"Office Address"
             }
@@ -61,56 +75,71 @@ class CheckAddress extends Component {
   }
   render() {
     return (
-      <View style={{paddingTop:this.StatusBarHeight,flex:1}}>
-         <Header title="Checkout" backbutton={true}/> 
-         <View style={{flex:1}}>
-            <Text style={[styles.text,{fontWeight:"normal"}]}>Choose Address from below</Text>
-            <ScrollView>
-                { this.state.addresses.map((obj,index)=>{
-                return (<Ship_AdressComponent label={obj.title} 
-                    content="lorem ipsom kfjnkn  ssnjsv v, vkjn" 
-                    key={index}  
-                    id={index} 
-                    selected={obj.selected?true:false}
-                    onSelect={this.onAddressSelected.bind(this)}
-                />)}) 
-                }
-                </ScrollView>
-            </View>
-
+        
+    <Wrapper>
+      <View style={{marginTop:-10,flex:1}}>
+      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+        <Header title="Checkout" backbutton={true}/> 
             <View style={{flex:1}}>
-                <Text style={[styles.text,{color:"#27ae60"}]}>OR</Text>
-                <Text style={[styles.text,{color:"#2980b9"}]}>Enter New Address</Text>
-                <View style={{paddingHorizontal: 20,paddingVertical:10}}>
-                    <View style={styles.inputstyle}>
-                    <TextInput 
-                        placeholder="enter address type..e.g home " 
-                        style={styles.add_type}
-                        returnKeyType="next"
-                        onChangeText={(text)=>this.setState({title:text})}
-                        />
-                    </View>  
-                    <View style={styles.inputstyle} >
-                        <TextInput placeholder="enter address " 
-                        multiline={true} 
-                        editable={true} 
-                        returnKeyType="done"
-                        style={[styles.add_type,{height:100,textAlignVertical:"top"}]}
-                        onChangeText={text=>this.setState({content:text})}
-                        />
-                    </View>
+                <Text style={[styles.text,{fontWeight:"normal"}]}>Choose Address from below</Text>
+                <ScrollView style={{flex:1}}>
+                    { this.state.addresses.map((obj,index)=>{
+                    return (
+                        <View  key={index} >
+                            <Ship_AdressComponent label={obj.title} 
+                            content="lorem ipsom kfjnkn  ssnjsv v, vkjn" 
+                        
+                            id={index} 
+                            selected={obj.selected?true:false}
+                            onSelect={this.onAddressSelected.bind(this)}/>
+                        </View>
+                    )}) 
+                    }
+                    </ScrollView>
                 </View>
-            </View>
-            <View className="bottombar" style={styles.checkouttab}>
-                <TouchableOpacity 
-                    disabled={this.state.btn_disabled} 
-                    style={[styles.btn,this.state.btn_disabled?styles.btn_disabled:{}]} 
-                    onPress={this.onCheckout.bind(this)}>
-                     <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
-                </TouchableOpacity>   
-            </View>
+    
+            
+                <View style={{flex:1}}>
+                    <Text style={[styles.text,{color:"#27ae60"}]}>OR</Text>
+                    <Text style={[styles.text,{color:"#2980b9"}]}>Enter New Address</Text>
+                    <View style={{paddingHorizontal: 20,paddingVertical:10}}>
+                        <View style={styles.inputstyle}>
+                        <TextInput 
+                            placeholder="enter address type..e.g home " 
+                            style={styles.add_type}
+                            returnKeyType="next"
+                            onChangeText={(text)=>this.setState({title:text})}
+                            />
+                        </View>  
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="enter address " 
+                            multiline={true} 
+                            editable={true} 
+                            returnKeyType="done"
+                            style={[styles.add_type,{height:100,textAlignVertical:"top"}]}
+                            onChangeText={text=>this.setState({content:text})}
+                            /> 
+                        </View>
+                    </View>
+                </View>      
+            </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+                <View className="bottombar" style={styles.checkouttab}>
+                    <TouchableOpacity 
+                        disabled={this.state.btn_disabled} 
+                        style={[styles.btn,this.state.btn_disabled?styles.btn_disabled:{}]} 
+                        onPress={this.onCheckout.bind(this)}>
+                        <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
+                    </TouchableOpacity>   
+                </View>
+      </View>   
+    
 
-         </View>
+      
+
+    </Wrapper>
+   
     );
   }
 }

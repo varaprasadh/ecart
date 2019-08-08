@@ -50,21 +50,11 @@ const HomeStack =createMaterialBottomTabNavigator({
           }
     }
 },{
-    initialRouteName:"Profile",
+    initialRouteName:"Explore",
     activeTintColor: '#2ecc71',
     shifting: true,
     order:["Explore","WishList","Cart","Profile"],
     barStyle: { backgroundColor: '#fff' },
 })  
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
-});
-
-//make this component available to the app
 export default HomeStack;

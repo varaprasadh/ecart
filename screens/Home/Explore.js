@@ -1,17 +1,21 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar ,ScrollView,FlatList} from 'react-native';
+import { View, Text, StyleSheet,StatusBar ,ScrollView,FlatList,} from 'react-native';
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Categories from "./components/Categories";
 import Products from "./components/Products";
+import LoadMoreButton from "./components/LoadMoreButton";
 
 // create a component
 class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
-            searchText:""
+            searchText:"",
+            products:[
+
+            ]
         }
     }
     onSearchChange(text){
@@ -31,19 +35,21 @@ class Explore extends Component {
        this.props.navigation.push("ExploreProduct");
        
    }
+  loadMoreProducts(){
 
+  }
+  
     render() { 
         return ( 
-           
-            
                <Wrapper>
                 <SearchBar onChangeText={this.onSearchChange.bind(this)}/>
-                <ScrollView >
+                <ScrollView>
                     <Categories
                        onCategorySelected={this.onCategorySelected.bind(this)} />
-                       <Products
-                           onProductSelect={this.onProductSelect.bind(this)}
-                       />
+                    <Products
+                        onProductSelect={this.onProductSelect.bind(this)}
+                    />
+                   <LoadMoreButton loading onPress={this.loadMoreProducts.bind(this)}/>
                 </ScrollView>
               </Wrapper>
            
@@ -64,7 +70,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
     },
-
     label:{
         fontWeight:"bold",
         fontSize:25,

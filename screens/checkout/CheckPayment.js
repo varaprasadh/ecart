@@ -9,6 +9,7 @@ import {
 import Header from "../major_components/Header";
 import {Ionicons} from "@expo/vector-icons";
 import { ScrollView } from 'react-native-gesture-handler';
+import Wrapper from '../Home/Wrapper';
 
 export class CheckPayment extends Component {
     box_checked=require("./icons/Checkbox_checked.png");
@@ -58,10 +59,11 @@ export class CheckPayment extends Component {
 
     render() {
         return (
-          <View style={{flex:1,paddingTop:StatusBar.currentHeight}}>
-                <Header title="Checkout" backbutton={true}/> 
-                <KeyboardAvoidingView behavior="padding" style={{flex:1}} enabled>
-                    <View style={styles.choosemethod}>
+           <Wrapper>
+             <View style={{marginTop:-10,flex:1}}>
+              <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+                    <Header title="Checkout" backbutton={true} backHandler={this.props.navigation.goBack}/> 
+                    <View style={{flex:1}}>
                             <Text style={{fontWeight:"bold",fontSize:18,paddingHorizontal:10,paddingVertical:10,color:"#2980b9"}}>Choose Payment Options</Text>
                             <View style={styles.tab}>
                                 <TouchableWithoutFeedback onPress={()=>this.setState({paymentMode:"Cash"})}>
@@ -84,7 +86,8 @@ export class CheckPayment extends Component {
                                 </TouchableWithoutFeedback>
                             </View>
                         </View>
-                        {this.state.paymentMode=="Card"?(
+                       <View style={{flex:3}}>
+                       {this.state.paymentMode=="Card"?(
                                 <CardDetails
                                    onNameChange={this.onNameChange.bind(this)}
                                    onNumberChange={this.onNumberChange.bind(this)}
@@ -92,8 +95,9 @@ export class CheckPayment extends Component {
                                    onYearChange={this.onYearChange.bind(this)}
                                    onCVVChange={this.onCVVChange.bind(this)}
                                 />
-                            ):null}
-                    </KeyboardAvoidingView>
+                            ):null} 
+                       </View>
+                
                     <View className="bottombar" style={styles.checkouttab}>
                        <TouchableOpacity 
                             style={[styles.btn,{backgroundColor:"#fff",borderWidth:1,borderColor:"#2ecc71"}]} 
@@ -105,10 +109,14 @@ export class CheckPayment extends Component {
                             onPress={this.validate.bind(this)}>
                                <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
                         </TouchableOpacity>   
-                       
                     </View>
-            </View>
-          
+                </KeyboardAvoidingView>
+             </View>
+
+           </Wrapper>
+               
+               
+                 
 
         )
     }
@@ -142,7 +150,8 @@ class CardDetails extends Component{
     }
     render(){
         return(
-         <View style={{paddingHorizontal:10}}>   
+        
+         <View style={{paddingHorizontal:10,zIndex:10,backgroundColor:"white"}}>   
                 <View style={styles.inputstyle}>
                     <Text style={styles.text}>Name on Card</Text>
                     <TextInput 
@@ -212,6 +221,8 @@ class CardDetails extends Component{
                     </View>
                 </View>
          </View>
+       
+        
         )
     }
 }
@@ -264,7 +275,7 @@ const styles=StyleSheet.create({
     },
     inputstyle:{
         borderWidth:2,
-        borderColor:"#2ecc71",
+        borderColor:"#2980b9",
         marginTop:10,
         borderRadius:2,
         marginRight:10,

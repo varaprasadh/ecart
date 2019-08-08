@@ -5,6 +5,17 @@ export class Categories extends Component {
     constructor(props){
         super(props);
         this.onItemClick=this.onItemClick.bind(this);
+        this.state={
+            categories:[
+                "cat1",
+                "cat1",
+                "cat1",
+                "cat1",
+                "cat1",
+                "cat1",
+                "cat1",
+            ]
+        }
     }
     onItemClick(name){
        this.props.onCategorySelected(name);
@@ -21,11 +32,12 @@ export class Categories extends Component {
                 </View>
                 <View style={styles.svWrapper}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <CategoryItem onItemClick={this.onItemClick} name="shoes"/>               
-                        <CategoryItem onItemClick={this.onItemClick} name="shoes2"/>               
-                        <CategoryItem onItemClick={this.onItemClick} name="shoes3"/>               
-                        <CategoryItem onItemClick={this.onItemClick} name="shoes4"/>               
-                        <CategoryItem onItemClick={this.onItemClick} name="shoes5"/>               
+                      {
+                          this.state.categories.map((catName,i)=>{
+                            return (<CategoryItem onItemClick={this.onItemClick} index={i} name={catName} key={i}/>) 
+                          })
+                      }              
+                              
                     </ScrollView>
                 </View>
             </View>

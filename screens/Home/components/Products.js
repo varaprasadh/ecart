@@ -10,13 +10,14 @@ class Products extends Component {
                     <Text style={styles.label}> Latest Products</Text>   
 
                        <FlatList
-                           data={[{key:'1'},{key:'2'},{key:'3'},{key:'4'}]}
+                            data={[{key:'1'},{key:'2'},{key:'3'},{key:'4'}]}
                             numColumns={2}
                             contentContainerStyle={styles.productContainer}
-                           renderItem={(item)=> (
-                           <Product_Explore 
-                                onProductSelect={this.props.onProductSelect.bind(this)}
-                                key={item.key} />)}
+                            renderItem={(item)=> (
+                                <Product_Explore 
+                                    onProductSelect={this.props.onProductSelect.bind(this)}
+                                    key={item.key}/>
+                                )}
                     />
                      
                
