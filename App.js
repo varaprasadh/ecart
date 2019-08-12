@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import { StyleSheet, Text, View ,StatusBar} from 'react-native';
 import LoginStack from './screens/login/LoginStack';
 import { createAppContainer,createStackNavigator } from 'react-navigation';
@@ -11,7 +11,8 @@ import OrderItemDetail from "./screens/Home/ProfileScreens/OrderItemDetail";
 
 import CheckoutStack from "./screens/checkout/CheckoutStack";
 
-
+import {Provider} from 'react-redux';
+import {createStore} from "redux";
 
 
 const rootStack=createStackNavigator({
@@ -23,11 +24,22 @@ const rootStack=createStackNavigator({
   Checkout:CheckoutStack,
   OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName:"Checkout",
+  initialRouteName: "HomeStack",
   headerMode:"none"
 })
 
 
-const App=createAppContainer(rootStack);
+const RootNavigation=createAppContainer(rootStack);
 
-export default App;
+const store=createStore(()=>{},{})
+
+
+export default class App extends Component{
+  render(){
+    return(
+      <Provider store={store}>
+        <RootNavigation/>
+      </Provider>
+    )
+  }
+}

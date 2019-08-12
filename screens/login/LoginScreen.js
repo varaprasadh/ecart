@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight } from 'react-native';
-
 class LoginScreen extends Component {
   constructor(props){
     super(props)
@@ -18,9 +17,10 @@ class LoginScreen extends Component {
   }
  
   
-    render() {
+    render() { 
         return (
-            <View className="container" style={styles.container}>
+            
+            <View className="container" style={styles.container}>  
               <View  style={styles.wrapper}>
                    <View className="signin-container" style={styles.signinContainer}>
                     <View style={{marginLeft:10}}>
@@ -49,7 +49,6 @@ class LoginScreen extends Component {
                             <TouchableOpacity onPress={()=>this.props.navigation.push('SignWithOTP')} style={[styles.customBtn]}>
                               <Text style={{color:"white",fontWeight:"bold"}}>Sign In With OTP</Text>
                             </TouchableOpacity>
-
                     </View>
                    </View> 
                  <View>
@@ -64,13 +63,10 @@ class LoginScreen extends Component {
                 </TouchableOpacity>
                 </View>
               </View>
-             
             </View>
         );
     }
 }
-
-
 
 
 const styles = StyleSheet.create({
@@ -141,5 +137,6 @@ const styles = StyleSheet.create({
       paddingBottom:5
     }
 });
+
 
 export default LoginScreen;

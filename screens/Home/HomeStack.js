@@ -50,7 +50,7 @@ const HomeStack =createMaterialBottomTabNavigator({
           }
     }
 },{
-    initialRouteName:"Explore",
+    initialRouteName: "Explore",
     activeTintColor: '#2ecc71',
     shifting: true,
     order:["Explore","WishList","Cart","Profile"],

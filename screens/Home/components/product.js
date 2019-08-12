@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,Dimensions} from 'react-native';
+import { View, Text, StyleSheet,Image,Dimensions,TouchableWithoutFeedback} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 // create a component
 
@@ -10,18 +10,30 @@ const d_width=Dimensions.get('window').width;
 class Product extends Component {
    constructor(props){
        super(props)
-      
+       this.state={
+           quantity:1  
+       }
+   }
+   increase(){
+       this.setState({
+           quantity:this.state.quantity+1
+       });
+   }
+   decrease(){
+       this.setState({
+           quantity: this.state.quantity>0?this.state.quantity-1:this.state.quantity
+       });
    }
 
     render() {
         return (
           <View style={styles.container} >
-           <View className="p-image" style={[styles.img,{flex:1,}]}>
+           <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
                 <Image source={this.props.productdata.src} 
                 style={{flex:1,width:null,height:null,borderRadius:10,}}
                 />
            </View>
-           <View style={{flex:2}} style={styles.productInfo}>
+           <View style={{flex:4}} style={styles.productInfo}>
              <View>
                <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
                      {this.props.productdata.name}
@@ -32,13 +44,25 @@ class Product extends Component {
                 $ {this.props.productdata.price}
                 </Text>
              </View>
-             <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
-               <Ionicons name={(()=>this.props.productdata.favourite?"ios-heart":"ios-heart-empty")()} 
-                  size={25} color="red"/>
-               <Text style={styles.remove_btn}>Remove</Text>
+             <View style={styles.ctrlwrapper}>
+               <View style={styles.qtyControls}>
+                   <View style={styles.qtbtn}>
+                       <TouchableWithoutFeedback onPress={this.decrease.bind(this)}>
+                           <Ionicons name="ios-remove" color="#2ecc71" size={25}/>
+                       </TouchableWithoutFeedback>
+                   </View>
+                   <View style={[styles.qtbtn,{backgroundColor:"#fff"}]}><Text>{this.state.quantity}</Text></View>
+                   <View style={styles.qtbtn}>
+                       <TouchableWithoutFeedback onPress={this.increase.bind(this)}>
+                           <Ionicons name="ios-add" color="#2ecc71" size={25}/> 
+                       </TouchableWithoutFeedback>
+                   </View>
+               </View>
+               <View>
+                   <Text style={styles.remove_btn}>Remove</Text>
+               </View>
              </View>
            </View>
-
           </View>
         );
     }
@@ -60,7 +84,7 @@ const styles = StyleSheet.create({
         paddingRight:20
     },
     price:{
-        color:"green"
+        color:"green",
     },
     img:{
         paddingBottom:5,
@@ -71,13 +95,38 @@ const styles = StyleSheet.create({
     },
     remove_btn:{
         color:"red",
-        fontSize:18,
-        marginLeft:100,
         borderWidth:1,
         borderColor:"red",
         paddingVertical:5,
-        paddingHorizontal:20,
+        paddingHorizontal:10,
         borderRadius:5
+    },
+    qtyControls: {
+        flexDirection: "row",
+        flex: 1,
+        backgroundColor: "#fff",
+        width: 100,
+        justifyContent:"space-around",
+        marginRight:5,
+        borderWidth:1,
+        borderColor: "#7f8c8d"
+
+    },
+    qtbtn: {
+        flex:1,
+        paddingVertical: 2,
+        paddingHorizontal: 2,
+        justifyContent:"center",
+        alignItems:"center"   ,
+        borderColor: "#7f8c8d",
+        borderLeftWidth:1,
+        borderRightWidth:1
+    },
+    ctrlwrapper: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 20,
+        width: 200
     }
 });
 

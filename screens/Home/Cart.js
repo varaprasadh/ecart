@@ -19,24 +19,26 @@ class Cart extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{}}>
-                  <ScrollView style={{flex:1,paddingTop:20}}>
-                   <Product productdata={{name:"prayer beads",price:"120 ",src:images[0],favourite:false}} />
-                   <Product productdata={{name:"sheha fatoota",price:"120 ",src:images[2],favourite:true}} />
-                   <Product productdata={{name:"shesma medium",price:"120 ",src:images[3],favourite:false}} />
-                   <Product productdata={{name:"sewing kit",price:"120 ",src:images[1],favourite:true}} />
-                   <Product productdata={{name:"prayer beads",price:"120 ",src:images[4],favourite:true}} />
-                   <Product productdata={{name:"test product",price:"120 ",src:images[5],favourite:false}} />
-                   <Product productdata={{name:"shesma medium",price:"120 ",src:images[6],favourite:false}} />
-                  </ScrollView>
-                  
+                <View >
+                    <ScrollView style={{paddingBottom:20}}>
+                        <Product productdata={{name:"prayer beads",price:"120 ",src:images[0],favourite:false}} />
+                        <Product productdata={{name:"sheha fatoota",price:"120 ",src:images[2],favourite:true}} />
+                        <Product productdata={{name:"shesma medium",price:"120 ",src:images[3],favourite:false}} />
+                        <Product productdata={{name:"sewing kit",price:"120 ",src:images[1],favourite:true}} />
+                        <Product productdata={{name:"prayer beads",price:"120 ",src:images[4],favourite:true}} />
+                        <Product productdata={{name:"test product",price:"120 ",src:images[5],favourite:false}} />
+                        <Product productdata={{name:"shesma medium",price:"120 ",src:images[6],favourite:false}} />
+                    </ScrollView>
                 </View>
                 <View style={styles.checkouttab}>
                    <View>
                      <Text>Total</Text>
                      <Text style={{fontWeight:"bold",fontSize:18,color:"green"}}>$1000</Text>
                    </View>
-                   <TouchableOpacity style={styles.btn}>
+                   <TouchableOpacity 
+                        style={styles.btn}
+                        onPress={()=>this.props.navigation.push('Checkout')}
+                   >
                      <Text style={{color:"white",fontWeight:"bold"}}>CHECKOUT</Text>
                    </TouchableOpacity>
                 </View>

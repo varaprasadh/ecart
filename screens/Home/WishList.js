@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions } from 'react-native';
 import Product from "./components/Product_wishlist";
+import Wrapper from './Wrapper';
 
 
 const d_width=Dimensions.get('window').width;
@@ -20,9 +21,9 @@ const images=[
 class WishList extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <View>
-                  <ScrollView style={{flex:1,paddingTop:20}}>
+            <Wrapper>
+               <View style={{flex:1,marginTop:-10}}>
+                  <ScrollView style={{flex:1,paddingBottom:35}}>
                    <Product productdata={{name:"prayer beads",price:"120 ",src:images[0],instock:true}} />
                    <Product productdata={{name:"shesma medium",price:"120 ",src:images[3]}} />
                    <Product productdata={{name:"sheha fatoota",price:"120 ",src:images[2],instock:true}} />
@@ -32,8 +33,10 @@ class WishList extends Component {
                    <Product productdata={{name:"shesma medium",price:"120 ",src:images[6]}} />
                   </ScrollView> 
                 </View>
-            </View>
-        );
+            </Wrapper>
+           
+        )    
+           
     }
 }
 

@@ -15,7 +15,8 @@ class Explore extends Component {
             searchText:"",
             products:[
 
-            ]
+            ],
+            loading:false
         }
     }
     onSearchChange(text){
@@ -36,7 +37,15 @@ class Explore extends Component {
        
    }
   loadMoreProducts(){
-
+       this.setState({
+           loading:true
+       });
+       setTimeout(()=>{
+          
+          this.setState({
+              loading:false
+          })
+       },3000)
   }
   
     render() { 
@@ -49,7 +58,7 @@ class Explore extends Component {
                     <Products
                         onProductSelect={this.onProductSelect.bind(this)}
                     />
-                   <LoadMoreButton loading onPress={this.loadMoreProducts.bind(this)}/>
+                   <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
                 </ScrollView>
               </Wrapper>
            

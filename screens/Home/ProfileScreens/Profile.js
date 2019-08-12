@@ -19,8 +19,8 @@ class Profile extends Component {
    } 
    componentDidMount(){
     //  this.props.navigation.push("OrderHistory");
-   }
-
+   } 
+     
    logout(){
     //clear data and redirect to login screen
    }
@@ -32,16 +32,16 @@ class Profile extends Component {
                     <View style={styles.profileDataContainer}>
                         <Image style={styles.pro_Icon} source={require("./images/boy.png")}/>
                         <View style={styles.details}>
-                            <View style={styles.jrow}>
-                               <Ionicons name="ios-person" size={25} color="#27ae60"/>
+                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                               <Ionicons color="#ecf0f1" name="ios-person" size={25} />
                                <Text style={styles.name}>john doe</Text>
                             </View>
-                            <View style={styles.jrow}>
-                               <Ionicons name="ios-call" size={25} color="#27ae60"/>
+                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                               <Ionicons color="#ecf0f1" name="ios-call" size={25} />
                                <Text style={styles.mobile}>9988773344</Text>
                             </View>
-                            <View style={styles.jrow}>
-                               <Ionicons name="ios-mail" size={25} color="#27ae60"/>
+                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                               <Ionicons color="#ecf0f1" name="ios-mail" size={25} />
                                <Text style={styles.email}>johndoen@test.com</Text>
                             </View>
                         </View>
@@ -98,7 +98,10 @@ const styles = StyleSheet.create({
     },
     jrow:{
         flexDirection:"row",
-        alignItems:"center"
+        alignItems:"center",
+        borderRadius:10,
+        paddingHorizontal: 5,
+        marginVertical:3
     },
     btn_text:{
         fontSize:18,
@@ -112,21 +115,23 @@ const styles = StyleSheet.create({
        
     },
     name:{
-     fontSize:20,
-     marginBottom:10,
+
      paddingHorizontal:10,
-     color:"#2980b9"
+     color:"#fff",
+     paddingVertical:5,
+     
    },
     email:{
-      fontSize:16,
-      paddingVertical:2,
-      paddingHorizontal:10
 
+      paddingVertical:2,
+      paddingHorizontal:10,
+      color: "#fff",
     },
     mobile:{
-      fontSize:16,
+
       paddingVertical:2,
-      paddingHorizontal:10
+      paddingHorizontal:10,
+      color: "#fff",
     }
 
 });

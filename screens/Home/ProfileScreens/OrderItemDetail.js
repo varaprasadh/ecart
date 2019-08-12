@@ -165,6 +165,7 @@ export class OrderItemsTable extends Component{
                 <View style={[styles.row,{borderBottomWidth:1,borderBottomColor:"#2c3e50"}]}> 
                 <View style={styles.col}><Text style={[styles.colHead]}>SL No</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>title</Text></View>
+                <View style={styles.col}><Text style={[styles.colHead]}>quantity</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>price</Text></View>
                 </View>
                 { this.state.items.map((item,index)=>{
@@ -172,6 +173,7 @@ export class OrderItemsTable extends Component{
                     <View style={styles.row} key={index}>  
                         <View style={styles.col}><Text style={[styles.colData]}>{index+1}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.name}</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData]}>2</Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60"}]}>{item.price}</Text></View>
                     </View>
                 )   
@@ -179,6 +181,7 @@ export class OrderItemsTable extends Component{
             
                 }
                 <View style={styles.row}>  
+                    <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>Total</Text></View>
                     <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold"}]}>{totalPrice}</Text></View>

@@ -18,7 +18,7 @@ class Product_Explore extends Component {
             <View style={styles.details}>
                 <Text style={{fontWeight:"bold",fontSize:18}}>Awesome Name</Text>
                 <Text style={{color:"#7f8c8d"}}>Category</Text>
-                <Text style={{color:"#2ecc71",fontSize:20}}>$10</Text>
+                <Text style={{color:"#2ecc71",fontSize:20,alignSelf:"flex-end"}}>$10</Text>
             </View>
         </View>
     </TouchableWithoutFeedback> 
@@ -28,7 +28,7 @@ class Product_Explore extends Component {
 const styles=StyleSheet.create({
     container:{
       paddingBottom:5,
-      backgroundColor:"#ecf0f1",
+      backgroundColor:"#fff",
       width:180,
       marginVertical:5,
       marginHorizontal:5,

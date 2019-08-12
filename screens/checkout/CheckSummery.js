@@ -7,8 +7,8 @@ export class CheckSummery extends Component {
     constructor(props){
         super(props);
         this.state={
-            payType:"cod",
-            address:"lorem ipsum intonssdsssgggwg sgknsg sgsgs sgsg sgsgg sgsg",
+            payType:"card", //card
+            address:"lorem sdfls sds sdgs sdgsdg sdgs dsgsg gsgss vgss vsgs dgg",
             cardNum:"1234567890123456",
             cardName:"john doe"
         }
@@ -34,11 +34,11 @@ export class CheckSummery extends Component {
                            <Text>{this.state.cardName}</Text>
                         </View>
                      </View>
-                    ):null
+                    ):null  
                     }
-                     <View style={styles.row}>
-                         <Text style={styles.label}>Address:</Text>
-                         <Text style={styles.address}>{this.state.address}</Text>
+                     <View style={{flexDirection:"row"}}>
+                         <Text style={[styles.label]}>Address:</Text>
+                         <Text style={[styles.address,{paddingHorizontal:50}]}>{this.state.address}</Text>
                      </View>
                  </View>
                  <View>

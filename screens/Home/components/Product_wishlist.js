@@ -1,11 +1,10 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,Dimensions} from 'react-native';
+import { View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 // create a component
 
 const d_width=Dimensions.get('window').width;
-
 
 class Product extends Component {
    constructor(props){
@@ -35,10 +34,12 @@ class Product extends Component {
              <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
                <Text 
                  style={[styles.remove_btn_stock,
-                    (()=>this.props.productdata.instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
-                 {this.props.productdata.instock?" In Stock":"Out of Stock"}
+                    (()=>this.props.productdata.instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
+                 {this.props.productdata.instock?" in stock":"out of stock"}
                 </Text>
-               <Text style={styles.remove_btn}>Remove</Text>
+               <TouchableOpacity>
+                    <Text style={styles.remove_btn}>Remove</Text>
+               </TouchableOpacity>
              </View>
            </View>
 
