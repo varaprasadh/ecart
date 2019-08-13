@@ -80,7 +80,7 @@ class CheckAddress extends Component {
       <View style={{marginTop:-10,flex:1}}>
       <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
       <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
-        <Header title="Checkout" backbutton={true}/> 
+        <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
             <View style={{flex:1}}>
                 <Text style={[styles.text,{fontWeight:"normal"}]}>Choose Address from below</Text>
                 <ScrollView style={{flex:1}}>

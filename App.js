@@ -12,7 +12,8 @@ import OrderItemDetail from "./screens/Home/ProfileScreens/OrderItemDetail";
 import CheckoutStack from "./screens/checkout/CheckoutStack";
 
 import {Provider} from 'react-redux';
-import {createStore} from "redux";
+// import {createStore} from "redux";
+import store from "./store/store";
 
 
 const rootStack=createStackNavigator({
@@ -31,7 +32,7 @@ const rootStack=createStackNavigator({
 
 const RootNavigation=createAppContainer(rootStack);
 
-const store=createStore(()=>{},{})
+// const store=createStore(()=>{},{})
 
 
 export default class App extends Component{
