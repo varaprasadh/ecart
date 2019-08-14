@@ -4,20 +4,17 @@ import { View, Text,Animated,Image,
   TouchableOpacity,TouchableWithoutFeedback
     } from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-import Header from "../major_components/Header";
 import Wrapper from "./Wrapper";
 
 
 class ProductMain extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title:"prayer beads",
-      category:"somecategory",
-      price:"$20",
-      description:"this is the thing used in prayer",
+    this.state={
+      product:this.props.navigation.getParam('product'),
       Favourite:true
-    };
+
+    }
     this.imgOpacity=new Animated.Value(0);
   } 
  
@@ -28,9 +25,8 @@ class ProductMain extends Component {
         easing:Easing.ease
       }).start(); 
  }
-//  onScroll(){
 
-//  }t
+ 
 toggleFavourite(){
   this.setState({
     Favourite:!this.state.Favourite
@@ -49,7 +45,7 @@ toggleFavourite(){
           </TouchableWithoutFeedback>
           <ScrollView scrollEventThrottle={16}>
             <Animated.View style={[styles.imageWrapper,{opacity:this.imgOpacity}]}>
-               <Image source={require("./product_images/prayerbeads.jpg")} style={styles.image}/>
+               <Image source={this.state.product.img} style={styles.image}/>
                <TouchableWithoutFeedback onPress={this.toggleFavourite.bind(this)}>
                 <View style={styles.Favourite}>
                  <Text 
@@ -61,12 +57,12 @@ toggleFavourite(){
                </TouchableWithoutFeedback>
             </Animated.View>
             <View style={styles.details}>
-               <Text style={styles.pName}>{this.state.title}</Text>
-               <Text style={styles.pCat}>{this.state.category}</Text>
-               <Text style={styles.pPrice} >{this.state.price}</Text>
+               <Text style={styles.pName}>{this.state.product.title}</Text>
+               <Text style={styles.pCat}>{this.state.product.category}</Text>
+               <Text style={styles.pPrice} >{this.state.product.price}</Text>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
-                  <Text style={styles.descText}>{this.state.description} </Text>
+                  <Text style={styles.descText}>{this.state.product.description} </Text>
                </View>
             </View>
             <View style={styles.actions}>

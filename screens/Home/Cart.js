@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions } from 'react-native';
 import Product from "./components/product"
 
+
 const d_width=Dimensions.get('window').width;
 // create a component
 const images=[
@@ -16,6 +17,9 @@ const images=[
 ]
 
 class Cart extends Component {
+
+  
+
     render() {
         return (
             <View style={styles.container}>

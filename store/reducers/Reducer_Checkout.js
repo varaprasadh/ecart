@@ -10,3 +10,10 @@
 // set exp_month
 // set year
 // set cvv
+
+export default function (state = {}, action) {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}

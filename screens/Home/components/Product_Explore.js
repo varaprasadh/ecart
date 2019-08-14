@@ -5,20 +5,22 @@ class Product_Explore extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      product:props.product
     };
+    console.log(props)
   }
 
   render() {
     return (
-    <TouchableWithoutFeedback onPress={()=>this.props.onProductSelect()}>
+    <TouchableWithoutFeedback onPress={()=>this.props.onProductSelect(this.props.product)}>
         <View style={styles.container}>
             <View style={styles.imagewrapper}>
-                <Image style={styles.image} source={require("../product_images/prayerbeads.jpg")}/>
+                <Image style={styles.image} source={this.state.product.img}/>
             </View>
             <View style={styles.details}>
-                <Text style={{fontWeight:"bold",fontSize:18}}>Awesome Name</Text>
-                <Text style={{color:"#7f8c8d"}}>Category</Text>
-                <Text style={{color:"#2ecc71",fontSize:20,alignSelf:"flex-end"}}>$10</Text>
+                <Text style={{fontWeight:"bold",fontSize:18}}>{this.state.product.title}</Text>
+                <Text style={{color:"#7f8c8d"}}>{this.state.product.category}</Text>
+                <Text style={{color:"#2ecc71",fontSize:20,alignSelf:"flex-end"}}>{this.state.product.price}</Text>
             </View>
         </View>
     </TouchableWithoutFeedback> 

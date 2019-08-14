@@ -7,15 +7,16 @@ import Categories from "./components/Categories";
 import Products from "./components/Products";
 import LoadMoreButton from "./components/LoadMoreButton";
 
-// create a component
+import {connect} from 'react-redux';
+
+import Loader from "../major_components/Loader";
+
+
 class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
             searchText:"",
-            products:[
-
-            ],
             loading:false
         }
     }
@@ -31,37 +32,52 @@ class Explore extends Component {
        this.props.navigation.push("ExploreCategory");
 
    }
-   onProductSelect(){
+   onProductSelect(product){
        //open product screen
-       this.props.navigation.push("ExploreProduct");
-       
+       this.props.navigation.push("ExploreProduct",{product});
    }
   loadMoreProducts(){
        this.setState({
            loading:true
        });
+     
        setTimeout(()=>{
-          
+           this.props.loadMore();
           this.setState({
               loading:false
           })
        },3000)
   }
-  
+   
+  componentDidMount(){
+
+    this.props.loadCategories();
+    this.props.loadProducts();
+    setTimeout(()=>{ 
+        this.props.toggleLoading();
+    },1000)
+  }
+ componentDidUpdate(){
+     console.log("updated");
+    //  console.log(this.props.products);
+ }
     render() { 
+       
         return ( 
-               <Wrapper>
+            this.props.loading?<Loader/> :
+             <Wrapper>
                 <SearchBar onChangeText={this.onSearchChange.bind(this)}/>
                 <ScrollView>
                     <Categories
+                       categories={this.props.categories}
                        onCategorySelected={this.onCategorySelected.bind(this)} />
                     <Products
+                        products={this.props.products}
                         onProductSelect={this.onProductSelect.bind(this)}
                     />
                    <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
                 </ScrollView>
               </Wrapper>
-           
         );
     }
 }
@@ -87,5 +103,37 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
-export default Explore;
+mapStateToProps=state=>{
+    let {
+        products,
+        categories,
+        loading
+    } =state.Explore;
+    return {
+       products,
+       categories,
+       loading
+    }
+}
+mapDispatchToProps=(dispatch)=> ({
+    loadProducts:()=>{
+        dispatch({type:"LOAD_EXPLORE"})
+    },
+    loadMore:()=>{
+        dispatch({
+            type: "LOAD_MORE"
+        })
+    },
+    loadCategories:()=>{
+        dispatch({
+            type: "LOAD_CATEGORIES"
+        })
+    },
+    toggleLoading:()=>{
+        dispatch({type:"TOGGLE_LOADING"})
+    }
+});
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Explore);

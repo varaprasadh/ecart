@@ -6,24 +6,16 @@ export class Categories extends Component {
         super(props);
         this.onItemClick=this.onItemClick.bind(this);
         this.state={
-            categories:[
-                "cat1",
-                "cat1",
-                "cat1",
-                "cat1",
-                "cat1",
-                "cat1",
-                "cat1",
-            ]
+            categories:this.props.categories||[]
         }
     }
     onItemClick(name){
        this.props.onCategorySelected(name);
-        
     }
 
     render() {
         return (
+           this.props.categories.length>0 &&
             <View style={styles.container}>
                 <View>
                     <Text style={styles.heading}>
