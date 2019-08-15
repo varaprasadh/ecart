@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ecart",
-    "slug": "ecart",
+    "name": "bazarkam",
+    "slug": "bazarkam",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
@@ -25,6 +25,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.wilson.bazarkam"
     }
   }
 }

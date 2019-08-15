@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,Dimensions,TouchableWithoutFeedback} from 'react-native';
+import { View, Text, StyleSheet,Image,Dimensions,TouchableWithoutFeedback,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 // create a component
 
@@ -11,32 +11,42 @@ class Product extends Component {
    constructor(props){
        super(props)
        this.state={
-           quantity:1  
+           quantity:1,
        }
+
    }
    increase(){
        this.setState({
            quantity:this.state.quantity+1
-       });
+       },
+       () => this.props.onValueChange(this.props.productdata.id, this.state.quantity));
+   
    }
    decrease(){
        this.setState({
            quantity: this.state.quantity>0?this.state.quantity-1:this.state.quantity
-       });
+       },
+        () => {
+            if (this.state.quantity > 0) {
+                this.props.onValueChange(this.props.productdata.id, this.state.quantity)
+            }else{
+                this.props.onRemove(this.props.productdata.id);
+            }
+        });
    }
 
     render() {
         return (
           <View style={styles.container} >
            <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
-                <Image source={this.props.productdata.src} 
+                <Image source={this.props.productdata.img} 
                 style={{flex:1,width:null,height:null,borderRadius:10,}}
                 />
            </View>
            <View style={{flex:4}} style={styles.productInfo}>
              <View>
                <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
-                     {this.props.productdata.name}
+                     {this.props.productdata.title}
                 </Text>
              </View>
              <View>
@@ -59,7 +69,9 @@ class Product extends Component {
                    </View>
                </View>
                <View>
-                   <Text style={styles.remove_btn}>Remove</Text>
+                   <TouchableOpacity onPress={()=>this.props.onRemove(this.props.productdata.id)}>
+                       <Text style={styles.remove_btn}>Remove</Text>
+                   </TouchableOpacity>
                </View>
              </View>
            </View>
@@ -130,5 +142,6 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
+
+
 export default Product;

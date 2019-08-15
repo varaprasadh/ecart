@@ -78,8 +78,8 @@ class SignUpScreen extends Component {
     render() {
         return (
           <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
-          <Container style={styles.container}>
-                    <Content>
+          <View style={styles.container}>
+                    <View style={{flex:1}}>
                     <View style={{paddingTop:5,paddingBottom:5,display:"flex"}} >
                         <View style={{flexDirection:"row",alignItems:"center"}}>
                             <Ionicons name="ios-arrow-back" size={32} color="black" />
@@ -88,10 +88,10 @@ class SignUpScreen extends Component {
                     </View>
                     <View className="wrapper" style={styles.wrapper}>
                         <View className="title">
-                        <Text style={styles.title}>Sign Up</Text>
+                          <Text style={styles.title}>Sign Up</Text>
                         </View>
-                          <View style={{paddingBottom:10}}>
-                                <ScrollView className="form" style={{paddingLeft:10,paddingRight:10,height:450}} >
+                            <ScrollView className="form" style={{paddingLeft:10,paddingRight:10,height:450}} >
+                               <View style={{paddingBottom:10}}>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label}>First Name</Text>
                                         <Input 
@@ -207,12 +207,12 @@ class SignUpScreen extends Component {
                                          onChangeText={text=> this.setState({ password_confirmation :text})}
                                          />  
                                     </View>
-                               </ScrollView>  
                            
-                          </View>
+                                </View>
+                            </ScrollView>  
                     </View>
-                </Content>
-          </Container>
+                </View>
+          </View>
           <TouchableOpacity disabled={this.buttonDisabled()}  style={[styles.btn_signup,{backgroundColor:this.buttonDisabled()?"#7f8c8d":"#2ecc71"}]}>
                <Text style={{color:"white"}}>SIGN UP</Text>
           </TouchableOpacity> 
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
         fontSize:32
     },
     wrapper:{
-        width:"100%",
+        flex:1,
         padding:10,
         marginTop: 20,
         backgroundColor:"#fff",

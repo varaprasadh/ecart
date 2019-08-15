@@ -9,3 +9,7 @@ export default function (state = {}, action) {
       return state;
   }
 }
+
+const tempWishlist={
+  loading:false,
+}

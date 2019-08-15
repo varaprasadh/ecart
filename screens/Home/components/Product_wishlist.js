@@ -14,36 +14,38 @@ class Product extends Component {
 
     render() {
         return (
-          <View style={styles.container} on >
-           <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
-                <Image source={this.props.productdata.src} 
-                style={{flex:1,width:null,height:null,borderRadius:10,}}
-                />
-           </View>
-           <View style={{flex:2}} style={styles.productInfo}>
-             <View>
-               <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
-                     {this.props.productdata.name}
-                </Text>
-             </View>
-             <View>
-               <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                $ {this.props.productdata.price}
-                </Text>
-             </View>
-             <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
-               <Text 
-                 style={[styles.remove_btn_stock,
-                    (()=>this.props.productdata.instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
-                 {this.props.productdata.instock?" in stock":"out of stock"}
-                </Text>
-               <TouchableOpacity>
-                    <Text style={styles.remove_btn}>Remove</Text>
-               </TouchableOpacity>
-             </View>
-           </View>
-
+          <View style={{height:150}}>
+            <View style={styles.container}>
+                <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
+                        <Image source={this.props.productdata.src} 
+                        style={{flex:1,width:null,height:null,borderRadius:10,}}
+                        />
+                </View>
+                <View style={{flex:2}} style={styles.productInfo}>
+                    <View>
+                    <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
+                            {this.props.productdata.name}
+                        </Text>
+                    </View>
+                    <View>
+                    <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
+                        $ {this.props.productdata.price}
+                        </Text>
+                    </View>
+                    <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
+                       <Text 
+                            style={[styles.remove_btn_stock,
+                                (()=>this.props.productdata.instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
+                            {this.props.productdata.instock?" in stock":"out of stock"}
+                        </Text>
+                        <TouchableOpacity>
+                            <Text style={styles.remove_btn}>Remove</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
           </View>
+          
         );
     }
 }
@@ -53,8 +55,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff', 
-        width:d_width,
-        height:150,
+        // width:d_width,
         flexDirection:"row",
         elevation:5, 
         marginTop:5  

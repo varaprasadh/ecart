@@ -127,39 +127,12 @@ export class OrderItemsTable extends Component{
     constructor(props){
         super(props);
         this.state={
-          items:[
-            {
-                name:"prayer beads",
-                price:"40",
-            },
-            {
-                 name:"prayer beads",
-                 price:"40",
-           },
-            {
-                name:"prayer beads",
-                price:"40",
-            },
-            {
-                 name:"prayer beads",
-                 price:"40",
-           },
-            {
-                name:"prayer beads",
-                price:"40",
-            },
-            {
-                 name:"prayer beads",
-                 price:"40",
-           },
-        ]
+          items:props.items
         }
     }
     render(){
-        totalPrice=0;
-        this.state.items.map(({price})=>{
-            totalPrice+=Number(price)
-        });
+        totalPrice=this.state.items.length*20;
+
         return(
             <View> 
                 <View style={[styles.row,{borderBottomWidth:1,borderBottomColor:"#2c3e50"}]}> 
@@ -172,8 +145,8 @@ export class OrderItemsTable extends Component{
                 return (
                     <View style={styles.row} key={index}>  
                         <View style={styles.col}><Text style={[styles.colData]}>{index+1}</Text></View>
-                        <View style={styles.col}><Text style={[styles.colData]}>{item.name}</Text></View>
-                        <View style={styles.col}><Text style={[styles.colData]}>2</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData]}>{item.title}</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData]}>1</Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60"}]}>{item.price}</Text></View>
                     </View>
                 )   
@@ -184,7 +157,7 @@ export class OrderItemsTable extends Component{
                     <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>Total</Text></View>
-                    <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold"}]}>{totalPrice}</Text></View>
+                    <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold"}]}>{totalPrice}$</Text></View>
                 </View> 
 
                 <View>

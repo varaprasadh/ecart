@@ -41,6 +41,4 @@ const LoginStack =createStackNavigator({
 
 
 
-
-
 export default LoginStack;

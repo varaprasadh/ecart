@@ -49,21 +49,21 @@ const tempProducts = [{
   id: 1,
   title: "prayer beads",
   category: "devotional",
-  price: "20$",
+  price: 20,
   description:"some description about the product",
   img: require('../product_images/prayerbeads.jpg')
 }, {
   id: 2,
   title: "sewing_kit",
   category: "devotional",
-  price: "20$",
+  price: 20,
   description: "some description about the product",
   img: require('../product_images/sewing_kit.jpg')
 }, {
   id: 3,
   title: "sheha fatoota",
   category: "devotional",
-  price: "20$",
+  price: 20,
   description: "some description about the product",
   img: require('../product_images/sheha_fatoota.jpg')
 }, {
@@ -71,13 +71,13 @@ const tempProducts = [{
   title: "shesma medium",
   category: "devotional",
   description: "some description about the product",
-  price: "20$",
+  price: 20,
   img: require('../product_images/shesma_medium.jpg')
 }, {
   id: 5,
   title: "wooden burner",
   category: "devotional",
-  price: "20$",
+  price: 20,
   description: "some description about the product",
   img: require('../product_images/wooden_burner2.jpg')
 }]

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight,ScrollView } from 'react-native';
 class LoginScreen extends Component {
   constructor(props){
     super(props)
@@ -19,7 +19,7 @@ class LoginScreen extends Component {
   
     render() { 
         return (
-            
+          <ScrollView>
             <View className="container" style={styles.container}>  
               <View  style={styles.wrapper}>
                    <View className="signin-container" style={styles.signinContainer}>
@@ -64,6 +64,7 @@ class LoginScreen extends Component {
                 </View>
               </View>
             </View>
+          </ScrollView>
         );
     }
 }

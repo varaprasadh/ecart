@@ -3,16 +3,32 @@ import { Text, View,StyleSheet,TouchableOpacity} from 'react-native'
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail"
+
+import {connect} from "react-redux";
+
+import {showMessage} from 'react-native-flash-message';
+
 export class CheckSummery extends Component {
     constructor(props){
         super(props);
         this.state={
-            payType:"card", //card
+            payType:"cod", //card
             address:"lorem sdfls sds sdgs sdgsdg sdgs dsgsg gsgss vgss vsgs dgg",
             cardNum:"1234567890123456",
             cardName:"john doe"
         }
     }
+    processOrder(){
+       showMessage({
+           message: "sucess",
+           description:"order placed successfully",
+           type:"success"
+       });
+       setTimeout(()=>{
+           this.props.navigation.navigate('Explore');
+       },500);
+    }
+
     render() {
         return (
             <Wrapper>
@@ -42,7 +58,7 @@ export class CheckSummery extends Component {
                      </View>
                  </View>
                  <View>
-                     <OrderItemsTable/>
+                     <OrderItemsTable items={this.props.cartItems}/>
                  </View>
                  <View className="bottombar" style={styles.checkouttab}>
                        <TouchableOpacity 
@@ -52,7 +68,8 @@ export class CheckSummery extends Component {
                                <Text style={{color:"#2ecc71",fontWeight:"bold"}}>BACK</Text>
                         </TouchableOpacity> 
                         <TouchableOpacity 
-                            style={[styles.btn,]} 
+                            style={[styles.btn,]}
+                            onPress={this.processOrder.bind(this)} 
                             >
                                <Text style={{color:"white",fontWeight:"bold"}}>CONFIRM</Text>
                         </TouchableOpacity>   
@@ -127,5 +144,10 @@ export class CheckSummery extends Component {
      
          }
      })
+mapStateToProps=state=>{
+    return {
+     cartItems:state.Cart.items
+    }
+}
 
-export default CheckSummery
+export default connect(mapStateToProps)(CheckSummery);

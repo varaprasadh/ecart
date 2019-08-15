@@ -6,16 +6,19 @@ import { View, Text,Animated,Image,
 import {Ionicons} from "@expo/vector-icons";
 import Wrapper from "./Wrapper";
 
+import {connect} from "react-redux";
 
 class ProductMain extends Component {
   constructor(props) {
     super(props);
     this.state={
       product:this.props.navigation.getParam('product'),
-      Favourite:true
+      Favourite:true,
+     addedToCart:false,
 
     }
     this.imgOpacity=new Animated.Value(0);
+    this.addToCart=this.addToCart.bind(this);
   } 
  
  componentDidMount(){
@@ -26,11 +29,20 @@ class ProductMain extends Component {
       }).start(); 
  }
 
- 
 toggleFavourite(){
   this.setState({
     Favourite:!this.state.Favourite
   })
+}
+addToCart(){
+  this.props.addToCart(this.state.product);
+  // this.setState({
+  //  addedToCart:true
+  // })
+}
+buy(){
+  this.props.addToCart(this.state.product);
+  this.props.navigation.navigate('Cart');
 }
 
   render() {
@@ -59,15 +71,19 @@ toggleFavourite(){
             <View style={styles.details}>
                <Text style={styles.pName}>{this.state.product.title}</Text>
                <Text style={styles.pCat}>{this.state.product.category}</Text>
-               <Text style={styles.pPrice} >{this.state.product.price}</Text>
+               <Text style={styles.pPrice} >{this.state.product.price}$</Text>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
                   <Text style={styles.descText}>{this.state.product.description} </Text>
                </View>
             </View>
             <View style={styles.actions}>
-              <TouchableOpacity><Text style={[styles.btn,styles.action_cart]}>Add to Cart</Text></TouchableOpacity>
-              <TouchableOpacity><Text style={styles.btn}>Buy</Text></TouchableOpacity>
+              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.state.addedToCart}>
+                 <Text style={[styles.btn,styles.action_cart]}>Add to Cart</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.buy.bind(this)}>
+                 <Text style={styles.btn}>Buy</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
@@ -148,4 +164,9 @@ const styles=StyleSheet.create({
   }
 })
 
-export default ProductMain;
+mapDispatch=dispatch=>{
+  return {
+    addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})}
+  }
+}
+export default connect(null, mapDispatch)(ProductMain);
