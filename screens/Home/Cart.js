@@ -7,9 +7,6 @@ import {connect} from "react-redux";
 import EmptyItems from '../major_components/EmptyItems';
 import Loader from '../major_components/Loader';
 
-const d_width=Dimensions.get('window').width;
-
-
 
 class Cart extends Component {
 
@@ -24,7 +21,10 @@ class Cart extends Component {
         this.props.toggleLoading();
       },2000)
   } 
-       
+ removeFromCart(id){
+     this.props.removeFromCart(id);
+     this.props.changeCartStatus(id,false);
+ }
    
     render() {
         cartProducts=[];
@@ -36,7 +36,7 @@ class Cart extends Component {
                 <Product 
                     productdata={item} 
                     key={item.id} 
-                    onRemove={this.props.removeFromCart.bind(this)}
+                    onRemove={this.removeFromCart.bind(this)}
                     onValueChange={this.props.setQuantity.bind(this)}
                      />
             )
@@ -111,7 +111,9 @@ mapDispatch=dispatch=>{
     return {
         removeFromCart:(id)=>{dispatch({type:"REMOVE_FROM_CART",id})},
         setQuantity:(id,quantity)=>{dispatch({type:"SET_QTY",id,quantity})},
-        toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})}
+        toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
+        changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
     }
 }
 export default connect(mapStateToProps,mapDispatch)(Cart);
+

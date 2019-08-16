@@ -13,39 +13,35 @@ class ProductMain extends Component {
     super(props);
     this.state={
       product:this.props.navigation.getParam('product'),
-      Favourite:true,
-     addedToCart:false,
-
     }
     this.imgOpacity=new Animated.Value(0);
     this.addToCart=this.addToCart.bind(this);
   } 
- 
+
  componentDidMount(){
-  Animated.timing(this.imgOpacity,{
-        duration:600,
+  Animated.timing(this.imgOpacity,{ 
+        duration:300,
         toValue:1,
         easing:Easing.ease
       }).start(); 
+      console.log(this.state.product);
  }
 
-toggleFavourite(){
-  this.setState({
-    Favourite:!this.state.Favourite
-  })
-}
 addToCart(){
+  this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
-  // this.setState({
-  //  addedToCart:true
-  // })
 }
 buy(){
   this.props.addToCart(this.state.product);
   this.props.navigation.navigate('Cart');
+}   
+addToWishlist(){
+  this.props.changeWishlistStatus(this.state.product.id,true);
+  this.props.addToWishlist(this.state.product);
 }
-
+ 
   render() {
+
     return (
       <Wrapper>
         <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
@@ -58,13 +54,13 @@ buy(){
           <ScrollView scrollEventThrottle={16}>
             <Animated.View style={[styles.imageWrapper,{opacity:this.imgOpacity}]}>
                <Image source={this.state.product.img} style={styles.image}/>
-               <TouchableWithoutFeedback onPress={this.toggleFavourite.bind(this)}>
+               <TouchableWithoutFeedback onPress={this.addToWishlist.bind(this)}>
                 <View style={styles.Favourite}>
                  <Text 
                    style={{paddingHorizontal:10,color:"#e74c3c",fontWeight:"bold"}}>
-                   {this.state.Favourite?"Added to Favorite":" Add To Favourite"}
+                   {this.state.isinWishlist?"added to wishlist":" Add To wishlist"}
                  </Text>
-                 <Ionicons color="#e74c3c" name={this.state.Favourite?"ios-heart":"ios-heart-empty"} size={30} />
+                 <Ionicons color="#e74c3c" name={this.state.product.isinWishlist?"ios-heart":"ios-heart-empty"} size={30} />
                 </View>
                </TouchableWithoutFeedback>
             </Animated.View>
@@ -78,8 +74,10 @@ buy(){
                </View>
             </View>
             <View style={styles.actions}>
-              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.state.addedToCart}>
-                 <Text style={[styles.btn,styles.action_cart]}>Add to Cart</Text>
+              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.state.product.isInCart}>
+                 <Text style={[styles.btn,styles.action_cart]}>
+                    {this.state.product.isInCart?"IN CART":"ADD TO CART"}
+                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={this.buy.bind(this)}>
                  <Text style={styles.btn}>Buy</Text>
@@ -91,6 +89,8 @@ buy(){
     );
   }
 }
+
+
 const styles=StyleSheet.create({
   imageWrapper:{
     height:300,
@@ -162,11 +162,23 @@ const styles=StyleSheet.create({
     borderRadius:5,
     width:150
   }
-})
+});
+
+
+mapStateToProps=state=>{
+  return {
+    wishlistItems:state.Wishlist.items,
+    cartItems:state.Cart.items
+  }
+}
 
 mapDispatch=dispatch=>{
   return {
-    addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})}
+    addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})},
+    addToWishlist:(product)=>{dispatch({type:"ADD_TO_WISHLIST",product})},
+    removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
+    changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
+    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})}
   }
 }
-export default connect(null, mapDispatch)(ProductMain);
+export default connect(mapStateToProps, mapDispatch)(ProductMain);

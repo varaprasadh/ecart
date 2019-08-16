@@ -1,30 +1,34 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-// create a component
 
-const d_width=Dimensions.get('window').width;
+
 
 class Product extends Component {
    constructor(props){
-       super(props)
-      
+       super(props);
+       this.remove=this.remove.bind(this);
    }
-
+ 
+   remove(){
+       this.props.onRemove(this.props.productdata.id);
+   }
     render() {
+        quantity=this.props.productdata.quantity||0;
+        instock=quantity>0
         return (
           <View style={{height:150}}>
             <View style={styles.container}>
                 <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
-                        <Image source={this.props.productdata.src} 
+                        <Image source={this.props.productdata.img} 
                         style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />
                 </View>
                 <View style={{flex:2}} style={styles.productInfo}>
                     <View>
                     <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
-                            {this.props.productdata.name}
+                            {this.props.productdata.title}
                         </Text>
                     </View>
                     <View>
@@ -35,10 +39,10 @@ class Product extends Component {
                     <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
                        <Text 
                             style={[styles.remove_btn_stock,
-                                (()=>this.props.productdata.instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
-                            {this.props.productdata.instock?" in stock":"out of stock"}
+                                (()=>instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
+                            {instock?" in stock":"out of stock"}
                         </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.remove()}>
                             <Text style={styles.remove_btn}>Remove</Text>
                         </TouchableOpacity>
                     </View>
@@ -55,7 +59,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff', 
-        // width:d_width,
         flexDirection:"row",
         elevation:5, 
         marginTop:5  

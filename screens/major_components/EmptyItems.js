@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import { Text, View,StyleSheet} from 'react-native'
 import {Ionicons} from "@expo/vector-icons";
-import Wrapper from '../Home/Wrapper';
 
 export class EmptyItems extends Component {
     render() {
         return (
-            <Wrapper>
+            <View style={{flex:1}}>
                 <View style={styles.container}>
                    <Ionicons name={this.props.icon||"ios-nutrition"} size={50} color="#2ecc71"/>
                    <Text style={styles.text}>{this.props.message||"404 not found"}</Text>
                 </View>
-           </Wrapper>
+           </View>
         )
     }
 }

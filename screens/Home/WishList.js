@@ -5,36 +5,43 @@ import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions } from 'r
 import Product from "./components/Product_wishlist";
 import Wrapper from './Wrapper';
 
+import {connect} from "react-redux";
+import Loader from '../major_components/Loader';
+import EmptyItems from '../major_components/EmptyItems';
+ 
 
-const d_width=Dimensions.get('window').width;
-
-const images=[
-     require("./product_images/prayerbeads.jpg"),
-     require("./product_images/sewing_kit.jpg"),
-     require("./product_images/sheha_fatoota.jpg"),
-     require("./product_images/shesma_medium.jpg"),
-     require("./product_images/prayerbeads.jpg"),
-     require("./product_images/sewing_kit.jpg"),
-     require("./product_images/sheha_fatoota.jpg"),
-]
 
 class WishList extends Component {
+    
+    componentDidMount(){
+        this.props.loadWishlist();
+        setTimeout(()=>{ 
+          this.props.toggleLoading();
+        },2000)
+    }
+    removeItem(id){
+        this.props.removeFromWishlist(id);
+        this.props.changeWishlistStatus(id,false);
+    }
     render() {
+        Items=[];
+        this.props.wishlistItems.forEach((item,i)=>{
+            Items.push(
+                <Product key={i} productdata={item} onRemove={this.removeItem.bind(this)} />
+            ); 
+        }) 
         return (
+         this.props.loading?<Loader/>:
+            Items.length>0?
             <Wrapper>
-               <View style={{flex:1,marginTop:-10}}>
-                  <ScrollView style={{flex:1,paddingBottom:35}}>
-                   <Product productdata={{name:"prayer beads",price:"120 ",src:images[0],instock:true}} />
-                   <Product productdata={{name:"shesma medium",price:"120 ",src:images[3]}} />
-                   <Product productdata={{name:"sheha fatoota",price:"120 ",src:images[2],instock:true}} />
-                   <Product productdata={{name:"sewing kit",price:"120 ",src:images[1]}} />
-                   <Product productdata={{name:"prayer beads",price:"120 ",src:images[4],instock:true}} />
-                   <Product productdata={{name:"test product",price:"120 ",src:images[5]}} />
-                   <Product productdata={{name:"shesma medium",price:"120 ",src:images[6]}} />
-                  </ScrollView> 
-                </View>
-            </Wrapper>
-           
+                    <View style={{flex:1,marginTop:-10}}>
+                        <ScrollView style={{flex:1,paddingBottom:35}}>
+                            {(()=>Items)()}
+                        </ScrollView> 
+                    </View>
+            </Wrapper>:
+            <EmptyItems message="no items in wish list yet!!!"/>
+        
         )    
            
     }
@@ -59,7 +66,22 @@ const styles = StyleSheet.create({
         borderRadius:5,   
     }
 });
+mapStatetoProps=state=>{
+    let {Wishlist}=state;
+    return {
+        wishlistItems:Wishlist.items,
+        loading:Wishlist.loading
+    }
+}
+mapDispatch=dispatch=>{
+    return{
+        removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
+        loadWishlist:()=>{dispatch({type:"LOAD_WISHLIST"})},
+        toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
+        changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})}
+    }
+}
 
-export default WishList;
+export default connect(mapStatetoProps,mapDispatch)(WishList);
 
 
