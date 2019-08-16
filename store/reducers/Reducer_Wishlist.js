@@ -8,9 +8,9 @@ const wishlist={
 }
 
 export default function (state =wishlist, action) {
-  switch (action.type) {
+  switch (action.type) { 
     case "LOAD_WISHLIST":
-      items=tempWishlist.items;
+      items=[...tempWishlist.items,...state.items];
       return {...state,items}
     case "ADD_TO_WISHLIST":
       console.log("add to wishlist reducer",action.product)
@@ -24,7 +24,7 @@ export default function (state =wishlist, action) {
         return item.id!=action.id;
       });
       return {...state,items}
-    case "TOGGLE_LOADING":
+    case "TOGGLE_WISHLIST_LOADING":
     newState = {
       ...state,
       loading: false
@@ -38,40 +38,40 @@ export default function (state =wishlist, action) {
 const tempWishlist={
   loading:false,
   items:[
-    {
-      id:1,
-      title:"prayer beads",
-      price:20,
-      quantity:0,
-      img: require('../product_images/prayerbeads.jpg')
-    },
-    {
-      id:2,
-      title:"shesma medium",
-      price:20,
-      quantity:1,
-      img: require('../product_images/sewing_kit.jpg'),
-    },
-    {
-      id:3,
-      title:"shesma medium",
-      price:20,
-      quantity:null,
-      img: require('../product_images/prayerbeads.jpg')
-    },
-    {
-      id:4,
-      title:"shesma medium",
-      price:20,
-      quantity:1,
-      img: require('../product_images/sewing_kit.jpg')
-    },
-    {
-      id:5,
-      title:"shesma medium",
-      price:20,
-      quantity:null,
-      img: require('../product_images/prayerbeads.jpg')
-    },
+    // {
+    //   id:1,
+    //   title:"prayer beads",
+    //   price:20,
+    //   quantity:0,
+    //   img: require('../product_images/prayerbeads.jpg')
+    // },
+    // {
+    //   id:2,
+    //   title:"shesma medium",
+    //   price:20,
+    //   quantity:1,
+    //   img: require('../product_images/sewing_kit.jpg'),
+    // },
+    // {
+    //   id:3,
+    //   title:"shesma medium",
+    //   price:20,
+    //   quantity:null,
+    //   img: require('../product_images/prayerbeads.jpg')
+    // },
+    // {
+    //   id:4,
+    //   title:"shesma medium",
+    //   price:20,
+    //   quantity:1,
+    //   img: require('../product_images/sewing_kit.jpg')
+    // },
+    // {
+    //   id:5,
+    //   title:"shesma medium",
+    //   price:20,
+    //   quantity:null,
+    //   img: require('../product_images/prayerbeads.jpg')
+    // },
   ]
 }

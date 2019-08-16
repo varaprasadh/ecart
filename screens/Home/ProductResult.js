@@ -8,7 +8,7 @@ import Wrapper from "./Wrapper";
 
 import {connect} from "react-redux";
 
-class ProductMain extends Component {
+class ProductResult extends Component {
   constructor(props) {
     super(props);
     this.state={
@@ -41,7 +41,7 @@ addToWishlist(){
 }
  
   render() {
-
+    
     return (
       <Wrapper>
         <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
@@ -174,11 +174,12 @@ mapStateToProps=state=>{
 
 mapDispatch=dispatch=>{
   return {
+    toggleloading:()=>{dispatch({type:"TOGGLE_SEARCH_LOADING"})},
     addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})},
     addToWishlist:(product)=>{dispatch({type:"ADD_TO_WISHLIST",product})},
     removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
-    changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
-    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})}
+    changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_CART_STATUS",id,value})},
+    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_WISHLIST_STATUS",id,value})}
   }
 }
-export default connect(mapStateToProps, mapDispatch)(ProductMain);
+export default connect(mapStateToProps, mapDispatch)(ProductResult);

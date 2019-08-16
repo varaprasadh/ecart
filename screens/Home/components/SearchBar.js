@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
-import { View, Text,TextInput,StyleSheet} from 'react-native';
+import { View, Text,TextInput,StyleSheet,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-import { Right } from 'native-base';
-import { BottomNavigation } from 'react-native-paper';
 class SearchBar extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      searchText:''
+    }
   }
 
+  onChangeText(text){
+    this.setState({
+      searchText:text
+    });
+  }
   render() {
     return (
      
           <View style={styles.container}>
             <TextInput style={styles.searchbar} 
               placeholder="search here"
-              onChangeText={this.props.onChangeText.bind(this)}/>
-            <View style={styles.icon}>
-              <Ionicons name="ios-search" size={25}/>
-            </View>
+              onChangeText={this.onChangeText.bind(this)}/>
+             <TouchableOpacity 
+              onPress={()=>this.props.onSearch(this.state.searchText)}
+              >
+               <View style={styles.icon}>
+                   <Ionicons name="ios-search" size={25}/>
+               </View>
+             </TouchableOpacity>
         </View>
     );
   }

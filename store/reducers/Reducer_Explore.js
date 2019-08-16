@@ -22,12 +22,6 @@ export default function(state = explore, action) {
       })
       return state;
 
-      case "LOAD_CATEGORIES":
-        tempCats.forEach(cat=>{
-          state.categories.push(cat);
-        })
-        return state;
-
       case "LOAD_MORE":
         newState=state;
         tempProducts.forEach(p=>{
@@ -53,7 +47,7 @@ export default function(state = explore, action) {
         })
         return {...state,products};
       
-      case "TOGGLE_LOADING":
+      case "TOGGLE_EXPLORE_LOADING":
          newState={
            ...state,loading:false
          } 

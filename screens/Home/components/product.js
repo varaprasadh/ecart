@@ -20,7 +20,6 @@ class Product extends Component {
            quantity:this.state.quantity+1
        },
        () => this.props.onValueChange(this.props.productdata.id, this.state.quantity));
-   
    }
    decrease(){
        this.setState({

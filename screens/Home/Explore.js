@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,StatusBar ,ScrollView,FlatList,} from 'react-native';
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
-import Categories from "./components/Categories";
 import Products from "./components/Products";
 import LoadMoreButton from "./components/LoadMoreButton";
 
@@ -16,22 +15,10 @@ class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
-            searchText:"",
             loading:false
         }
     }
-    onSearchChange(text){
-        this.setState({
-            searchText:text
-        });
-        console.log(text);
 
-    }
-   onCategorySelected(name){
-       //trigger intent with that category
-       this.props.navigation.push("ExploreCategory");
-
-   }
    onProductSelect(product){
        //open product screen
        this.props.navigation.push("ExploreProduct",{product});
@@ -40,7 +27,6 @@ class Explore extends Component {
        this.setState({
            loading:true
        });
-     
        setTimeout(()=>{
            this.props.loadMore();
           this.setState({
@@ -50,8 +36,7 @@ class Explore extends Component {
   }
    
   componentDidMount(){
-
-    this.props.loadCategories();
+    //  this.props.navigation.push('SearchResult',{query:"TEMP"});
     this.props.loadProducts();
     setTimeout(()=>{ 
         this.props.toggleLoading();
@@ -61,16 +46,18 @@ class Explore extends Component {
      console.log("updated");
     //  console.log(this.props.products);
  }
+ onSearch(text){
+     if(text.trim()!==''){
+         this.props.navigation.push('SearchResult',{query:text});
+     }
+ }
     render() { 
        
         return ( 
             this.props.loading?<Loader/> :
              <Wrapper>
-                <SearchBar onChangeText={this.onSearchChange.bind(this)}/>
+                <SearchBar onSearch={this.onSearch.bind(this)} />
                 <ScrollView>
-                    <Categories
-                       categories={this.props.categories}
-                       onCategorySelected={this.onCategorySelected.bind(this)} />
                     <Products
                         products={this.props.products}
                         onProductSelect={this.onProductSelect.bind(this)}
@@ -124,13 +111,8 @@ mapDispatchToProps=(dispatch)=> ({
             type: "LOAD_MORE"
         })
     },
-    loadCategories:()=>{
-        dispatch({
-            type: "LOAD_CATEGORIES"
-        })
-    },
     toggleLoading:()=>{
-        dispatch({type:"TOGGLE_LOADING"})
+        dispatch({type:"TOGGLE_EXPLORE_LOADING"})
     }
 });
 

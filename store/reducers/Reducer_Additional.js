@@ -1,7 +1,13 @@
 //change default shipping address
 
-export default function (state = {}, action) {
+const global={
+    isCurrentMain:true,
+}
+
+export default function (state = global, action) {
     switch (action.type) {
+        case "CHANGE_CURRENT":
+            return {...state,isCurrentMain:action.value}
         default:
             return state;
     }

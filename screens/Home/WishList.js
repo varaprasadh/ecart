@@ -21,7 +21,14 @@ class WishList extends Component {
     }
     removeItem(id){
         this.props.removeFromWishlist(id);
-        this.props.changeWishlistStatus(id,false);
+        //from main
+       if(this.props.mainIntentActive){
+          this.props.changeWishlistStatus(id, false)
+       }else{
+           //change status from result data
+           this.props.changeWishlistStatus_Result(id,false);
+       }
+        
     }
     render() {
         Items=[];
@@ -70,15 +77,17 @@ mapStatetoProps=state=>{
     let {Wishlist}=state;
     return {
         wishlistItems:Wishlist.items,
-        loading:Wishlist.loading
+        loading:Wishlist.loading,
+        mainIntentActive: state.Addition.isCurrentMain
     }
 }
 mapDispatch=dispatch=>{
     return{
         removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
         loadWishlist:()=>{dispatch({type:"LOAD_WISHLIST"})},
-        toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
-        changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})}
+        toggleLoading:()=>{dispatch({type:"TOGGLE_WISHLIST_LOADING"})},
+        changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})},
+        changeWishlistStatus_Result:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_WISHLIST_STATUS",id,value})}
     }
 }
 

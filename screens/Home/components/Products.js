@@ -5,12 +5,12 @@ import Product_Explore from "./Product_Explore";
 class Products extends Component {
     constructor(props){
         super(props);
+        console.log("debug",this.props.products);
     }
     render() {
         return (
             <View>
-                <Text style={styles.label}> Latest Products</Text>   
-
+               {!this.props.notitle? <Text style={styles.label}>Latest Products</Text>:null} 
                     <FlatList
                         data={this.props.products}
                         numColumns={2}
