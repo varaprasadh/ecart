@@ -8,8 +8,9 @@ import {
 } from 'react-native'
 import Header from "../major_components/Header";
 import {Ionicons} from "@expo/vector-icons";
-import { ScrollView } from 'react-native-gesture-handler';
 import Wrapper from '../Home/Wrapper';
+
+import {connect} from "react-redux";
 
 export class CheckPayment extends Component {
     box_checked=require("./icons/Checkbox_checked.png");
@@ -17,7 +18,7 @@ export class CheckPayment extends Component {
     constructor(props){
         super(props);
         this.state={
-            paymentMode:"Card",
+            paymentMode:"Cash",
             card_name:'',
             card_number:'',
             exp_month:'',
@@ -25,8 +26,21 @@ export class CheckPayment extends Component {
             cvv:''
         }
     }
+
     validate(){
-        this.props.navigation.push("CheckSummery")
+        this.props.setPayType(this.state.paymentMode);
+        if(this.state.paymentMode=="Card"){
+        card={
+            name:this.state.card_name,
+            number:this.state.card_number.replace(/\s/g,''),
+            month:this.state.exp_month,
+            year:this.state.exp_year,
+            cvv:this.state.cvv
+        }
+         this.props.setCardDetails(card);
+
+        }
+        this.props.navigation.push("CheckSummery");
     }
     onNameChange(text){
         this.setState({
@@ -52,9 +66,6 @@ export class CheckPayment extends Component {
         this.setState({
             cvv:text
         })
-    }
-    componentDidUpdate(){
-        console.log(this.state)
     }
 
     render() {
@@ -227,8 +238,6 @@ class CardDetails extends Component{
     }
 }
 
-
-
 const styles=StyleSheet.create({
    tab:{
     marginTop:10,
@@ -289,4 +298,15 @@ const styles=StyleSheet.create({
 
     }
 })
-export default CheckPayment
+mapState=state=>{
+    return {
+
+    }
+}
+mapDispatch=dispatch=>{
+    return {
+      setPayType:(payType)=>{dispatch({type:"SET_PAYTYPE",payType})},
+      setCardDetails:(card)=>{dispatch({type:"SET_CARD_DETAILS",card})}
+    }
+}
+export default connect(mapState,mapDispatch)(CheckPayment);

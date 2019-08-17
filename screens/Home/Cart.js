@@ -74,7 +74,6 @@ class Cart extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -89,9 +88,9 @@ const styles = StyleSheet.create({
         backgroundColor:"#fff",
         flexDirection:"row",
         paddingVertical:10,
-        justifyContent:"space-around",
-        elevation:3
-    
+        justifyContent:"space-between",
+        elevation:3,
+        paddingHorizontal:10
     },
     btn:{
         backgroundColor:"#27ae60",

@@ -65,7 +65,8 @@ const tempProducts = [{
   description:"some description about the product",
   img: require('../product_images/prayerbeads.jpg'),
   isInCart: false,
-  isinWishlist: false
+  isinWishlist: false,
+  quantity:0
 }, {
   id: 2,
   title: "sewing_kit",
@@ -74,7 +75,8 @@ const tempProducts = [{
   description: "some description about the product",
   img: require('../product_images/sewing_kit.jpg'),
   isInCart: false,
-  isinWishlist: false
+  isinWishlist: false,
+  quantity: 4,
 }, {
   id: 3,
   title: "sheha fatoota",
@@ -83,7 +85,8 @@ const tempProducts = [{
   description: "some description about the product",
   img: require('../product_images/sheha_fatoota.jpg'),
   isInCart: false,
-  isinWishlist: false
+  isinWishlist: false,
+  quantity: 0
 
 }, {
   id: 4,
@@ -93,7 +96,8 @@ const tempProducts = [{
   price: 20,
   img: require('../product_images/shesma_medium.jpg'),
   isInCart: false,
-  isinWishlist: false
+  isinWishlist: false,
+  quantity: 4
 }, {
   id: 5,
   title: "wooden burner",
@@ -102,14 +106,6 @@ const tempProducts = [{
   description: "some description about the product",
   img: require('../product_images/wooden_burner2.jpg'),
   isInCart: false,
-  isinWishlist: false
+  isinWishlist: false,
+  quantity: 4
 }]
-
-const tempCats=[
-  "Devotional",
-  "blankets",
-  "baking dishes",
-  "cooking utensils",
-  "baby items",
-  "blankets"
-]

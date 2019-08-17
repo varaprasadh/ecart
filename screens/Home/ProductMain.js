@@ -41,7 +41,7 @@ addToWishlist(){
 }
  
   render() {
-
+    let instock=this.state.product.quantity>0;
     return (
       <Wrapper>
         <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
@@ -79,10 +79,12 @@ addToWishlist(){
                     {this.state.product.isInCart?"IN CART":"ADD TO CART"}
                  </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.buy.bind(this)}>
-                 <Text style={styles.btn}>Buy</Text>
+              <TouchableOpacity onPress={this.buy.bind(this)} disabled={!instock}>
+                 <Text style={[styles.btn,!instock?{backgroundColor:"#e74c3c"}:{}]}>
+                    {instock?"BUY":"OUT OF STOCK"}
+                  </Text>
               </TouchableOpacity>
-            </View>
+            </View> 
           </ScrollView>
         </View>
       </Wrapper>

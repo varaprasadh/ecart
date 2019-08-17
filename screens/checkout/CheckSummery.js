@@ -8,15 +8,18 @@ import {connect} from "react-redux";
 
 import {showMessage} from 'react-native-flash-message';
 
+
 export class CheckSummery extends Component {
     constructor(props){
         super(props);
+        let {checkoutData}=props;
         this.state={
-            payType:"cod", //card
-            address:"lorem sdfls sds sdgs sdgsdg sdgs dsgsg gsgss vgss vsgs dgg",
-            cardNum:"1234567890123456",
-            cardName:"john doe"
+            payType: checkoutData.payType,
+            address: checkoutData.address,
+            cardNum: checkoutData.card.number,
+            cardName:checkoutData.card.name
         }
+        console.log("this is the data", this.props.cartItems);
     }
     processOrder(){
        showMessage({
@@ -37,9 +40,9 @@ export class CheckSummery extends Component {
                  <View style={{paddingVertical:20,paddingHorizontal:10}}>
                      <View style={styles.row}>
                          <Text style={styles.label}>payment type:</Text>
-                         <Text style={styles.styledlabel}>{this.state.payType!="cod"?"card":"cash on delivey"}</Text>
+                         <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
                      </View>
-                    { this.state.payType!="cod"?(
+                    { this.state.payType!="Cash"?(
                         <View style={{borderBottomWidth:1,borderBottomColor:"#7f8c8d"}}>
                         <View style={{flexDirection:"row",justifyContent:"space-between"}} >
                            <Text style={styles.label}>card number:</Text>
@@ -146,7 +149,8 @@ export class CheckSummery extends Component {
      })
 mapStateToProps=state=>{
     return {
-     cartItems:state.Cart.items
+     cartItems:state.Cart.items,
+     checkoutData:state.Checkout,
     }
 }
 

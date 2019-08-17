@@ -2,6 +2,15 @@
 
 const global={
     isCurrentMain:true,
+    savedAddress:[
+        //  {
+        //      title: "home Address",
+        //      address:"some street,some road,some door",
+        //  }, {
+        //      title: "Office Address",
+        //      address: "some street,some road,some door",
+        //  }
+    ]
 }
 
 export default function (state = global, action) {
