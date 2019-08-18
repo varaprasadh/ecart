@@ -22,11 +22,9 @@ class CheckAddress extends Component {
     constructor(props){
         super(props);
         this.state={
-        addresses:props.savedAddress||[],
+        addresses:[],
         selectedAddress:"",
-        btn_disabled:true
         }
-        console.log("dub",this.props);
     }
   StatusBarHeight=StatusBar.currentHeight;
    
@@ -36,6 +34,11 @@ class CheckAddress extends Component {
      this.setState({
          selectedAddress:selectedAddress
      },()=>console.log(this.state))
+  }
+  componentWillMount(){
+      this.setState({
+          addresses:this.props.savedAddress
+      })
   }
 
   updateSelection(index){
@@ -56,9 +59,9 @@ class CheckAddress extends Component {
   }
   
   onChangeText(text){
+      console.log("debugggggggg",text);
       this.setState({
           selectedAddress: text,
-          btn_disabled:text.trim()==''
       });
   }
   onCheckout(){
@@ -67,6 +70,8 @@ class CheckAddress extends Component {
           this.props.navigation.push('CheckPayment');
   }
   render() {
+      console.log(this.state)
+      let btn_disabled = this.state.selectedAddress.trim() == '';
     return (
         
     <Wrapper>
@@ -75,18 +80,19 @@ class CheckAddress extends Component {
       <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
         <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
             <View style={{flex:1}}>
-                {this.state.addresses.length>0? 
-                  <View>
-                     <Text style={[styles.text,{fontWeight:"normal"}]}>Choose Address from below</Text>
+                {this.props.savedAddress.length>0? 
+                  <View style={{flex:1}}>
+                     <Text style = {
+                         [styles.text,styles.styltext]
+                     } > Choose Address from below </Text>
                      <ScrollView style={{flex:1}}>
                         { this.state.addresses.map((obj,index)=>{
                         return (
                             <View  key={index} >
-                                <Ship_AdressComponent label={obj.title} 
+                                <Ship_AdressComponent typeSelect label={obj.title} 
                                 content={obj.address}
-                            
                                 id={index} 
-                                selected={obj.selected?true:false}
+                                selected={obj.selected}
                                 onSelect={this.onAddressSelected.bind(this)}/>
                             </View>
                         )}) 
@@ -102,14 +108,6 @@ class CheckAddress extends Component {
                     <Text style={[styles.text,{color:"#27ae60"}]}>OR</Text>
                     <Text style={[styles.text,{color:"#2980b9"}]}>Enter New Address</Text>
                     <View style={{paddingHorizontal: 20,paddingVertical:10}}>
-                    {/* <View style={styles.inputstyle}>
-                          <TextInput 
-                            placeholder="enter address type..e.g home " 
-                            style={styles.add_type}
-                            returnKeyType="next"
-                            onChangeText={(text)=>this.setState({title:text})}
-                            />
-                        </View>   */}
                       
                             <View style={styles.inputstyle} >
                             <TextInput placeholder="enter address " 
@@ -128,8 +126,8 @@ class CheckAddress extends Component {
             </KeyboardAvoidingView>
                 <View className="bottombar" style={styles.checkouttab}>
                     <TouchableOpacity 
-                        disabled={this.state.btn_disabled} 
-                        style={[styles.btn,this.state.btn_disabled?styles.btn_disabled:{}]} 
+                        disabled={btn_disabled} 
+                        style={[styles.btn,btn_disabled?styles.btn_disabled:{}]} 
                         onPress={this.onCheckout.bind(this)}>
                         <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
                     </TouchableOpacity>   
@@ -186,9 +184,14 @@ const styles = StyleSheet.create({
         fontSize:18,
         textAlign:"center",
         fontWeight:"bold"
-    }
-    
-    
+    },
+    styltext:{
+        borderRadius: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: "#3498db",
+        color: "#fff"
+    } 
 });
 
 mapStateToProps=state=>{

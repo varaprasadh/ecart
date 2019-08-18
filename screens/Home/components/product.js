@@ -16,10 +16,12 @@ class Product extends Component {
 
    }
    increase(){
-       this.setState({
+       if (this.state.quantity < this.props.productdata.availableQuantity) {
+           this.setState({
            quantity:this.state.quantity+1
        },
        () => this.props.onValueChange(this.props.productdata.id, this.state.quantity));
+       }
    }
    decrease(){
        this.setState({

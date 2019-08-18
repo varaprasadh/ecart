@@ -12,14 +12,8 @@ class AddAddressModal extends Component {
        }
    }
    
-   componentDidUpdate(){
-     console.log("modal updated");
-     console.log(this.state);
 
-   }
-
-   onAddAddress(){
-     
+   onAddAddress(){    
       if(this.state.title!=''&& this.state.content!=''){
         this.props.onAddAddress(this.state)
       }else{
@@ -27,13 +21,14 @@ class AddAddressModal extends Component {
       }
   }
     render() {
-         
+      
         return (
             <Modal
             animationType="slide"
             transparent={true}
             visible={this.props.visible}>
                 <View style={styles.container}>
+                  <Text style={styles.label}>Enter a Address To save</Text>
                   <View style={{paddingHorizontal: 20,paddingVertical:10}}>
                     <View style={styles.inputstyle}>
                       <TextInput 
@@ -85,7 +80,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#34495e',
     },
     add_type:{
         height:50,
@@ -110,7 +105,14 @@ const styles = StyleSheet.create({
     },
     text:{
       color:"#fff"
-    }
+    },  
+    label:{
+      paddingHorizontal:10,
+      paddingVertical:5,
+      backgroundColor: "#3498db",
+      borderRadius:10,
+      color:"#fff",
+     }
 });
 
 

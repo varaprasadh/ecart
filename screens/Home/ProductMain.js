@@ -11,8 +11,10 @@ import {connect} from "react-redux";
 class ProductMain extends Component {
   constructor(props) {
     super(props);
+    prodObj = this.props.navigation.getParam('product');
+    availableQuantity=prodObj.quantity
     this.state={
-      product:this.props.navigation.getParam('product'),
+      product:{...prodObj,quantity:1,availableQuantity},
     }
     this.imgOpacity=new Animated.Value(0);
     this.addToCart=this.addToCart.bind(this);
@@ -30,14 +32,23 @@ class ProductMain extends Component {
 addToCart(){
   this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
+  //when its added
+
+  // this.setState({
+  //   product:{...this.state.product,isInCart:true}
+  // })
 }
 buy(){
   this.props.addToCart(this.state.product);
   this.props.navigation.navigate('Cart');
-}   
+}    
 addToWishlist(){
   this.props.changeWishlistStatus(this.state.product.id,true);
   this.props.addToWishlist(this.state.product);
+  
+  // this.setState({ 
+  //   product:{...this.state.product,isinWishlist:true}
+  // })
 }
  
   render() {
@@ -168,6 +179,7 @@ const styles=StyleSheet.create({
 
 
 mapStateToProps=state=>{
+
   return {
     wishlistItems:state.Wishlist.items,
     cartItems:state.Cart.items

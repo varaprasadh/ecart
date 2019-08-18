@@ -5,48 +5,21 @@ import Header from "../../major_components/Header";
 import Ship_AdressComponent from "./components/Ship_AddressComponent";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AddAddressModal from "./components/AddAddressModal";
-
+import EmptyItems from "../../major_components/EmptyItems";
+import {connect} from "react-redux";
 
 // create a component
 class ShippingAddress extends Component {
     constructor(props){
         super(props);
         this.state={
-            addresses:[
-                {
-                    title:"home Address",
-                    selected:true
-                },{
-                    title:"Office Address"
-                }
-            ],
             modalVisible:false
         }
         this.closeDialog=this.closeDialog.bind(this);
         this.openDialog=this.openDialog.bind(this);
     } 
 
-
-    onSelect(index){
-       newAddress=this.state.addresses.map((address,i)=>{
-          if(i==index){
-              address.selected=true;
-          }
-          else{
-            address.selected=false;
-          }
-          return address
-       });
-       console.log(newAddress);
-      this.setState({
-          addresses:newAddress
-      })
-    }
-
-    content="21, Alex Davidson Avenue,Opposite Omegatron, Vicent Smith Quarters, Victoria Island, Lagos, Nigeria"
-    
-    openDialog(){
-    
+    openDialog(){    
              this.setState({
                  modalVisible:true
              })
@@ -54,37 +27,43 @@ class ShippingAddress extends Component {
     closeDialog(){
              this.setState({
                  modalVisible:false
-             })
+             });
     }  
     onAddAddress({title,content}){
         addresses = this.state.addresses;
-        addresses.push({title,content});
-
-        this.setState({
-             addresses
-        });
-
-        console.log("founs",title,content)
-        this.closeDialog()
+        if(title.trim()!='' && content.trim()!=''){
+             this.props.addNewAddress(title, content);
+             this.closeDialog()
+        }else{
+          alert("fill proper details");   
+        }
+    }
+    onDelete(index){
+        this.props.deleteSavedAddress(index);
     }
 
      render() {
         
         modalVisible=this.state.modalVisible;
-       
+        console.log(this.props.savedAddress);
         return (
             <View style={styles.container}>
             <Header backbutton title="Shipping Address" backHandler={this.props.navigation.goBack.bind(this)} />
             <ScrollView style={{flex:1}}>
-            { this.state.addresses.map((obj,index)=>{
-            // console.log("update",obj,index)
-            return (<Ship_AdressComponent label={obj.title} 
-                content={this.content} 
-                key={index}  
-                id={index} 
-                selected={obj.selected?true:false}
-                onSelect={this.onSelect.bind(this)}/>)}) 
-            }
+               { this.props.savedAddress.length>0?
+                 <View>
+                    {this.props.savedAddress.map((obj,index)=>{
+                        return (<Ship_AdressComponent label={obj.title} 
+                            content={obj.address} 
+                            key={index}  
+                            id={index} 
+                            onDelete={this.onDelete.bind(this)}
+                            />)}) 
+                   }
+                </View>: 
+                 <View style={{flex:1,justifyContent:"center"}}>
+                     <EmptyItems message="no address added yet! try adding"/>
+                </View> } 
             </ScrollView> 
             <View style={{alignItems:"center",justifyContent:"center",paddingVertical:10}}>
               <TouchableOpacity  style={styles.addnew_btn} onPress={this.openDialog}>
@@ -116,5 +95,16 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
-export default ShippingAddress;
+mapState=state=>{
+    let {Addition}=state;
+    return {
+      savedAddress: Addition.savedAddress
+    }
+}
+mapDispatch=dispatch=>{
+    return {
+       addNewAddress:(title,address)=>{dispatch({type:"ADD_NEW_ADDRESS",title,address})},
+       deleteSavedAddress:(index)=>{dispatch({type:"DELETE_SAVED_ADDRESS",index})}
+    }
+}
+export default connect(mapState,mapDispatch)(ShippingAddress);

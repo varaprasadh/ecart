@@ -11,8 +11,11 @@ import {connect} from "react-redux";
 class ProductResult extends Component {
   constructor(props) {
     super(props);
+   
+    prodObj = this.props.navigation.getParam('product');
+    availableQuantity=prodObj.quantity
     this.state={
-      product:this.props.navigation.getParam('product'),
+      product:{...prodObj,quantity:1,availableQuantity},
     }
     this.imgOpacity=new Animated.Value(0);
     this.addToCart=this.addToCart.bind(this);
@@ -30,6 +33,9 @@ class ProductResult extends Component {
 addToCart(){
   this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
+  this.setState({
+    product:{...this.state.product,isInCart:true}
+  })
 }
 buy(){
   this.props.addToCart(this.state.product);
@@ -38,6 +44,9 @@ buy(){
 addToWishlist(){
   this.props.changeWishlistStatus(this.state.product.id,true);
   this.props.addToWishlist(this.state.product);
+  this.setState({ 
+    product:{...this.state.product,isinWishlist:true}
+  })
 }
  
   render() {
