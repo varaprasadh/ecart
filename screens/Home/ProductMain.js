@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 class ProductMain extends Component {
   constructor(props) {
     super(props);
-    prodObj = this.props.navigation.getParam('product');
+    prodObj = this.props.product;
     availableQuantity=prodObj.quantity
     this.state={
       product:{...prodObj,quantity:1,availableQuantity},
@@ -32,11 +32,7 @@ class ProductMain extends Component {
 addToCart(){
   this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
-  //when its added
-
-  // this.setState({
-  //   product:{...this.state.product,isInCart:true}
-  // })
+  // this.props.changeCurrentStatus(this.state.product.id,{isInCart:true});
 }
 buy(){
   this.props.addToCart(this.state.product);
@@ -182,7 +178,8 @@ mapStateToProps=state=>{
 
   return {
     wishlistItems:state.Wishlist.items,
-    cartItems:state.Cart.items
+    cartItems:state.Cart.items,
+    product:state.Addition.currentProduct
   }
 }
 
@@ -192,7 +189,8 @@ mapDispatch=dispatch=>{
     addToWishlist:(product)=>{dispatch({type:"ADD_TO_WISHLIST",product})},
     removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
     changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
-    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})}
+    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})},
+    changeCurrentStatus:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
   }
 }
 export default connect(mapStateToProps, mapDispatch)(ProductMain);

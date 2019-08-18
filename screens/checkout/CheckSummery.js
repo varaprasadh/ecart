@@ -33,6 +33,9 @@ export class CheckSummery extends Component {
     }
 
     render() {
+       let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
+       billingAddress= `${firstName} ${lastName},${email},${mobile},${area},${street},${block},${lane}`
+      
         return (
             <Wrapper>
                 <View style={{marginTop:-10,flex:1}}>
@@ -55,9 +58,9 @@ export class CheckSummery extends Component {
                      </View>
                     ):null  
                     }
-                     <View style={{flexDirection:"row"}}>
-                         <Text style={[styles.label]}>Address:</Text>
-                         <Text style={[styles.address,{paddingHorizontal:50}]}>{this.state.address}</Text>
+                     <View style={[{flexDirection:"row",justifyContent:"space-between"}]}>
+                         <Text style={[styles.label]}>Billing Address:</Text>
+                         <Text style={[styles.address,]}>{billingAddress}</Text>
                      </View>
                  </View>
                  <View>

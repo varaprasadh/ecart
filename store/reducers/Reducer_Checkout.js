@@ -11,7 +11,16 @@
 // set year
 // set cvv
 const checkout={
-    address:'',
+    address:{
+       firstname:'',
+       lastname:'',
+       email:'',
+       mobile:'' ,
+       area:"",
+       street:"",
+       block:"",
+       lane:""
+    },
     payType:'',
     card:{
         name:'',

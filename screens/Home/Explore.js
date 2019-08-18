@@ -21,7 +21,8 @@ class Explore extends Component {
 
    onProductSelect(product){
        //open product screen
-       this.props.navigation.push("ExploreProduct",{product});
+       this.props.setCurrentProduct(product);
+       this.props.navigation.push("ExploreProduct");
    }
   loadMoreProducts(){
        this.setState({
@@ -113,7 +114,8 @@ mapDispatchToProps=(dispatch)=> ({
     },
     toggleLoading:()=>{
         dispatch({type:"TOGGLE_EXPLORE_LOADING"})
-    }
+    },
+    setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})}
 });
 
 

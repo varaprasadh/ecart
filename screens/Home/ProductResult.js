@@ -12,7 +12,7 @@ class ProductResult extends Component {
   constructor(props) {
     super(props);
    
-    prodObj = this.props.navigation.getParam('product');
+    prodObj = this.props.product;
     availableQuantity=prodObj.quantity
     this.state={
       product:{...prodObj,quantity:1,availableQuantity},
@@ -177,7 +177,8 @@ const styles=StyleSheet.create({
 mapStateToProps=state=>{
   return {
     wishlistItems:state.Wishlist.items,
-    cartItems:state.Cart.items
+    cartItems:state.Cart.items,
+    product: state.Addition.currentProduct
   }
 }
 

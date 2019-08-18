@@ -53,16 +53,17 @@ class Profile extends Component {
                                 <Text style={styles.btn_text}>Edit Profile</Text>
                             </View>
                         </TouchableWithoutFeedback> */}
-                        <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
+                        {/* <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
                             <View style={[styles.row]}>
                                 <Image source={require("./images/Icon_Location.png")}/>
                                 <Text style={styles.btn_text} >Shipping Adress</Text>  
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback> */}
+                        
                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("OrderHistory")}>
                             <View style={[styles.row]}>
                                 <Image source={require("./images/Icon_History.png")}/>
-                                <Text style={styles.btn_text} >Order History</Text>
+                                <Text style={styles.btn_text} >My Orders</Text>
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={this.logout} >

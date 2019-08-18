@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { 
     View, 
     Text,StyleSheet,
-    StatusBar,
     ScrollView,
     TextInput,
     TouchableOpacity,
@@ -10,7 +9,6 @@ import {
   } from 'react-native';
 import Header from "../major_components/Header";
 
-import Ship_AdressComponent from "../Home/ProfileScreens/components/Ship_AddressComponent";
 import Wrapper from "../Home/Wrapper";
 
 import EmptyItems from "../major_components/EmptyItems";
@@ -22,121 +20,113 @@ class CheckAddress extends Component {
     constructor(props){
         super(props);
         this.state={
-        addresses:[],
-        selectedAddress:"",
+          firstName:'',
+          lastName:'',
+          mobile:'',
+          email:'',
+          area:'',
+          block:'',
+          street:'',
+          lane:''
         }
     }
-  StatusBarHeight=StatusBar.currentHeight;
    
-  onAddressSelected(index){
-     this.updateSelection(index);
-     let selectedAddress=this.state.addresses[index].address;
-     this.setState({
-         selectedAddress:selectedAddress
-     },()=>console.log(this.state))
-  }
-  componentWillMount(){
-      this.setState({
-          addresses:this.props.savedAddress
-      })
-  }
-
-  updateSelection(index){
-    newAddress=this.state.addresses.map((address,i)=>{
-        if(i==index){
-            address.selected=!address.selected 
-        }
-        else{
-          address.selected=false; 
-        }
-       
-        return address
-     });
-     console.log(newAddress);
-    this.setState({
-        addresses:newAddress
-    })
-  }
-  
-  onChangeText(text){
-      console.log("debugggggggg",text);
-      this.setState({
-          selectedAddress: text,
-      });
-  }
   onCheckout(){
-          //update checkout reducer
-          this.props.setAddress(this.state.selectedAddress);
+          this.props.setAddress(this.state);
           this.props.navigation.push('CheckPayment');
   }
+  isValid(state){
+      flag=false;
+      for (entry of Object.entries(state)){
+          key=entry[0];
+          value=entry[1];
+          if(value.trim()==''){
+               return false;
+          }
+          flag=true;
+      }
+      if (!/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(state.email)) {
+          flag=false;
+      }
+      if(!/^\d{6,}$/.test(state.mobile)){
+          flag=false
+      }
+      return flag;
+  }
   render() {
-      console.log(this.state)
-      let btn_disabled = this.state.selectedAddress.trim() == '';
+      let btn_disabled = !this.isValid(this.state);
     return (
         
     <Wrapper>
       <View style={{marginTop:-10,flex:1}}>
-      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
-      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
-        <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
-            <View style={{flex:1}}>
-                {this.props.savedAddress.length>0? 
-                  <View style={{flex:1}}>
-                     <Text style = {
-                         [styles.text,styles.styltext]
-                     } > Choose Address from below </Text>
-                     <ScrollView style={{flex:1}}>
-                        { this.state.addresses.map((obj,index)=>{
-                        return (
-                            <View  key={index} >
-                                <Ship_AdressComponent typeSelect label={obj.title} 
-                                content={obj.address}
-                                id={index} 
-                                selected={obj.selected}
-                                onSelect={this.onAddressSelected.bind(this)}/>
-                            </View>
-                        )}) 
-                        }
-                        </ScrollView>
-                 </View>:
-                 <EmptyItems message="you have not saved any address yet!"/>
-                }
-                </View>
-    
-            
-                <View style={{flex:1}}>
-                    <Text style={[styles.text,{color:"#27ae60"}]}>OR</Text>
-                    <Text style={[styles.text,{color:"#2980b9"}]}>Enter New Address</Text>
-                    <View style={{paddingHorizontal: 20,paddingVertical:10}}>
-                      
-                            <View style={styles.inputstyle} >
-                            <TextInput placeholder="enter address " 
-                            multiline={true} 
-                            editable={true} 
-                            returnKeyType="done"
-                            value={this.state.selectedAddress}
-                            style={[styles.add_type,{height:100,textAlignVertical:"top"}]}
-                            onChangeText={this.onChangeText.bind(this)}
+        <KeyboardAvoidingView behavior="padding" style={{flex:3}}>
+            <KeyboardAvoidingView  style={{flex:1}}>
+                <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
+                <View style={{flex:1,paddingHorizontal:10}}>
+                    <Text style={[styles.text,styles.styltext,{alignSelf:"flex-start"}]}>Fill All the Details</Text>
+                    <ScrollView>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="first name"
+                            style={styles.input} 
+                            onChangeText={text=>this.setState({firstName:text})}
                             /> 
                         </View>
-                        
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="last name"
+                            style={styles.input}
+                            onChangeText={text=>this.setState({lastName:text})} 
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="email address"
+                            style={styles.input} 
+                            onChangeText={text=>this.setState({email:text})}
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="mobile number"
+                            style={styles.input}
+                            onChangeText={text=>this.setState({mobile:text})} 
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="area"
+                            style={styles.input} 
+                            onChangeText={text=>this.setState({area:text})}
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="block"
+                            style={styles.input}
+                            onChangeText={text=>this.setState({block:text})} 
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="street"
+                            style={styles.input} 
+                            onChangeText={text=>this.setState({street:text})}
+                            /> 
+                        </View>
+                        <View style={styles.inputstyle} >
+                            <TextInput placeholder="lane" 
+                            style={styles.input}
+                            onChangeText={text=>this.setState({lane:text})}
+                            /> 
+                        </View>
+                        </ScrollView> 
                     </View>
-                </View>      
-            </KeyboardAvoidingView>
-            </KeyboardAvoidingView>
-                <View className="bottombar" style={styles.checkouttab}>
-                    <TouchableOpacity 
-                        disabled={btn_disabled} 
-                        style={[styles.btn,btn_disabled?styles.btn_disabled:{}]} 
-                        onPress={this.onCheckout.bind(this)}>
-                        <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
-                    </TouchableOpacity>   
-                </View>
-      </View>   
-    
-
-      
-
+            </KeyboardAvoidingView>   
+            <View className="bottombar" style={styles.checkouttab}>
+                <TouchableOpacity 
+                    disabled={btn_disabled} 
+                    style={[styles.btn,btn_disabled?styles.btn_disabled:{}]} 
+                    onPress={this.onCheckout.bind(this)}>
+                    <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
+                </TouchableOpacity>   
+            </View>   
+        </KeyboardAvoidingView>
+        </View>   
+        
     </Wrapper>
    
     );
@@ -144,17 +134,14 @@ class CheckAddress extends Component {
 }
 
 const styles = StyleSheet.create({
-    add_type:{
-        height:50,
-        backgroundColor:"#fff",
-        paddingHorizontal:20,
-        paddingVertical:5 , 
-    },
     inputstyle:{
-        borderWidth:2,
-        borderColor:"#000",
+        borderBottomWidth:1,
+        borderBottomColor: "#7f8c8d",
         marginTop:10,
-        borderRadius:2
+    },
+    input:{
+        paddingVertical:5,
+        paddingHorizontal:10,
     },
     btn:{
         backgroundColor:"#27ae60",
@@ -189,14 +176,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 5,
         paddingHorizontal: 10,
-        backgroundColor: "#3498db",
-        color: "#fff"
+        backgroundColor: "#2ecc71",
+        color: "#fff",
+        marginVertical:10,
     } 
 });
 
 mapStateToProps=state=>{
     return {
-        savedAddress:state.Addition.savedAddress
+        
     }
 }
 mapDispatch=dispatch=>{

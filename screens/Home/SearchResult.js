@@ -23,7 +23,9 @@ class SearchResult extends Component {
     this.props.emptyResultSet();
  }
   onProductSelect(product){
-       this.props.navigation.push('ProductResult',{product})
+      
+      this.props.setCurrentProduct(product);
+      this.props.navigation.push('ProductResult');
   }
   render() {
     return ( 
@@ -54,7 +56,9 @@ mapDispatch=dispatch=>{
       toggleLoading:()=>{dispatch({type:"TOGGLE_SEARCH_LOADING"})},
       loadResults:()=>{dispatch({type:"LOAD_RESULTS"})},
       toggleGlobalIntent:(value)=>{dispatch({type:"CHANGE_CURRENT",value})},
-      emptyResultSet:()=>{dispatch({type:"EMPTY_THE_RESULTS"})}
+      emptyResultSet:()=>{dispatch({type:"EMPTY_THE_RESULTS"})},
+      setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})}
+
     }
 }
 export default connect(mapState,mapDispatch)(SearchResult);

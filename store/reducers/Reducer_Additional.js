@@ -2,32 +2,19 @@
 
 const global={
     isCurrentMain:true,
-    savedAddress:[
-         {
-             title: "home Address",
-             address:"some street,some road,some door",
-         }, {
-             title: "Office Address",
-             address: "some street,some road,some door",
-         }
-    ]
+    currentProduct:null
 }
 
 export default function (state = global, action) {
     switch (action.type) {
-        case "CHANGE_CURRENT":
-            return {...state,isCurrentMain:action.value};
-        case "ADD_NEW_ADDRESS":
-            console.log("adding new add");
-            savedAddress=state.savedAddress;
-            savedAddress.push({title:action.title,address:action.address});
-            return {...state,savedAddress}
-        case "DELETE_SAVED_ADDRESS":
-            savedAddress=state.savedAddress;
-            savedAddress = savedAddress.filter((ad, index) => {
-                return index!=action.index
-            });
-            return {...state,savedAddress}
+        case "SET_CURRENT_PRODUCT":
+            return {...state,currentProduct:action.product};
+        case "CHANGE_CURRENT_ITEM_STATUS":
+            newState={...state};
+            if(action.id==state.currentProduct.id){
+                newState={...state,...action.obj}
+            }
+            return newState;
         default:
             return state;
     }
