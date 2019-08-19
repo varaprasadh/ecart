@@ -60,7 +60,7 @@ export class CheckSummery extends Component {
                     }
                      <View style={[{flexDirection:"row",justifyContent:"space-between"}]}>
                          <Text style={[styles.label]}>Billing Address:</Text>
-                         <Text style={[styles.address,]}>{billingAddress}</Text>
+                         <Text style={[styles.address,{flex:2}]}>{billingAddress}</Text>
                      </View>
                  </View>
                  <View>
@@ -101,7 +101,7 @@ export class CheckSummery extends Component {
           color:"#2980b9"
         },
         address:{
-          paddingHorizontal:20,
+          paddingHorizontal:10,
           paddingVertical:5,
           color:"#2c3e50",
           textTransform:"capitalize"

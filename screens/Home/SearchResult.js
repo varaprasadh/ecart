@@ -30,14 +30,14 @@ class SearchResult extends Component {
   render() {
     return ( 
       <Wrapper>
-        <View style={{marginTop:-10}}>
+        <View style={{marginTop:-10,marginBottom:40}}>
             <Header title="results" backbutton backHandler={this.props.navigation.goBack}/>
-            <ScrollView>
+              <ScrollView>
                 <Products notitle
                     products={this.props.items}
                     onProductSelect={this.onProductSelect.bind(this)}
                 />
-            </ScrollView>
+              </ScrollView>
         </View>
       </Wrapper>
     );
@@ -58,7 +58,6 @@ mapDispatch=dispatch=>{
       toggleGlobalIntent:(value)=>{dispatch({type:"CHANGE_CURRENT",value})},
       emptyResultSet:()=>{dispatch({type:"EMPTY_THE_RESULTS"})},
       setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})}
-
     }
 }
 export default connect(mapState,mapDispatch)(SearchResult);

@@ -1,7 +1,6 @@
 //change default shipping address
 
 const global={
-    isCurrentMain:true,
     currentProduct:null
 }
 
@@ -11,9 +10,11 @@ export default function (state = global, action) {
             return {...state,currentProduct:action.product};
         case "CHANGE_CURRENT_ITEM_STATUS":
             newState={...state};
+            console.log("changing status")
             if(action.id==state.currentProduct.id){
-                newState={...state,...action.obj}
+                newState={...state,currentProduct:{...state.currentProduct,...action.obj}}
             }
+            console.log(newState);
             return newState;
         default:
             return state;

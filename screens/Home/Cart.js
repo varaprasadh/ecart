@@ -23,7 +23,7 @@ class Cart extends Component {
   } 
  removeFromCart(id){
      this.props.removeFromCart(id);
-     this.props.changeCurrent({isInCart:false})
+     this.props.changeCurrent(id,{isInCart:false})
  }
    
     render() {
@@ -105,7 +105,6 @@ mapStateToProps=state=>{
 
        cartItems:Cart.items,
        loading:Cart.loading,
-       mainIntentActive: state.Addition.isCurrentMain
     }
 }
 mapDispatch=dispatch=>{
@@ -115,7 +114,7 @@ mapDispatch=dispatch=>{
         toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
         changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
         changeCartStatus_Result:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_CART_STATUS",id,value})},
-        changeCurrent:(obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",obj})}
+        changeCurrent:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
     }
 }
 export default connect(mapStateToProps,mapDispatch)(Cart);

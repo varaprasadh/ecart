@@ -33,9 +33,7 @@ class ProductResult extends Component {
 addToCart(){
   this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
-  this.setState({
-    product:{...this.state.product,isInCart:true}
-  })
+   this.props.changeCurrentStatus(this.state.product.id,{isInCart:true});
 }
 buy(){
   this.props.addToCart(this.state.product);
@@ -44,13 +42,13 @@ buy(){
 addToWishlist(){
   this.props.changeWishlistStatus(this.state.product.id,true);
   this.props.addToWishlist(this.state.product);
-  this.setState({ 
-    product:{...this.state.product,isinWishlist:true}
-  })
-}
+  this.props.changeCurrentStatus(this.state.product.id,{isinWishlist:true});
+
+} 
+
  
   render() {
-    
+         let instock = this.props.product.quantity > 0;
     return (
       <Wrapper>
         <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
@@ -67,9 +65,9 @@ addToWishlist(){
                 <View style={styles.Favourite}>
                  <Text 
                    style={{paddingHorizontal:10,color:"#e74c3c",fontWeight:"bold"}}>
-                   {this.state.product.isinWishlist?"added to wishlist":" Add To wishlist"}
+                   {this.props.product.isinWishlist?"added to wishlist":" Add To wishlist"}
                  </Text>
-                 <Ionicons color="#e74c3c" name={this.state.product.isinWishlist?"ios-heart":"ios-heart-empty"} size={30} />
+                 <Ionicons color="#e74c3c" name={this.props.product.isinWishlist?"ios-heart":"ios-heart-empty"} size={30} />
                 </View>
                </TouchableWithoutFeedback>
             </Animated.View>
@@ -83,13 +81,15 @@ addToWishlist(){
                </View>
             </View>
             <View style={styles.actions}>
-              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.state.product.isInCart}>
+              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
                  <Text style={[styles.btn,styles.action_cart]}>
-                    {this.state.product.isInCart?"IN CART":"ADD TO CART"}
+                    {this.props.product.isInCart?"IN CART":"ADD TO CART"}
                  </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={this.buy.bind(this)}>
-                 <Text style={styles.btn}>Buy</Text>
+                <Text style={[styles.btn,!instock?{backgroundColor:"#e74c3c"}:{}]}>
+                  {instock?"BUY":"OUT OF STOCK"}
+                </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -189,7 +189,8 @@ mapDispatch=dispatch=>{
     addToWishlist:(product)=>{dispatch({type:"ADD_TO_WISHLIST",product})},
     removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
     changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_CART_STATUS",id,value})},
-    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_WISHLIST_STATUS",id,value})}
+    changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_WISHLIST_STATUS",id,value})},
+     changeCurrentStatus:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
   }
 }
 export default connect(mapStateToProps, mapDispatch)(ProductResult);
