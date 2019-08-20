@@ -25,7 +25,7 @@ const rootStack=createStackNavigator({
   Checkout:CheckoutStack,
   OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName: "HomeStack",
+  initialRouteName: "LoginStack",
   headerMode:"none"
 })
 

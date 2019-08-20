@@ -1,11 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
 import { StyleSheet,ScrollView ,Button,KeyboardAvoidingView,TouchableOpacity} from 'react-native';
-import {Container,Content,Text,View,Input} from 'native-base';
+import {Text,View,Input} from 'native-base';
 import {Ionicons} from '@expo/vector-icons';
 import {Constants,Font,Asset} from "expo";
 
-// create a component
+import {connect} from "react-redux";
+
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -15,38 +16,34 @@ class SignUpScreen extends Component {
             lastname:"",
             mobile:"",
             email:"",
-            address:"",
+            area:"",
+            block:"",
+            street:"",
+            lane:"",
             password:"",
             password_confirmation:"",
             submit_enabled:false,
         }
       this.validate=this.validate.bind(this);
       this.signUP=this.signUP.bind(this);
-       
     }
      
-
-    // async componentWillMount() {
-    //     await Font.loadAsync({
-    //         Roboto: require("../../node_modules/native-base/Fonts/Roboto.ttf"),
-    //         Roboto_medium: require("../../node_modules/native-base/Fonts/Roboto_medium.ttf"),
-    //         Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
-    //     });
-    //     this.setState({ loading: false });
-    // }
    buttonDisabled(){
        return !this.state.submit_enabled;
    }
    validate(){
        console.log("calling function")
       const regex={
-          firstname:/^\w+$/g,
-          lastname:/^\w+$/g,
+          firstname: /^[a-zA-Z]+$/,
+          lastname: /^[a-zA-Z]+$/,
           mobile:/^\d{10}$/,
           email:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          address:/^[A-z0-9,\s]*$/g,
-          password:/^\S{4}\S*$/g,
-          password_confirmation:/^\S{4}\S*$/g
+          area:/^[a-zA-Z0-9]+$/,
+          block:/^[a-zA-Z0-9]+$/,
+          street:/^[a-zA-Z0-9]+$/,
+          lane:/^[a-zA-z0-9]+$/,
+          password:/^[a-zA-Z0-9]{4,}$/g,
+          password_confirmation:/^[a-zA-Z0-9]{4,}$/g
       }
      let fieldKeys=Object.keys(this.state);
      validFlag=false;
@@ -55,8 +52,7 @@ class SignUpScreen extends Component {
      for(key of fieldKeys){
 
          if(key in regex){
-           console.log(key);      
-              
+           console.log(key);        
             if(regex[key].test(this.state[key])){
                 validFlag=true;
                 console.log("correct",key);
@@ -72,7 +68,21 @@ class SignUpScreen extends Component {
          })
    }
    signUP(){
-
+         let obj={
+            email:this.state.email,
+            first_name:this.state.firstname,
+            last_name:this.state.lastname,
+            phone_number:this.state.mobile,
+            user_address:{
+                area:this.state.area,
+                block:this.state.block,
+                street:this.state.street,
+                lane:this.state.lane
+            },
+            password:this.state.password,
+            password_confirmation:this.state.password_confirmation
+         }
+        console.log(obj);
    }
 
     render() {
@@ -157,7 +167,7 @@ class SignUpScreen extends Component {
                                         onSubmitEditing={({nativeEvent:{text}})=>{
                                             this.setState({email:text});
                                             this.validate();
-                                            this.address._root.focus()
+                                            this.area._root.focus()
                                             }
                                         }
                                         onChangeText={text=> this.setState({email:text})}
@@ -166,16 +176,54 @@ class SignUpScreen extends Component {
 
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label} >Address</Text>
-                                        <Input ref={address=>this.address=address} 
+
+                                        <Input ref={area=>this.area=area} 
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
+                                        placeholder="area..."
                                         onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({address:text});
+                                            this.setState({area:text});
+                                            this.validate();
+                                            this.block._root.focus()
+                                           }
+                                        }
+                                        onChangeText={text=>this.setState({area:text})}
+                                        />
+                                        <Input ref={block=>this.block=block} 
+                                        style={[styles.inputline,styles.input,{marginTop:3}]}
+                                        returnKeyType="next"
+                                        placeholder="block..."
+                                        onSubmitEditing={({nativeEvent:{text}})=>{
+                                            this.setState({block:text});
+                                            this.validate();
+                                            this.street._root.focus()
+                                           }
+                                        }
+                                        onChangeText={text=>this.setState({block:text})}
+                                        />
+                                        <Input ref={street=>this.street=street} 
+                                        style={[styles.inputline,styles.input,{marginTop:3}]}
+                                        returnKeyType="next"
+                                        placeholder="street..."
+                                        onSubmitEditing={({nativeEvent:{text}})=>{
+                                            this.setState({street:text});
+                                            this.validate();
+                                            this.lane._root.focus()
+                                           }
+                                        }
+                                        onChangeText={text=>this.setState({street:text})}
+                                        />
+                                        <Input ref={lane=>this.lane=lane} 
+                                        style={[styles.inputline,styles.input,{marginTop:3}]}
+                                        returnKeyType="next"
+                                        placeholder="lane..."
+                                        onSubmitEditing={({nativeEvent:{text}})=>{
+                                            this.setState({lane:text});
                                             this.validate();
                                             this.password._root.focus()
                                            }
                                         }
-                                        onChangeText={text=>this.setState({address:text})}
+                                        onChangeText={text=>this.setState({lane:text})}
                                         />
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
@@ -204,7 +252,12 @@ class SignUpScreen extends Component {
                                              console.log(this.state); 
                                              this.validate();
                                          }}
-                                         onChangeText={text=> this.setState({ password_confirmation :text})}
+                                         onChangeText={text=> {
+                                           this.setState({ password_confirmation :text});
+                                           this,this.validate();
+                                         }}
+                                         
+                                         
                                          />  
                                     </View>
                            
@@ -213,7 +266,7 @@ class SignUpScreen extends Component {
                     </View>
                 </View>
           </View>
-          <TouchableOpacity disabled={this.buttonDisabled()}  style={[styles.btn_signup,{backgroundColor:this.buttonDisabled()?"#7f8c8d":"#2ecc71"}]}>
+          <TouchableOpacity onPress={this.signUP.bind(this)} disabled={this.buttonDisabled()}  style={[styles.btn_signup,{backgroundColor:this.buttonDisabled()?"#7f8c8d":"#2ecc71"}]}>
                <Text style={{color:"white"}}>SIGN UP</Text>
           </TouchableOpacity> 
           </KeyboardAvoidingView>
@@ -270,5 +323,30 @@ const styles = StyleSheet.create({
        color:"#2ecc71"
    }
 });
+mapState=state=>{
+    return {
+        baseUrl: state.Config.base_url
+    }
+}
 
-export default SignUpScreen;
+export default connect(mapState)(SignUpScreen);
+
+
+/**
+ *
+ /**
+         * 
+         * email: "hghjg@hbh.hgiyg"
+         first_name: "hghg"
+         last_name: "hghg"
+         password: "password"
+         password_confirmation: "password"
+         phone_number: "76767676"
+         user_address: {
+             area: "hgh",
+             block: "ghghg",
+             lane: "ghg",
+             street: "jhj"
+         }
+         
+         */
