@@ -29,12 +29,12 @@ const rootStack=createStackNavigator({
   headerMode:"none"
 })
 
+console.log("store is ",store.getState())
 
 const RootNavigation=createAppContainer(rootStack);
 
 export default class App extends Component{
    
- 
     componentDidMount() {
       NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
     }
