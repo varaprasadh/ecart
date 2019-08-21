@@ -7,6 +7,7 @@ import {Constants,Font,Asset} from "expo";
 
 import {connect} from "react-redux";
 
+import Loader from "../major_components/Loader";
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -23,7 +24,10 @@ class SignUpScreen extends Component {
             password:"",
             password_confirmation:"",
             submit_enabled:false,
+
+            loading:false
         }
+
       this.validate=this.validate.bind(this);
       this.signUP=this.signUP.bind(this);
     }
@@ -38,16 +42,15 @@ class SignUpScreen extends Component {
           lastname: /^[a-zA-Z]+$/,
           mobile:/^\d{10}$/,
           email:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          area:/^[a-zA-Z0-9]+$/,
-          block:/^[a-zA-Z0-9]+$/,
-          street:/^[a-zA-Z0-9]+$/,
-          lane:/^[a-zA-z0-9]+$/,
+          area: /^\w+( +\w+)*$/,
+          block: /^\w+( +\w+)*$/,
+          street: /^\w+( +\w+)*$/,
+          lane: /^\w+( +\w+)*$/,
           password:/^[a-zA-Z0-9]{4,}$/g,
           password_confirmation:/^[a-zA-Z0-9]{4,}$/g
       }
      let fieldKeys=Object.keys(this.state);
      validFlag=false;
-    //  console.log(fieldKeys,regexKeys);
      
      for(key of fieldKeys){
 
@@ -73,7 +76,7 @@ class SignUpScreen extends Component {
             first_name:this.state.firstname,
             last_name:this.state.lastname,
             phone_number:this.state.mobile,
-            user_address:{
+            user_address: {
                 area:this.state.area,
                 block:this.state.block,
                 street:this.state.street,
@@ -81,16 +84,35 @@ class SignUpScreen extends Component {
             },
             password:this.state.password,
             password_confirmation:this.state.password_confirmation
-         }
-        console.log(obj);
+         };
+        this.setState({
+            loading:true
+        });
+        fetch(`${this.props.baseUrl}/register`,{
+            method:"POST",
+            body:JSON.stringify(obj),
+            headers:{
+                "content-type":"application/json"
+            }
+        }).then(res=>res.json()).then(data=>{
+            console.log(data);
+            if(data.success==true){
+                this.props.navigation.push('OTP',{mobile:this.state.mobile});
+            }
+        }).catch(err=>{
+            this.setState({
+                loading:false
+            });            
+        });
    }
 
     render() {
         return (
+          this.state.loading?<Loader/>:
           <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
           <View style={styles.container}>
                     <View style={{flex:1}}>
-                    <View style={{paddingTop:5,paddingBottom:5,display:"flex"}} >
+                    <View style={{paddingTop:5,paddingBottom:5,display:"flex"}}>
                         <View style={{flexDirection:"row",alignItems:"center"}}>
                             <Ionicons name="ios-arrow-back" size={32} color="black" />
                             <Text onPress={()=>this.props.navigation.goBack()} style={{marginLeft:10}}>Back</Text>
@@ -331,22 +353,3 @@ mapState=state=>{
 
 export default connect(mapState)(SignUpScreen);
 
-
-/**
- *
- /**
-         * 
-         * email: "hghjg@hbh.hgiyg"
-         first_name: "hghg"
-         last_name: "hghg"
-         password: "password"
-         password_confirmation: "password"
-         phone_number: "76767676"
-         user_address: {
-             area: "hgh",
-             block: "ghghg",
-             lane: "ghg",
-             street: "jhj"
-         }
-         
-         */

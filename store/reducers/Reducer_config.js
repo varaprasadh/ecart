@@ -1,7 +1,7 @@
 //change default shipping address
 
 const config={
-    base_url: "https://1026fbf9.ngrok.io"
+    base_url: "https://cbdca1e0.ngrok.io"
 }
 
 export default function (state = config, action) {

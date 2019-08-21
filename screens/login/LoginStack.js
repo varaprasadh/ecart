@@ -24,7 +24,7 @@ const drawer = createDrawerNavigator({
         }
     }
 }, {
-    initialRouteName: "MainLogin"
+    initialRouteName: "MainLogin" 
 })
  
 
@@ -35,7 +35,7 @@ const LoginStack =createStackNavigator({
     SignWithOTP:SignWithOTP,
     ForgetPassword:ForgetPassword
 },{
-    initialRouteName: "SignUP",
+    initialRouteName: "Login",
     headerMode:"none"
 })
 

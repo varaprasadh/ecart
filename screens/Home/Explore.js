@@ -15,39 +15,60 @@ class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
+           
         }
+        this.page=1;
     }
 
    onProductSelect(product){
        //open product screen
        this.props.setCurrentProduct(product);
-       this.props.navigation.push("ExploreProduct");
+       this.props.navigation.push("ExploreProduct"); 
    }
   loadMoreProducts(){
-       this.setState({
-           loading:true
-       });
-       setTimeout(()=>{
-           this.props.loadMore();
-          this.setState({
-              loading:false
-          })
-       },3000)
+
+    //   console.log(this.state.page,"page sd")
+    //    this.setState({
+    //        loading:true,
+    //    });
+    //    url = `https://cbdca1e0.ngrok.io/products?page=${encodeURIComponent(this.page)}`;
+    //    console.log(url)
+    //    fetch(url, {
+    //        method:"GET",
+    //        headers: {
+    //            AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNiJ9."
+    //        }
+    //    }).then(res=>res.json()).then(data=>{
+    //        if(data.success==true){
+    //         //    console.log(data);
+    //            this.setState({ 
+    //                loading:false,
+    //            });
+    //            this.props.loadMore(products);
+    //        }
+    //    })
+       
   }
-   
-  componentDidMount(){
-    //  this.props.navigation.push('SearchResult',{query:"TEMP"});
-    this.props.loadProducts();
-    setTimeout(()=>{ 
-        this.props.toggleLoading();
-    },1000)
+ 
+
+  componentWillMount(){
+
+      fetch(`${this.props.baseUrl}/products?page=${this.state.page}&per_page=10`,{
+          method:"get",
+          headers:{
+              AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNiJ9."
+          }
+      }).then(res=>res.json()).then(data=>{
+          if(data.success==true){
+              this.page++;
+              this.props.toggleLoading();
+              this.props.loadProducts(data.products);
+          }
+      })
   }
- componentDidUpdate(){
-     console.log("updated");
-    //  console.log(this.props.products);
- }
- onSearch(text){
+
+  onSearch(text){
      if(text.trim()!==''){
          this.props.navigation.push('SearchResult',{query:text});
      }
@@ -66,16 +87,11 @@ class Explore extends Component {
                    <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
                 </ScrollView>
               </Wrapper>
-        );
+        ); 
     }
 }
 
 
-
-
-
-
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -100,16 +116,18 @@ mapStateToProps=state=>{
     return {
        products,
        categories,
-       loading
-    }
+       loading,
+       baseUrl: state.Config.base_url
+    } 
 }
 mapDispatchToProps=(dispatch)=> ({
-    loadProducts:()=>{
-        dispatch({type:"LOAD_EXPLORE"})
+    loadProducts:(products)=>{
+        dispatch({type:"LOAD_EXPLORE",products})
     },
-    loadMore:()=>{
+    loadMore:(products)=>{
         dispatch({
-            type: "LOAD_MORE"
+            type: "LOAD_MORE",
+            products
         })
     },
     toggleLoading:()=>{

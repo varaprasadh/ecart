@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { StyleSheet, Text, View ,StatusBar,NetInfo} from 'react-native';
 import LoginStack from './screens/login/LoginStack';
-import { createAppContainer,createStackNavigator } from 'react-navigation';
+import { createAppContainer,createStackNavigator,createSwitchNavigator } from 'react-navigation';
 import HomeStack from "./screens/Home/HomeStack";
 
 import ShippingAddress from "./screens/Home/ProfileScreens/ShippingAddress";
@@ -18,21 +18,28 @@ import FlashMessage from 'react-native-flash-message';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
 const rootStack=createStackNavigator({
-  LoginStack:LoginStack,
   HomeStack:HomeStack,
   ShippingAddress:ShippingAddress,
   OrderHistory:OrderHistory,
   Checkout:CheckoutStack,
   OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName: "LoginStack",
+  initialRouteName: "HomeStack",
   headerMode:"none"
+})
+
+const root = createSwitchNavigator({
+   LoginStack: LoginStack,
+   Main:rootStack
+},{
+  initialRouteName: "Main",
+  headerMode:"none",
 })
 
 console.log("store is ",store.getState())
 
-const RootNavigation=createAppContainer(rootStack);
-
+const RootNavigation = createAppContainer(root);
+ 
 export default class App extends Component{
    
     componentDidMount() {

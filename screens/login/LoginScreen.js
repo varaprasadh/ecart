@@ -1,24 +1,64 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight,ScrollView } from 'react-native';
+
+import {connect} from "react-redux"
+import {AsyncStorage} from 'react-native';
+import Loader from '../major_components/Loader';
+
+import {showMessage} from "react-native-flash-message";
 class LoginScreen extends Component {
   constructor(props){
     super(props)
-    const state={
+     this.state={
       Email_Mobile:"",
-      Password:""
+      Password:"",
+      loading:false
     }
   }
 
-
   signIn(){
-    //TODO 
-    //make api call and check response
-
+   
+    let obj={
+        email: this.state.Email_Mobile.trim(),
+        password:this.state.password.trim()
+    };
+    if(obj.email!='' && obj.password !=''){
+       this.setState({
+         loading:true
+       })
+        fetch(`${this.props.baseUrl}/login_with_password`, {
+          method: "post",
+          body: JSON.stringify(obj),
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(res => res.json()).then(data => {
+          console.log(data)
+          if (data.success == true) {
+            AsyncStorage.setItem('AUTH_TOKEN', data.auth_token,(err)=>{
+              console.log("saved")
+              this.props.navigation.navigate('Main');
+            })
+          }else {
+              this.setState({
+                loading:false
+              });
+              showMessage({
+                message:"login failed",
+                type:"danger",
+                description:"credintials might be wrong",
+                autoHide:true
+              });
+          }
+        })
+    }
+    
   }
  
   
     render() { 
         return (
+          this.state.loading?<Loader/>:
           <ScrollView>
             <View className="container" style={styles.container}>  
               <View  style={styles.wrapper}>
@@ -30,18 +70,20 @@ class LoginScreen extends Component {
                     <View className="form" style={[styles.form]}>
                             <View className="input-row" style={styles.inputRow}>
                                 <Text>Email or Mobile</Text>
-                                <TextInput onSubmitEditing={()=>this.passwordInput.focus()} returnKeyType="next" style={[styles.inputline,styles.input]}/>
+                                <TextInput onSubmitEditing={()=>this.passwordInput.focus()}
+                                onChangeText={text=>this.setState({Email_Mobile:text})}
+                                   returnKeyType="next" style={[styles.inputline,styles.input]}/>
                             </View>
                             <View className="input-row" style={styles.inputRow} >
                                 <Text>Password</Text>
-                                <TextInput ref={passwordInput=>this.passwordInput=passwordInput} returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input]} />
+                                <TextInput
+                                    onChangeText={text=>this.setState({password:text})} 
+                                    returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input]} />
                                 <TouchableOpacity onPress={()=>this.props.navigation.push("ForgetPassword")} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
                                   <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </View> 
-                            <TouchableOpacity style={styles.customBtn} onPress={()=>{
-                              this.props.navigation.push('HomeStack')
-                            }}>
+                            <TouchableOpacity style={styles.customBtn} onPress={this.signIn.bind(this)}>
                                <Text style={{color:"white",fontWeight:"bold"}}>Sign In</Text>
                             </TouchableOpacity>
 
@@ -65,7 +107,7 @@ class LoginScreen extends Component {
               </View>
             </View>
           </ScrollView>
-        );
+        );  
     }
 }
 
@@ -139,5 +181,10 @@ const styles = StyleSheet.create({
     }
 });
 
+mapState = state => {
+  return {
+    baseUrl: state.Config.base_url
+  }
+}
 
-export default LoginScreen;
+export default connect(mapState)(LoginScreen);

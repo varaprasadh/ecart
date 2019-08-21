@@ -5,7 +5,6 @@ import Product_Explore from "./Product_Explore";
 class Products extends Component {
     constructor(props){
         super(props);
-        console.log("debug",this.props.products);
     }
     render() {
         return (

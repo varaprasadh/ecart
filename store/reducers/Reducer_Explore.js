@@ -4,7 +4,6 @@ import {LOAD_EXPLORE,LOAD_CATEGORIES,LOAD_MORE} from '../actions/types';
 const explore = {
   loading:true,
   products:[],
-  categories:[],
 };
 
 
@@ -12,23 +11,52 @@ const explore = {
 //load products
 //load categories
 //load more products
-
-
+/*
+ {
+   id: 4,
+   title: "shesma medium",
+   category: "devotional",
+   description: "some description about the product",
+   price: 20,
+   img: require('../product_images/shesma_medium.jpg'), //main
+   images:['','','']
+   isInCart: false,
+   isinWishlist: false,
+   quantity: 4
+ }
+*/
+ 
 export default function(state = explore, action) {
   switch (action.type) {
     case "LOAD_EXPLORE":
-      tempProducts.forEach(p=>{
-        state.products.push(p);
-      })
-      return state;
-
+       products=action.products;
+       products=products.map(p=>{
+         let parsedProduct = {
+           id: p.id,
+           title: p.item_name,
+           category: p.category,
+           description: p.category,
+           price: p.price,
+           isInCart: p.is_incart,
+           isinWishlist: p.is_inwishlist,
+           img: p.images[0] ? {
+             uri: p.images[0]
+           } : require('../product_images/noimage.jpg'),
+           quantity: p.quantity
+         }
+      return parsedProduct;
+      })    
+        
+      return {...state,products:[...state.products,...products]};
+ 
       case "LOAD_MORE":
-        newState=state;
-        tempProducts.forEach(p=>{
-          p.id=state.products.length;
-          newState.products.push(p);
+        products = action.products;
+        products.forEach(p=>{
+         
+          state.products.push(p);
         })
-        return newState;
+        return state;
+        
       case "MODIFY_ITEM_CART_STATUS":
         products = state.products;
         products.forEach(product=>{

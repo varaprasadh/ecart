@@ -7,6 +7,7 @@ import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail"
 import {connect} from "react-redux";
 
 import {showMessage} from 'react-native-flash-message';
+import Loader from '../major_components/Loader';
 
 
 export class CheckSummery extends Component {
@@ -17,19 +18,70 @@ export class CheckSummery extends Component {
             payType: checkoutData.payType,
             address: checkoutData.address,
             cardNum: checkoutData.card.number,
-            cardName:checkoutData.card.name
+            cardName:checkoutData.card.name,
+            loading:false
         }
         console.log("this is the data", this.props.cartItems);
     }
     processOrder(){
-       showMessage({
-           message: "sucess",
-           description:"order placed successfully",
-           type:"success"
-       });
-       setTimeout(()=>{
-           this.props.navigation.navigate('Explore');
-       },500);
+  
+    // this.props.navigation.navigate('Explore');
+
+
+     let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
+     let items=[];
+     total_cart_cost=0;
+     this.props.cartItems.forEach(item=>{
+         total_cart_cost+=item.price*item.quantity;
+     })
+     this.props.cartItems.map(item=>{
+         items.push({
+             product_id:item.id,
+             quantity:item.quantity
+         });
+     })
+    let obj={
+        billing_address:{
+            first_name:firstName,
+            last_name:lastName,
+            email,
+            mobile,
+            area,street,block,lane
+        },
+        items,
+        total_cart_cost,
+        payment_mode:this.state.payType
+    }
+   this.setState({
+       loading:true
+   })
+   fetch(`${this.props.baseUrl}/cart_checkout`,{
+       method:"POST",
+       body:JSON.stringify(obj),
+       headers:{
+           'content-type':"application/json",
+            AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNiJ9."
+       }
+   }).then(res=>res.json()).then(data=>{
+       console.log(data)
+        if(data.success==true){
+            this.setState({
+                loading:false
+            });
+            showMessage({
+                message: "sucess",
+                description: "order placed successfully",
+                type: "success"
+            });
+        }else{
+            showMessage({
+                message:"failed",
+                description:"something went wrong, try again",
+                type:"danger"
+            })
+        }
+    }) 
+
     }
 
     render() {
@@ -37,6 +89,7 @@ export class CheckSummery extends Component {
        billingAddress= `${firstName} ${lastName},${email},${mobile},${area},${street},${block},${lane}`
       
         return (
+            this.loading?<Loader/>:
             <Wrapper>
                 <View style={{marginTop:-10,flex:1}}>
                  <Header title="summery" backbutton backHandler={this.props.navigation.goBack}/>
@@ -154,6 +207,7 @@ mapStateToProps=state=>{
     return {
      cartItems:state.Cart.items,
      checkoutData:state.Checkout,
+     baseUrl: state.Config.base_url
     }
 }
 
