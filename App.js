@@ -27,7 +27,7 @@ const rootStack=createStackNavigator({
   initialRouteName: "HomeStack",
   headerMode:"none"
 })
-
+ 
 const root = createSwitchNavigator({
    LoginStack: LoginStack,
    Main:rootStack
@@ -36,7 +36,7 @@ const root = createSwitchNavigator({
   headerMode:"none",
 })
 
-console.log("store is ",store.getState())
+// console.log("store is ",store.getState())
 
 const RootNavigation = createAppContainer(root);
  

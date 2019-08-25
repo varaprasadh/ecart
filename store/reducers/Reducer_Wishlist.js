@@ -10,8 +10,28 @@ const wishlist={
 export default function (state =wishlist, action) {
   switch (action.type) { 
     case "LOAD_WISHLIST":
-      items=[...tempWishlist.items,...state.items];
-      return {...state,items}
+           products = action.products;
+           products = products.map(p => {
+             let parsedProduct = {
+               id: p.id,
+               title: p.item_name,
+               category: p.category,
+               description: p.category,
+               price: p.price,
+               isInCart: p.is_incart,
+               isinWishlist: p.is_inwishlist,
+               img: p.images[0] ? {
+                 uri: p.images[0]
+               } : require('../product_images/noimage.jpg'),
+               quantity: p.quantity
+             }
+             return parsedProduct;
+           });
+           return {
+             ...state,
+             items: [...state.items, ...products]
+           };
+
     case "ADD_TO_WISHLIST":
       console.log("add to wishlist reducer",action.product)
       items =state.items;

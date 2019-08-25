@@ -11,7 +11,7 @@ export default function (state = global, action) {
         case "CHANGE_CURRENT_ITEM_STATUS":
             newState={...state};
             console.log("changing status")
-            if(action.id==state.currentProduct.id){
+            if(state.currentProduct && action.id==state.currentProduct.id){
                 newState={...state,currentProduct:{...state.currentProduct,...action.obj}}
             }
             console.log(newState);

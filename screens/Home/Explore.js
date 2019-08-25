@@ -15,8 +15,7 @@ class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
-            loading:false,
-           
+            loading:false,   
         }
         this.page=1;
     }
@@ -57,7 +56,7 @@ class Explore extends Component {
       fetch(`${this.props.baseUrl}/products?page=${this.state.page}&per_page=10`,{
           method:"get",
           headers:{
-              AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNiJ9."
+              AUTH_TOKEN: this.props.AUTH_TOKEN
           }
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
@@ -65,7 +64,7 @@ class Explore extends Component {
               this.props.toggleLoading();
               this.props.loadProducts(data.products);
           }
-      })
+      }).catch(err=>console.error);
   }
 
   onSearch(text){
@@ -117,7 +116,8 @@ mapStateToProps=state=>{
        products,
        categories,
        loading,
-       baseUrl: state.Config.base_url
+       baseUrl: state.Config.base_url,
+       AUTH_TOKEN: state.Config.AUTH_TOKEN
     } 
 }
 mapDispatchToProps=(dispatch)=> ({

@@ -30,6 +30,23 @@ class ProductMain extends Component {
  }
 
 addToCart(){
+   obj={
+     product_id: this.state.product.id,
+     price: this.state.product.price, 
+     quantity: 1
+   };
+  fetch(`${this.props.baseUrl}/add_item_to_cart`,{
+   method:"POST",
+   body:JSON.stringify(obj),
+   headers:{
+     "content-Type":"application/json",
+      "AUTH_TOKEN": this.props.AUTH_TOKEN
+   }
+  }).then(res=>res.json()).then(data=>{
+    console.log("added to cart",data);
+
+  })
+
   this.props.changeCartStatus(this.state.product.id,true);
   this.props.addToCart(this.state.product);
   this.props.changeCurrentStatus(this.state.product.id,{isInCart:true});
@@ -47,7 +64,7 @@ addToWishlist(){
  
   render() {
     let instock=this.props.product.quantity>0;
-    return (
+    return ( 
       <Wrapper>
         <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>
@@ -177,7 +194,9 @@ mapStateToProps=state=>{
   return {
     wishlistItems:state.Wishlist.items,
     cartItems:state.Cart.items,
-    product:state.Addition.currentProduct
+    product:state.Addition.currentProduct,
+    baseUrl: state.Config.base_url,
+    AUTH_TOKEN: state.Config.AUTH_TOKEN
   }
 }
 

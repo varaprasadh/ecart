@@ -14,16 +14,59 @@ class Cart extends Component {
        super(props);
        this.state={
            cartItems:props.cartItems,
-       }
+       } 
    }
-  componentDidMount(){
-      setTimeout(()=>{
-        this.props.toggleLoading();
-      },2000)
-  } 
- removeFromCart(id){
-     this.props.removeFromCart(id);
-     this.props.changeCurrent(id,{isInCart:false})
+    componentWillMount(){
+       fetch(`${this.props.baseUrl}/cart`,{
+           method:"GET",
+           headers:{
+               "content-Type":"application/json",
+               "AUTH_TOKEN":this.props.AUTH_TOKEN
+           } 
+       }).then(res=>res.json()).then(data=>{
+           this.props.toggleLoading();
+           if(data.success==true){
+               //add that to cart state,
+               data.products.forEach(product => {
+                   console.log("debug each cart product")
+                   parsedProduct={
+                       ...product,...{
+                           id: product.product_id,
+                           title:product.product_name,
+                           availableQuantity: product.product_actual_auantity,
+                           price:product.price,
+                           img:{
+                               uri:product.image_url
+                           }
+                       }
+                   };
+                console.log(parsedProduct);
+                this.props.addToCart(parsedProduct);
+               })
+           }
+       }).catch(err=>err);
+
+    } 
+ removeFromCart(id){ 
+    obj = { 
+        product_id:id 
+    };
+    fetch(`${this.props.baseUrl}/remove_item_from_cart`,{
+        method:"POST",
+        headers:{
+            "content-Type":"application/json",
+            "AUTH_TOKEN":this.props.AUTH_TOKEN
+        },
+        body:JSON.stringify(obj)
+    }).then(res=>res.json()).then(data=>{
+        console.log(data);
+        if(data.success==true){
+            this.props.removeFromCart(id);
+            this.props.changeCurrent(id,{isInCart:false})
+        }
+    })
+
+    
  }
    
     render() {
@@ -105,10 +148,13 @@ mapStateToProps=state=>{
 
        cartItems:Cart.items,
        loading:Cart.loading,
+       baseUrl: state.Config.base_url,
+       AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
-mapDispatch=dispatch=>{
+mapDispatch=dispatch=>{ 
     return {
+        addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})},
         removeFromCart:(id)=>{dispatch({type:"REMOVE_FROM_CART",id})},
         setQuantity:(id,quantity)=>{dispatch({type:"SET_QTY",id,quantity})},
         toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},

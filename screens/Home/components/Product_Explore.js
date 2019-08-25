@@ -7,10 +7,10 @@ class Product_Explore extends Component {
     this.state = {
       product:props.product
     };
-    console.log(props)
+
   }
 
-  render() {
+  render() { 
     return (
     <TouchableWithoutFeedback onPress={()=>this.props.onProductSelect(this.props.product)}>
         <View style={styles.container}>

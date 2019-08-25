@@ -45,7 +45,7 @@ export class CheckSummery extends Component {
             first_name:firstName,
             last_name:lastName,
             email,
-            mobile,
+            phone_number:mobile,
             area,street,block,lane
         },
         items,
@@ -80,7 +80,7 @@ export class CheckSummery extends Component {
                 type:"danger"
             })
         }
-    }) 
+    }).catch(err=>console.error(err)) 
 
     }
 

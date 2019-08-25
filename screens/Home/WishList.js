@@ -13,15 +13,43 @@ import EmptyItems from '../major_components/EmptyItems';
 
 class WishList extends Component {
     
-    componentDidMount(){
-        this.props.loadWishlist();
-        setTimeout(()=>{ 
-          this.props.toggleLoading();
-        },2000)
+
+    componentWillMount(){
+        fetch(`${this.props.baseUrl}/wish_list`,{
+            method:"GET",
+            headers:{
+                "content-Type":"application/json",
+                "AUTH_TOKEN":this.props.AUTH_TOKEN
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.success==true){
+                let products=data.products;
+                this.props.toggleLoading();
+                this.props.loadWishlist(products);
+            }else{
+                //todo to refresh
+
+            }
+        }).catch(err=>console.error(err));
     }
-    removeItem(id){
-        this.props.removeFromWishlist(id);
-        this.props.changeCurrent(id,{isinWishlist:false});       
+   
+    removeItem(id){ 
+        obj={
+            product_id:id 
+        };
+        fetch(`${this.props.baseUrl}/remove_item_from_wish_list`,{
+            method:"DELETE",
+            headers:{
+                "content-Type":"application/json",
+                "AUTH_TOKEN":this.props.AUTH_TOKEN 
+            },
+            body:JSON.stringify(obj)
+        }).then(res=>res.json()).then(data=>{
+            if(data.success==true){
+                this.props.removeFromWishlist(id);
+                this.props.changeCurrent(id,{isinWishlist:false});
+            }
+        }).catch(err=>console.log(err));       
     }
     render() {
         Items=[];
@@ -71,12 +99,14 @@ mapStatetoProps=state=>{
     return {
         wishlistItems:Wishlist.items,
         loading:Wishlist.loading,
+        baseUrl: state.Config.base_url,
+        AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{
     return{
         removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
-        loadWishlist:()=>{dispatch({type:"LOAD_WISHLIST"})},
+        loadWishlist:(products)=>{dispatch({type:"LOAD_WISHLIST",products})},
         toggleLoading:()=>{dispatch({type:"TOGGLE_WISHLIST_LOADING"})},
         changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})},
         changeWishlistStatus_Result:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_WISHLIST_STATUS",id,value})},
