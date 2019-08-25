@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 
 import {showMessage} from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
+import CheckoutStatus from "./CheckoutStatus";
 
 
 export class CheckSummery extends Component {
@@ -19,13 +20,18 @@ export class CheckSummery extends Component {
             address: checkoutData.address,
             cardNum: checkoutData.card.number,
             cardName:checkoutData.card.name,
-            loading:false
+            loading:false,
+            checkout_done:false,
+            triedCheckout:false
         }
         console.log("this is the data", this.props.cartItems);
     }
+
+    onContinue() {
+        this.props.navigation.navigate('Explore');
+    }
+
     processOrder(){
-  
-    // this.props.navigation.navigate('Explore');
 
 
      let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
@@ -39,7 +45,7 @@ export class CheckSummery extends Component {
              product_id:item.id,
              quantity:item.quantity
          });
-     })
+     })   
     let obj={
         billing_address:{
             first_name:firstName,
@@ -66,19 +72,16 @@ export class CheckSummery extends Component {
        console.log(data)
         if(data.success==true){
             this.setState({
-                loading:false
-            });
-            showMessage({
-                message: "sucess",
-                description: "order placed successfully",
-                type: "success"
+                loading:false,
+                checkout_done:true,
+                triedCheckout:true
             });
         }else{
-            showMessage({
-                message:"failed",
-                description:"something went wrong, try again",
-                type:"danger"
-            })
+           this.setState({
+               triedCheckout:true,
+               checkout_done:false,
+               loading:false
+           })
         }
     }).catch(err=>console.error(err)) 
 
@@ -89,7 +92,8 @@ export class CheckSummery extends Component {
        billingAddress= `${firstName} ${lastName},${email},${mobile},${area},${street},${block},${lane}`
       
         return (
-            this.loading?<Loader/>:
+            this.state.loading?<Loader/>:
+            this.state.triedCheckout != true ?
             <Wrapper>
                 <View style={{marginTop:-10,flex:1}}>
                  <Header title="summery" backbutton backHandler={this.props.navigation.goBack}/>
@@ -134,7 +138,7 @@ export class CheckSummery extends Component {
                         </TouchableOpacity>   
                     </View>
                 </View>
-            </Wrapper>
+            </Wrapper>:<CheckoutStatus  onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}/>
         )
     }
 }

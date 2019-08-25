@@ -1,7 +1,12 @@
 //change default shipping address
 
 const global={
-    currentProduct:null
+    currentProduct:null,
+    profile:{
+        name:"",
+        mobile:"",
+        email:""
+    },
 }
 
 export default function (state = global, action) {
@@ -16,6 +21,8 @@ export default function (state = global, action) {
             }
             console.log(newState);
             return newState;
+        case "SET_PROFILE":
+            return {...state,profile:action.profile}
         default:
             return state;
     }

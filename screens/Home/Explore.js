@@ -50,21 +50,21 @@ class Explore extends Component {
        
   }
  
-
+//?page=${this.state.page}&per_page=10
   componentWillMount(){
 
-      fetch(`${this.props.baseUrl}/products?page=${this.state.page}&per_page=10`,{
-          method:"get",
-          headers:{
+      fetch(`${this.props.baseUrl}/products`,{
+          method:"GET",
+          headers:{ 
               AUTH_TOKEN: this.props.AUTH_TOKEN
-          }
+          } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
               this.page++;
               this.props.toggleLoading();
               this.props.loadProducts(data.products);
           }
-      }).catch(err=>console.error);
+      }).catch(err=>console.log(err)); 
   }
 
   onSearch(text){

@@ -6,6 +6,7 @@ import Wrapper from '../Wrapper';
 
 import {Ionicons} from "@expo/vector-icons";
 
+import {connect} from "react-redux";
 // write a function to logout
 
 
@@ -27,22 +28,22 @@ class Profile extends Component {
     render() {
         return (
             <Wrapper>
-               <View style={{marginTop:-10}}>
+               <View style={{marginTop:-10,flex:1}}>
                     {/* <Header title="Profile"/> */}
                     <View style={styles.profileDataContainer}>
                         <Image style={styles.pro_Icon} source={require("./images/boy.png")}/>
                         <View style={styles.details}>
                             <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
                                <Ionicons color="#ecf0f1" name="ios-person" size={25} />
-                               <Text style={styles.name}>john doe</Text>
+                               <Text style={styles.name}>{this.props.name}</Text>
                             </View>
                             <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
                                <Ionicons color="#ecf0f1" name="ios-call" size={25} />
-                               <Text style={styles.mobile}>9988773344</Text>
+                               <Text style={styles.mobile}>{this.props.mobile}</Text>
                             </View>
                             <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
                                <Ionicons color="#ecf0f1" name="ios-mail" size={25} />
-                               <Text style={styles.email}>johndoen@test.com</Text>
+                               <Text style={styles.email}>{this.props.email}</Text>
                             </View>
                         </View>
                         </View>
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         borderRadius:10,
         paddingHorizontal: 5,
-        marginVertical:3
+        marginVertical:3,
     },
     btn_text:{
         fontSize:18,
@@ -113,23 +114,29 @@ const styles = StyleSheet.create({
         alignSelf:"flex-start",
         paddingVertical:20,
         paddingHorizontal:10,
+        flex:1
        
     },
-    name:{
 
+    name:{
+     alignSelf:"stretch",
      paddingHorizontal:10,
      color:"#fff",
      paddingVertical:5,
-     
    },
     email:{
-
+      flex:1,
+      flexDirection:"row",
+      flexWrap:"wrap",
       paddingVertical:2,
       paddingHorizontal:10,
       color: "#fff",
     },
     mobile:{
-
+      flex:1,
+      alignSelf:"stretch",
+      flexDirection:"row",
+      flexWrap:"wrap",
       paddingVertical:2,
       paddingHorizontal:10,
       color: "#fff",
@@ -137,5 +144,15 @@ const styles = StyleSheet.create({
 
 });
 
+mapState=state=>{
+    console.log(state);
+    let {Addition}=state;
+    let {profile}=Addition;
+    return {
+        name:profile.name,
+        mobile:profile.mobile,
+        email:profile.email
+    }
+}
 
-export default Profile;
+export default connect(mapState)(Profile);

@@ -22,10 +22,10 @@ class Cart extends Component {
            headers:{
                "content-Type":"application/json",
                "AUTH_TOKEN":this.props.AUTH_TOKEN
-           } 
+           }  
        }).then(res=>res.json()).then(data=>{
-           this.props.toggleLoading();
-           if(data.success==true){
+           this.props.toggleLoading(); 
+           if(data.success==true){ 
                //add that to cart state,
                data.products.forEach(product => {
                    console.log("debug each cart product")
@@ -35,9 +35,7 @@ class Cart extends Component {
                            title:product.product_name,
                            availableQuantity: product.product_actual_auantity,
                            price:product.price,
-                           img:{
-                               uri:product.image_url
-                           }
+                           img: product.image_url?{uri: product.image_url}:require("./product_images/noimage.jpg")
                        }
                    };
                 console.log(parsedProduct);
@@ -64,9 +62,7 @@ class Cart extends Component {
             this.props.removeFromCart(id);
             this.props.changeCurrent(id,{isInCart:false})
         }
-    })
-
-    
+    }).catch(err=>console.log(err));
  }
    
     render() {

@@ -5,17 +5,19 @@ class Product_Explore extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product:props.product
-    };
+      product:props.product,
+    }; 
 
-  }
+  } 
 
   render() { 
     return (
     <TouchableWithoutFeedback onPress={()=>this.props.onProductSelect(this.props.product)}>
         <View style={styles.container}>
             <View style={styles.imagewrapper}>
-                <Image style={styles.image} source={this.state.product.img}/>
+                <Image style={styles.image} 
+                    source= {this.state.product.img} 
+                    />
             </View>
             <View style={styles.details}>
                 <Text style={{fontWeight:"bold",fontSize:18}}>{this.state.product.title}</Text>

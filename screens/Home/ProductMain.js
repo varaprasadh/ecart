@@ -34,7 +34,7 @@ addToCart(){
      product_id: this.state.product.id,
      price: this.state.product.price, 
      quantity: 1
-   };
+   }; 
   fetch(`${this.props.baseUrl}/add_item_to_cart`,{
    method:"POST",
    body:JSON.stringify(obj),
@@ -44,21 +44,43 @@ addToCart(){
    }
   }).then(res=>res.json()).then(data=>{
     console.log("added to cart",data);
-
-  })
-
-  this.props.changeCartStatus(this.state.product.id,true);
-  this.props.addToCart(this.state.product);
-  this.props.changeCurrentStatus(this.state.product.id,{isInCart:true});
+    if(data.success==true){
+      this.props.changeCartStatus(this.state.product.id, true);
+      this.props.addToCart(this.state.product);
+      this.props.changeCurrentStatus(this.state.product.id, {
+        isInCart: true
+      });
+    }
+  });
 }
+
 buy(){
   this.props.addToCart(this.state.product);
   this.props.navigation.navigate('Cart');
 }    
 addToWishlist(){
-  this.props.changeWishlistStatus(this.state.product.id,true);
-  this.props.addToWishlist(this.state.product);
-  this.props.changeCurrentStatus(this.state.product.id,{isinWishlist:true});
+  obj = {
+    product_id:this.state.product.id
+  }
+  fetch(`${this.props.baseUrl}/add_item_to_wish_list`,{
+    method:"POST",
+    headers:{
+      "content-Type":"application/json",
+      "AUTH_TOKEN":this.props.AUTH_TOKEN
+    },
+    body:JSON.stringify(obj)
+  }).then(res=>res.json()).then(data=>{
+    console.log("adding to wishlist",data)
+    if(data.success){
+        this.props.changeWishlistStatus(this.state.product.id, true);
+        this.props.addToWishlist(this.state.product);
+        this.props.changeCurrentStatus(this.state.product.id, {
+          isinWishlist: true
+        });
+    }
+  }).catch(err=>console.log(err));
+
+ 
 
 }
  
@@ -76,7 +98,7 @@ addToWishlist(){
           <ScrollView scrollEventThrottle={16}>
             <Animated.View style={[styles.imageWrapper,{opacity:this.imgOpacity}]}>
                <Image source={this.state.product.img} style={styles.image}/>
-               <TouchableWithoutFeedback onPress={this.addToWishlist.bind(this)}>
+               <TouchableWithoutFeedback onPress={this.addToWishlist.bind(this)} disabled={this.props.product.isinWishlist}>
                 <View style={styles.Favourite}>
                  <Text 
                    style={{paddingHorizontal:10,color:"#e74c3c",fontWeight:"bold"}}>
@@ -89,7 +111,10 @@ addToWishlist(){
             <View style={styles.details}>
                <Text style={styles.pName}>{this.state.product.title}</Text>
                <Text style={styles.pCat}>{this.state.product.category}</Text>
-               <Text style={styles.pPrice} >{this.state.product.price}$</Text>
+               <View style={[styles.pPrice,{flexDirection:"row",alignItems:"center"}]}>
+                 <Text style={{fontWeight:"bold",color:"#27ae60",fontSize:20}}>at </Text>
+                 <Text style={styles.styledPrice}>{this.state.product.price}$</Text>
+               </View>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
                   <Text style={styles.descText}>{this.state.product.description} </Text>
@@ -151,7 +176,7 @@ const styles=StyleSheet.create({
   },
   pName:{fontSize:22,fontWeight:"bold",color:"#2980b9",textTransform:"capitalize"},
   pCat:{fontWeight:"bold",fontSize:18,color:"#7f8c8d"},
-  pPrice:{fontWeight:"bold",color:"green",fontSize:20},
+  pPrice:{fontWeight:"bold",color:"green",fontSize:20,alignSelf:"flex-end"},
   details:{
     flex:1,
     paddingHorizontal:10,
@@ -185,6 +210,14 @@ const styles=StyleSheet.create({
     textAlign:"center",
     borderRadius:5,
     width:150
+  },
+  styledPrice:{
+    backgroundColor: "#27ae60",
+    fontWeight:"bold",
+    fontSize:20,
+    color:"#fff",
+    paddingHorizontal:20,
+    paddingVertical:5
   }
 });
 

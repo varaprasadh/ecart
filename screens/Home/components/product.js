@@ -40,7 +40,7 @@ class Product extends Component {
         return (
           <View style={styles.container} >
            <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
-                <Image source={this.props.productdata.img} 
+                <Image source={this.props.productdata.img} loadingIndicatorSource={require("./assets/img_loading.gif")}
                 style={{flex:1,width:null,height:null,borderRadius:10,}}
                 />
            </View>

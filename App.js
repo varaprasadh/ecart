@@ -36,13 +36,60 @@ const root = createSwitchNavigator({
   headerMode:"none",
 })
 
-// console.log("store is ",store.getState())
+const GlobalState = store.getState();
+// console.log(GlobalState)
+baseUrl=GlobalState.Config.base_url;
+AUTH_TOKEN=GlobalState.Config.AUTH_TOKEN;
+
+
 
 const RootNavigation = createAppContainer(root);
- 
+
+ //korada.santoshkumar611@gmail.com
+
 export default class App extends Component{
-   
+  
+    componentWillMount(){
+      fetch(`${baseUrl}/profile`,{
+        method:"GET",
+        headers:{
+          "AUTH_TOKEN": AUTH_TOKEN
+        }
+      }).then(res=>res.json()).then(data=>{
+        if(data.success==true){
+          profile=data.profile;
+          let obj={
+            name: profile.first_name + " " + profile.last_name,
+            mobile: profile.phone_number,
+            email: profile.email
+          }
+          store.dispatch({type:"SET_PROFILE",profile:obj});
+        }
+      })
+      /*
+      {
+        "success": true,
+        "profile": {
+          "id": 8,
+          "first_name": "Admin",
+          "last_name": null,
+          "phone_number": "8990",
+          "email": "hafed_admin@gmail.com",
+          "password_digest": "$2a$12$sAxtJjHjhZ4jgSy37MDYguhIG321mBvp7oqMgq4.VefOOVfWqFWsW",
+          "address": null,
+          "role": "Admin",
+          "active": true,
+          "created_at": "2019-08-10T11:06:20.901Z",
+          "updated_at": "2019-08-10T11:06:20.901Z",
+          "user_address": null
+        }
+      }
+      
+      */
+    } 
+
     componentDidMount() {
+      
       NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
     }
 
@@ -70,8 +117,6 @@ export default class App extends Component{
           <RootNavigation/>
           <FlashMessage position="top"/>
         </View>
-          
-        
       </Provider>
     )
   }

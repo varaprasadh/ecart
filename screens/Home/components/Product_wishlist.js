@@ -16,13 +16,14 @@ class Product extends Component {
    }
     render() {
         quantity=this.props.productdata.quantity||0;
-        instock=quantity>0
+        instock=quantity>0 
         return (
           <View style={{height:150}}>
             <View style={styles.container}>
                 <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
-                        <Image source={this.props.productdata.img} 
-                        style={{flex:1,width:null,height:null,borderRadius:10,}}
+                        <Image source={this.props.productdata.img}
+                            loadingIndicatorSource={require("./assets/img_loading.gif")}
+                           style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />
                 </View>
                 <View style={{flex:2}} style={styles.productInfo}>

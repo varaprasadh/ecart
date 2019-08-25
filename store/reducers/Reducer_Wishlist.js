@@ -24,12 +24,17 @@ export default function (state =wishlist, action) {
                  uri: p.images[0]
                } : require('../product_images/noimage.jpg'),
                quantity: p.quantity
-             }
+             } 
              return parsedProduct;
            });
+           const uniqueproducts = Array.from(new Set(products.map(a => a.id)))
+             .map(id => {
+               return products.find(a => a.id === id)  
+             });
+
            return {
              ...state,
-             items: [...state.items, ...products]
+             items: [...state.items, ...uniqueproducts]
            };
 
     case "ADD_TO_WISHLIST":
