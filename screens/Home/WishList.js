@@ -62,7 +62,7 @@ class WishList extends Component {
          this.props.loading?<Loader/>:
             Items.length>0?
             <Wrapper>
-                    <View style={{flex:1,marginTop:-10}}>
+                    <View style={{flex:1}}>
                         <ScrollView style={{flex:1,paddingBottom:35}}>
                             {(()=>Items)()}
                         </ScrollView> 

@@ -9,7 +9,6 @@ export default class OrderItem extends Component{
          delivered:props.data.delivered,
          index:props.data.index,
          id:props.data.productId,
-         items:props.data.items.join(),
          price:props.data.price
         }
     }
@@ -25,16 +24,12 @@ export default class OrderItem extends Component{
                 <View style={styles.right}>
                     <View style={{flex:6}}>
                         <View style={styles.row}>
-                            <Text style={styles.label}>ID:</Text>
+                            <Text style={styles.label}>Order ID:</Text>
                             <Text style={styles.value}>{this.state.id}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Text style={styles.label}>Ordered Items:</Text>  
-                            <Text style={styles.value} numberOfLines={1}>{this.state.items}</Text>  
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>price:</Text>  
-                            <Text style={styles.price} numberOfLines={1}>{this.state.price}</Text>  
+                            <Text style={styles.label}>Amount:</Text>  
+                            <Text style={styles.price}>{this.state.price} KD</Text>  
                         </View>
                     </View>
                     <View style={{flex:2,marginRight:10,alignItems:"center"}}>
@@ -65,15 +60,9 @@ const styles = StyleSheet.create({
       
     },
     price:{
-       backgroundColor:"#e67e22",
-       color:"#fff",
-       paddingHorizontal:20,
-       borderRadius:5,
        textAlign:"center",
-       paddingVertical:3,
        fontWeight:"bold",
-       marginHorizontal:10
-    
+       color: "#27ae60"
     }, 
     row:{
         flexDirection:"row",alignItems:"center",
@@ -88,7 +77,8 @@ const styles = StyleSheet.create({
     label:{
       fontWeight:"bold",
       fontSize:16,
-      color:"#7f8c8d"
+      color:"#7f8c8d",
+      paddingHorizontal:10
     },
     value:{
       color:"#2980b9",

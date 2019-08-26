@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar ,ScrollView,FlatList,} from 'react-native';
+import { View, Text, StyleSheet,StatusBar ,ScrollView,ImageBackground} from 'react-native';
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Products from "./components/Products";
@@ -77,14 +77,19 @@ class Explore extends Component {
         return ( 
             this.props.loading?<Loader/> :
              <Wrapper>
-                <SearchBar onSearch={this.onSearch.bind(this)} />
-                <ScrollView>
-                    <Products
-                        products={this.props.products}
-                        onProductSelect={this.onProductSelect.bind(this)}
-                    />
-                   <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
-                </ScrollView>
+                {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
+                <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
+                    <SearchBar onSearch={this.onSearch.bind(this)} />
+                    <ScrollView>
+                        <Text style={styles.label}>Latest Products</Text>
+                        <Products
+                            products={this.props.products}
+                            onProductSelect={this.onProductSelect.bind(this)}
+                        />
+                    <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                    </ScrollView>
+                </ImageBackground>
+                {/* </View> */}
               </Wrapper>
         ); 
     }
@@ -102,7 +107,8 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
         fontSize:25,
         paddingHorizontal:10,
-        paddingVertical:10
+        paddingVertical:10,
+        color:"#fff"
     },
 });
 
@@ -139,3 +145,4 @@ mapDispatchToProps=(dispatch)=> ({
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(Explore);
+connect

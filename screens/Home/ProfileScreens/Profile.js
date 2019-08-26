@@ -28,38 +28,38 @@ class Profile extends Component {
     render() {
         return (
             <Wrapper>
-               <View style={{marginTop:-10,flex:1}}>
+               <View style={{flex:1,backgroundColor:"#fff"}}>
                     {/* <Header title="Profile"/> */}
                     <View style={styles.profileDataContainer}>
-                        <Image style={styles.pro_Icon} source={require("./images/boy.png")}/>
+                        <Image style={styles.pro_Icon} source={require("./images/avatar.gif")}/>
                         <View style={styles.details}>
-                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                            <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-person" size={25} />
                                <Text style={styles.name}>{this.props.name}</Text>
                             </View>
-                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                            <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-call" size={25} />
                                <Text style={styles.mobile}>{this.props.mobile}</Text>
                             </View>
-                            <View style={[styles.jrow,{backgroundColor:"#2980b9"}]}>
+                            <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-mail" size={25} />
                                <Text style={styles.email}>{this.props.email}</Text>
                             </View>
-                        </View>
-                        </View>
-                        <View>
-                        {/* <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("EditProfile")} >
+                         </View>
+                    </View>
+                    <View style={styles.actions}>
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("EditProfile")} >
                             <View style={[styles.row]}>
                                 <Image source={require("./images/Icon_Edit-Profile.png")}/>
                                 <Text style={styles.btn_text}>Edit Profile</Text>
                             </View>
-                        </TouchableWithoutFeedback> */}
-                        {/* <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
                             <View style={[styles.row]}>
                                 <Image source={require("./images/Icon_Location.png")}/>
                                 <Text style={styles.btn_text} >Shipping Adress</Text>  
                             </View>
-                        </TouchableWithoutFeedback> */}
+                        </TouchableWithoutFeedback>
                         
                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("OrderHistory")}>
                             <View style={[styles.row]}>
@@ -84,11 +84,17 @@ class Profile extends Component {
 const styles = StyleSheet.create({
  
      profileDataContainer:{
-        flexDirection:"row",
+        // flexDirection:"row",
+        alignItems:"center",
         borderBottomWidth:2,
         borderBottomColor:"#7f8c8d",
-     }
-    ,
+        // flex:1,
+        backgroundColor: "#30336b",
+        padding:10
+     },
+     actions:{
+        // flex:1
+     },
     pro_Icon:{
         width:150,
         height:150,
@@ -96,7 +102,9 @@ const styles = StyleSheet.create({
     row:{
         flexDirection:"row",
         alignItems:"center",
-        paddingHorizontal:10
+        paddingHorizontal:10,
+        borderBottomWidth:1,
+        borderBottomColor:"#000"
     },
     jrow:{
         flexDirection:"row",
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
         borderRadius:10,
         paddingHorizontal: 5,
         marginVertical:3,
+      
     },
     btn_text:{
         fontSize:18,
@@ -112,36 +121,30 @@ const styles = StyleSheet.create({
     },
     details:{
         alignSelf:"flex-start",
-        paddingVertical:20,
+        alignItems:"flex-start",
+        paddingVertical:10,
         paddingHorizontal:10,
-        flex:1
        
     },
 
     name:{
-     alignSelf:"stretch",
      paddingHorizontal:10,
      color:"#fff",
      paddingVertical:5,
+     fontWeight:"bold"
    },
     email:{
-      flex:1,
-      flexDirection:"row",
-      flexWrap:"wrap",
       paddingVertical:2,
       paddingHorizontal:10,
       color: "#fff",
+      fontWeight:"bold"
     },
     mobile:{
-      flex:1,
-      alignSelf:"stretch",
-      flexDirection:"row",
-      flexWrap:"wrap",
       paddingVertical:2,
       paddingHorizontal:10,
       color: "#fff",
+      fontWeight:"bold"
     }
-
 });
 
 mapState=state=>{

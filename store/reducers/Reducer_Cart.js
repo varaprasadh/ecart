@@ -39,6 +39,8 @@ export default function (state = tempCart,action) {
                     return product;
                })
                return {...state,items}
+          case 'EMPTY_THE_CART':
+               return {...state,items:[]}
           default:
                return state;
      }

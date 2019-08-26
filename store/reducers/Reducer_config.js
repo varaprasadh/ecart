@@ -1,7 +1,7 @@
 //change default shipping address
 
 const config={ 
-    base_url: "https://2d1d5190.ngrok.io",
+    base_url: "https://168b4cf7.ngrok.io",
     AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNSJ9."
 }
 

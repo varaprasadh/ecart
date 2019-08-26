@@ -18,11 +18,11 @@ class Header extends Component {
               <View style={styles.row}>
                {this.props.backbutton?( <TouchableWithoutFeedback onPress={this.props.backHandler} 
                 style={{flex:1,paddingRight:20}}>
-                <Image source={require("./Icon_Arrow-Left.png")} />
+               <Ionicons name="ios-arrow-back" size={25} color="#fff"/> 
                </TouchableWithoutFeedback>):(null)
                } 
 
-               <Text style={{fontSize:18,flex:3,textAlign:"center"}}>
+               <Text style={{fontSize:18,flex:3,textAlign:"center",color:"#fff"}}>
                   {this.props.title}
                </Text>
               </View>
@@ -35,7 +35,7 @@ class Header extends Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#130f40',
         height:50,
         paddingVertical:10,
         paddingHorizontal:10,

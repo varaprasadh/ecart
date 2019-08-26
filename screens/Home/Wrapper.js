@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View,StatusBar } from 'react-native'
+import { View,StatusBar,StyleSheet } from 'react-native'
 
 export class Wrapper extends Component {
     constructor(props){
@@ -8,11 +8,16 @@ export class Wrapper extends Component {
     }
     render() {
         return (
-            <View style={{flex:1,paddingTop:StatusBar.currentHeight+10}}>
+            <View style={[styles.container,{flex:1,paddingTop:StatusBar.currentHeight}]}>
                {this.props.children}
             </View>
         )
     }
 }
+const styles=StyleSheet.create({
+    container:{
+        backgroundColor: "#130f40"
+    }
+})
 
 export default Wrapper

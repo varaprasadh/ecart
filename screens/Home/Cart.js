@@ -6,6 +6,7 @@ import Product from "./components/product"
 import {connect} from "react-redux";
 import EmptyItems from '../major_components/EmptyItems';
 import Loader from '../major_components/Loader';
+import Wrapper from './Wrapper';
 
 
 class Cart extends Component {
@@ -84,8 +85,9 @@ class Cart extends Component {
          this.props.loading?
          <Loader/>
          :totalPrice>0?
-            (<View style={styles.container}>
-                <View > 
+           <Wrapper>
+            <View style={styles.container}>
+                <View> 
                     <ScrollView style={{paddingBottom:20}}>
                     {(()=>cartProducts)()}
                     </ScrollView>
@@ -104,7 +106,8 @@ class Cart extends Component {
                     </View>
                 </View>
             </View>
-            ):<EmptyItems message="you got no items in cart yet!"/>
+            </Wrapper>
+            :<EmptyItems message="you got no items in cart yet!"/>
         );
     }
 }
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ecf0f1',
         paddingBottom:30,
-        paddingTop:40
+        paddingTop:30
     },
     checkouttab:{
         display:"flex",

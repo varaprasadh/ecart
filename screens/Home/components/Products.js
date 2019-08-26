@@ -9,7 +9,6 @@ class Products extends Component {
     render() {
         return (
             <View>
-               {!this.props.notitle? <Text style={styles.label}>Latest Products</Text>:null} 
                     <FlatList
                         data={this.props.products}
                         numColumns={2}
@@ -31,12 +30,6 @@ const styles = StyleSheet.create({
     productContainer:{
         flex:1,
         alignItems:"center"
-    },
-    label:{
-        fontWeight:"bold",
-        fontSize:25,
-        paddingHorizontal:10,
-        paddingVertical:10
     },
 });
 

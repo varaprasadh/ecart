@@ -24,7 +24,7 @@ const rootStack=createStackNavigator({
   Checkout:CheckoutStack,
   OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName: "HomeStack",
+  initialRouteName: "OrderHistory",
   headerMode:"none"
 })
  
@@ -37,7 +37,7 @@ const root = createSwitchNavigator({
 })
 
 const GlobalState = store.getState();
-// console.log(GlobalState)
+
 baseUrl=GlobalState.Config.base_url;
 AUTH_TOKEN=GlobalState.Config.AUTH_TOKEN;
 

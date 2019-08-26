@@ -76,6 +76,7 @@ export class CheckSummery extends Component {
                 checkout_done:true,
                 triedCheckout:true
             });
+            this.props.clearCart();
         }else{
            this.setState({
                triedCheckout:true,
@@ -214,5 +215,9 @@ mapStateToProps=state=>{
      baseUrl: state.Config.base_url
     }
 }
-
-export default connect(mapStateToProps)(CheckSummery);
+mapDispatch=dispatch=>{
+    return {
+        clearCart:()=>{dispatch({type:"EMPTY_THE_CART"})}
+    }
+}
+export default connect(mapStateToProps,mapDispatch)(CheckSummery);

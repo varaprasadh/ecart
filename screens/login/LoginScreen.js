@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight,ScrollView } from 'react-native';
+import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,TouchableHighlight,ScrollView,ImageBackground } from 'react-native';
 
 import {connect} from "react-redux"
 import {AsyncStorage} from 'react-native';
@@ -11,7 +11,7 @@ class LoginScreen extends Component {
     super(props)
      this.state={
       Email_Mobile:"",
-      Password:"",
+      password:"",
       loading:false
     }
   }
@@ -19,7 +19,7 @@ class LoginScreen extends Component {
   signIn(){
    
     let obj={
-        email: this.state.Email_Mobile.trim(),
+        email: this.state.Email_Mobile.trim().toLowerCase(),
         password:this.state.password.trim()
     };
     if(obj.email!='' && obj.password !=''){
@@ -59,7 +59,8 @@ class LoginScreen extends Component {
     render() { 
         return (
           this.state.loading?<Loader/>:
-          <ScrollView>
+          <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
+          <ScrollView contentContainerStyle={{flex:1}} showsHorizontalScrollIndicator={false}>
             <View className="container" style={styles.container}>  
               <View  style={styles.wrapper}>
                    <View className="signin-container" style={styles.signinContainer}>
@@ -94,7 +95,7 @@ class LoginScreen extends Component {
                     </View>
                    </View> 
                  <View>
-                 <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20}]}>-OR-</Text>
+                 <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20,color:"white"}]}>-OR-</Text>
                 </View>
                 <View>
                 <TouchableOpacity onPress={()=>{
@@ -107,6 +108,7 @@ class LoginScreen extends Component {
               </View>
             </View>
           </ScrollView>
+          </ImageBackground>
         );  
     }
 }
@@ -115,12 +117,11 @@ class LoginScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:"#F5F5F5",
+        // backgroundColor: "#130f40",
         alignItems:"center",
         padding:10,
     },
     wrapper:{
-      
       width:"100%",
       padding:10,
       marginTop: 100

@@ -217,7 +217,8 @@ const styles=StyleSheet.create({
     fontSize:20,
     color:"#fff",
     paddingHorizontal:20,
-    paddingVertical:5
+    paddingVertical:5,
+    borderRadius:10
   }
 });
 

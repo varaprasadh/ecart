@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image } from 'react-native';
+import { View, Text,StyleSheet,Image,ImageBackground } from 'react-native';
 
 class Loader extends Component {
   constructor(props) {
@@ -10,12 +10,14 @@ class Loader extends Component {
 
   render() {
     return (
+      <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
       <View style={styles.container}>
         <View style={{alignItems:"center"}}>
            <Image source={require("../../assets/icons/icon144.png")}/> 
-           <Text style={styles.text}>please wait ...</Text>
+           <Text style={styles.text}>Loading...</Text>
         </View>
       </View>
+      </ImageBackground>
     );
   }
 }
@@ -28,12 +30,12 @@ const styles=StyleSheet.create({
          bottom:0,
          left:0,
          position:"absolute",
-         backgroundColor: "#fff",
+        //  backgroundColor: "#fff",
          zIndex:99
      },
      text:{
          fontWeight:"bold",
-         color: "#27ae60",
+         color: "#fff",
          fontSize:20
      }
 })
