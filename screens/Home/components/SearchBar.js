@@ -36,7 +36,7 @@ class SearchBar extends Component {
 const styles=StyleSheet.create({
   container:{
     height:50,
-    backgroundColor:"#ecf0f1",
+    backgroundColor:"#fff",
     alignSelf:"stretch",
     flexDirection: 'row',
     borderRadius:20,

@@ -6,7 +6,10 @@ import { View, Text,Animated,Image,
 import {Ionicons} from "@expo/vector-icons";
 import Wrapper from "./Wrapper";
 
+import BackgroundCarousel from "../major_components/BackgroundCarousel";
+
 import {connect} from "react-redux";
+import Loader from '../major_components/Loader';
 
 class ProductMain extends Component {
   constructor(props) {
@@ -15,6 +18,7 @@ class ProductMain extends Component {
     availableQuantity=prodObj.quantity
     this.state={
       product:{...prodObj,quantity:1,availableQuantity},
+      loading:true
     }
     this.imgOpacity=new Animated.Value(0);
     this.addToCart=this.addToCart.bind(this);
@@ -80,15 +84,14 @@ addToWishlist(){
     }
   }).catch(err=>console.log(err));
 
- 
-
 }
  
   render() {
     let instock=this.props.product.quantity>0;
-    return ( 
-      <Wrapper>
-        <View style={[styles.container,{marginTop:-10,marginBottom:40}]}>
+    return (
+      this.state.loading?<Loader/>: 
+      <Wrapper noBackground>
+        <View style={[styles.container,{marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>
           <View style={styles.backBtn}>
               <Ionicons name="ios-arrow-back" size={30}/>
@@ -97,12 +100,15 @@ addToWishlist(){
           </TouchableWithoutFeedback>
           <ScrollView scrollEventThrottle={16}>
             <Animated.View style={[styles.imageWrapper,{opacity:this.imgOpacity}]}>
-               <Image source={this.state.product.img} style={styles.image}/>
+               <View style={styles.image}>
+                  <BackgroundCarousel images={this.state.product.images}/>
+               </View>
+              
                <TouchableWithoutFeedback onPress={this.addToWishlist.bind(this)} disabled={this.props.product.isinWishlist}>
                 <View style={styles.Favourite}>
                  <Text 
                    style={{paddingHorizontal:10,color:"#e74c3c",fontWeight:"bold"}}>
-                   {this.props.product.isinWishlist?"added to wishlist":" Add To wishlist"}
+                   {this.props.product.isinWishlist?"Added to Wishlist":" Add to Wishlist"}
                  </Text>
                  <Ionicons color="#e74c3c" name={this.props.product.isinWishlist?"ios-heart":"ios-heart-empty"} size={30} />
                 </View>
@@ -112,28 +118,28 @@ addToWishlist(){
                <Text style={styles.pName}>{this.state.product.title}</Text>
                <Text style={styles.pCat}>{this.state.product.category}</Text>
                <View style={[styles.pPrice,{flexDirection:"row",alignItems:"center"}]}>
-                 <Text style={{fontWeight:"bold",color:"#27ae60",fontSize:20}}>at </Text>
-                 <Text style={styles.styledPrice}>{this.state.product.price}$</Text>
+                 {/* <Text style={{fontWeight:"bold",color:"#27ae60",fontSize:20}}></Text> */}
+                 <Text style={styles.styledPrice}>{this.state.product.price} KD</Text>
                </View>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
                   <Text style={styles.descText}>{this.state.product.description} </Text>
                </View>
-            </View>
-            <View style={styles.actions}>
-              <TouchableOpacity onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
+            </View> 
+          </ScrollView>
+        </View>
+         <View style={styles.actions}>
+              <TouchableOpacity style={{flex:1}} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
                  <Text style={[styles.btn,styles.action_cart]}>
                     {this.props.product.isInCart?"IN CART":"ADD TO CART"}
                  </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.buy.bind(this)} disabled={!instock}>
+              <TouchableOpacity style={{flex:1}} onPress={this.buy.bind(this)} disabled={!instock}>
                  <Text style={[styles.btn,!instock?{backgroundColor:"#e74c3c"}:{}]}>
                     {instock?"BUY":"OUT OF STOCK"}
                   </Text>
               </TouchableOpacity>
-            </View> 
-          </ScrollView>
-        </View>
+          </View>
       </Wrapper>
     );
   }
@@ -170,8 +176,6 @@ const styles=StyleSheet.create({
      paddingHorizontal:10
   },
   image:{
-    width:null,
-    height:null,
     flex:1,
   },
   pName:{fontSize:22,fontWeight:"bold",color:"#2980b9",textTransform:"capitalize"},
@@ -191,12 +195,16 @@ const styles=StyleSheet.create({
      fontSize:18,
      color:"#34495e"
   },
-  actions:{flex:1,
-         paddingHorizontal:10,paddingVertical:10,
-         flexDirection:"row",justifyContent:"space-around",},
+  actions:{
+    position:"absolute",
+    bottom:0,
+    width:"100%",
+    flex:1,
+    flexDirection:"row",
+    alignSelf:"stretch",
+    backgroundColor:"red"
+  },
   action_cart:{
-    borderWidth:1,
-    borderColor:"#27ae60",
     backgroundColor:"#fff",
     color:"#27ae60"
   },
@@ -208,8 +216,7 @@ const styles=StyleSheet.create({
     fontWeight:"bold",
     color:"#fff",
     textAlign:"center",
-    borderRadius:5,
-    width:150
+    flex:1
   },
   styledPrice:{
     backgroundColor: "#27ae60",
@@ -226,6 +233,7 @@ const styles=StyleSheet.create({
 mapStateToProps=state=>{
 
   return {
+    Addition:state.Addition,
     wishlistItems:state.Wishlist.items,
     cartItems:state.Cart.items,
     product:state.Addition.currentProduct,

@@ -76,7 +76,7 @@ class Explore extends Component {
        
         return ( 
             this.props.loading?<Loader/> :
-             <Wrapper>
+             <Wrapper noBackground>
                 {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
                     <SearchBar onSearch={this.onSearch.bind(this)} />

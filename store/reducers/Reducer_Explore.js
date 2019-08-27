@@ -31,14 +31,20 @@ export default function(state = explore, action) {
     case "LOAD_EXPLORE":
        products=action.products;
        products=products.map(p=>{
+         carouselImages=p.images.map(imgurl=>{
+           return {
+             uri:imgurl
+           }
+         })
          let parsedProduct = {
            id: p.id,
            title: p.item_name,
            category: p.category,
-           description: p.category,
+           description: p.category, 
            price: p.price,
            isInCart: p.is_incart,
            isinWishlist: p.is_inwishlist,
+           images:carouselImages.length?carouselImages:[require('../product_images/noimage.jpg')],
            img: p.images[0] ? {
              uri: p.images[0]
            } : require('../product_images/noimage.jpg'),

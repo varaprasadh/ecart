@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View,StyleSheet,TouchableOpacity} from 'react-native'
+import { Text, View,StyleSheet,TouchableOpacity,ImageBackground} from 'react-native'
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail"
@@ -91,19 +91,21 @@ export class CheckSummery extends Component {
     render() {
        let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
        billingAddress= `${firstName} ${lastName},${email},${mobile},${area},${street},${block},${lane}`
+       billingAddress= "some lorem,sfsfs,sfsfssse,sdgsgsgsegse,ssgsgsgs,sfsfsse,sdfsfsfse,sdfsf"
       
         return (
             this.state.loading?<Loader/>:
             this.state.triedCheckout != true ?
             <Wrapper>
-                <View style={{marginTop:-10,flex:1}}>
-                 <Header title="summery" backbutton backHandler={this.props.navigation.goBack}/>
-                 <View style={{paddingVertical:20,paddingHorizontal:10}}>
+               <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
+                <Header title="summery" backbutton backHandler={this.props.navigation.goBack}/>
+                <View style={{flex:1,padding:10}}>
+                 <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
                      <View style={styles.row}>
-                         <Text style={styles.label}>payment type:</Text>
+                         <Text style={styles.label}>Payment Type :</Text>
                          <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
                      </View>
-                    { this.state.payType!="Cash"?(
+                    {/* { this.state.payType!="Cash"?(
                         <View style={{borderBottomWidth:1,borderBottomColor:"#7f8c8d"}}>
                         <View style={{flexDirection:"row",justifyContent:"space-between"}} >
                            <Text style={styles.label}>card number:</Text>
@@ -115,16 +117,16 @@ export class CheckSummery extends Component {
                         </View>
                      </View>
                     ):null  
-                    }
-                     <View style={[{flexDirection:"row",justifyContent:"space-between"}]}>
+                    } */}
+                     <View style={[]}>
                          <Text style={[styles.label]}>Billing Address:</Text>
-                         <Text style={[styles.address,{flex:2}]}>{billingAddress}</Text>
+                         <Text style={[styles.text]}>{billingAddress}</Text>
                      </View>
                  </View>
-                 <View>
+                 <View style={{backgroundColor:"#fff"}}>
                      <OrderItemsTable items={this.props.cartItems}/>
                  </View>
-                 <View className="bottombar" style={styles.checkouttab}>
+                 <View style={styles.checkouttab}>
                        <TouchableOpacity 
                             style={[styles.btn,{backgroundColor:"#fff",borderWidth:1,borderColor:"#2ecc71"}]} 
                             onPress={()=>this.props.navigation.goBack()}
@@ -139,6 +141,7 @@ export class CheckSummery extends Component {
                         </TouchableOpacity>   
                     </View>
                 </View>
+              </ImageBackground>
             </Wrapper>:<CheckoutStatus  onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}/>
         )
     }
@@ -188,7 +191,7 @@ export class CheckSummery extends Component {
          },
          checkouttab:{
              display:"flex",
-             backgroundColor:"#fff",
+             backgroundColor: "#dff9fb",
              height:70,
              flexDirection:"row",
              paddingTop:10,

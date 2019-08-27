@@ -27,8 +27,8 @@ class Profile extends Component {
    }
     render() {
         return (
-            <Wrapper>
-               <View style={{flex:1,backgroundColor:"#fff"}}>
+            <Wrapper noBackground>
+               <View style={{flex:1}}>
                     {/* <Header title="Profile"/> */}
                     <View style={styles.profileDataContainer}>
                         <Image style={styles.pro_Icon} source={require("./images/avatar.gif")}/>
@@ -50,27 +50,27 @@ class Profile extends Component {
                     <View style={styles.actions}>
                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("EditProfile")} >
                             <View style={[styles.row]}>
-                                <Image source={require("./images/Icon_Edit-Profile.png")}/>
+                                <Ionicons name="ios-create" color="#fff" size={25}/>
                                 <Text style={styles.btn_text}>Edit Profile</Text>
-                            </View>
+                            </View>   
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
-                            <View style={[styles.row]}>
-                                <Image source={require("./images/Icon_Location.png")}/>
-                                <Text style={styles.btn_text} >Shipping Adress</Text>  
+                            <View style={[styles.row]}> 
+                                <Ionicons name="ios-hammer" color="#fff" size={25}/>
+                                <Text style={styles.btn_text} >Change Password</Text>  
                             </View>
                         </TouchableWithoutFeedback>
                         
                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("OrderHistory")}>
                             <View style={[styles.row]}>
-                                <Image source={require("./images/Icon_History.png")}/>
+                                <Ionicons name="ios-cart" color="#fff" size={25}/>
                                 <Text style={styles.btn_text} >My Orders</Text>
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={this.logout} >
                             <View style={[styles.row]}>
-                                <Image source={require("./images/Icon_Exit.png")}/>
-                                <Text style={styles.btn_text} >Logout</Text>
+                                <Ionicons name="ios-exit" color="#fff" size={25}/>
+                                <Text style={[styles.btn_text]} >Logout</Text>
                             </View>
                         </TouchableWithoutFeedback>
                         </View>
@@ -88,23 +88,23 @@ const styles = StyleSheet.create({
         alignItems:"center",
         borderBottomWidth:2,
         borderBottomColor:"#7f8c8d",
-        // flex:1,
-        backgroundColor: "#30336b",
         padding:10
      },
      actions:{
-        // flex:1
+        // backgroundColor: "#fff"
      },
     pro_Icon:{
         width:150,
         height:150,
-    },
+    }, 
     row:{
         flexDirection:"row",
         alignItems:"center",
         paddingHorizontal:10,
-        borderBottomWidth:1,
-        borderBottomColor:"#000"
+        borderWidth:2,
+        borderColor: "#27ae60",
+        marginTop:5
+        // backgroundColor:"#fff"
     },
     jrow:{
         flexDirection:"row",
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
     btn_text:{
         fontSize:18,
         paddingVertical:15,
-        marginLeft:20
+        marginLeft:20,
+        color:"#fff"
     },
     details:{
         alignSelf:"flex-start",

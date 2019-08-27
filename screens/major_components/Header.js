@@ -35,7 +35,7 @@ class Header extends Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        backgroundColor: '#130f40',
+        backgroundColor: '#F2AA4CFF',
         height:50,
         paddingVertical:10,
         paddingHorizontal:10,

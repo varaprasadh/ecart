@@ -6,38 +6,36 @@ export default class OrderItem extends Component{
     constructor(props){
         super(props);
         this.state={
-         delivered:props.data.delivered,
-         index:props.data.index,
-         id:props.data.productId,
-         price:props.data.price
+            orderobj:props.data,
+            orderinfo:props.data.order
         }
     }
     render(){
         return (
         <TouchableWithoutFeedback
-         onPress={()=>this.props.onClick(this.state.id)}
+         onPress={()=>this.props.onClick(this.state.orderobj.index)}
         >
             <View style={styles.listContainer}>
                 <View style={{flex:1,alignItems:"center"}}>
-                <Text style={styles.index}>{this.state.index}</Text>
+                  <Text style={styles.index}>{this.state.orderobj.index}</Text>
                 </View>
-                <View style={styles.right}>
+                <View style={styles.right}> 
                     <View style={{flex:6}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Order ID:</Text>
-                            <Text style={styles.value}>{this.state.id}</Text>
+                            <Text style={styles.value}>{this.state.orderinfo.id}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.label}>Amount:</Text>  
-                            <Text style={styles.price}>{this.state.price} KD</Text>  
+                            <Text style={styles.price}>{this.state.orderinfo.total_price} KD</Text>  
                         </View>
                     </View>
                     <View style={{flex:2,marginRight:10,alignItems:"center"}}>
-                    {this.state.delivered?(
+                    {this.state.orderobj.delivery_date!=null?(
                         <Ionicons name="ios-done-all" color="#2ecc71" size={25}/>)
                         :(<Ionicons name="ios-airplane" color="#e74c3c" size={25}/>)
-                    }  
-                    <Text style={this.state.delivered?styles.done:styles.pending}>{this.state.delivered?"Delivered":"Pending"}</Text>
+                    }
+                    <Text style={this.state.orderobj.delivery_date!=null?styles.done:styles.pending}>{this.state.delivered?"Delivered":"Pending"}</Text>
                     </View>
                     <View style={{flex:1,alignItems:"flex-end",marginRight:10}}>
                         <Ionicons name="ios-arrow-forward" size={25}/>

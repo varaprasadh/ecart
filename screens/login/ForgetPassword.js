@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity,ImageBackground} from 'react-native';
 import {Input} from 'native-base';
 // create a component
 class ForgetPassword extends Component {
@@ -26,10 +26,11 @@ class ForgetPassword extends Component {
     })
    }
    changePassword(){
-       
-   }
+
+   } 
     render() {
         return (
+        <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={[styles.card]}>
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
@@ -59,6 +60,7 @@ class ForgetPassword extends Component {
                 </TouchableOpacity>
             </View>   
         </View>
+        </ImageBackground>
         );
     }
 }
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ecf0f1',
     },
     input:{
         fontSize:20,

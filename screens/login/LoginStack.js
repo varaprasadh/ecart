@@ -33,7 +33,7 @@ const LoginStack =createStackNavigator({
     SignUP:SignUpScreen,
     OTP:OTPScreen,
     SignWithOTP:SignWithOTP,
-    ForgetPassword:ForgetPassword
+    ForgetPassword: ForgetPassword
 },{
     initialRouteName: "Login",
     headerMode:"none"

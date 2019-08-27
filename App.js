@@ -24,7 +24,7 @@ const rootStack=createStackNavigator({
   Checkout:CheckoutStack,
   OrderItemDetail:OrderItemDetail,
 },{
-  initialRouteName: "OrderHistory",
+  initialRouteName: "HomeStack",
   headerMode:"none"
 })
  
@@ -61,11 +61,12 @@ export default class App extends Component{
           let obj={
             name: profile.first_name + " " + profile.last_name,
             mobile: profile.phone_number,
-            email: profile.email
+            email: profile.email,
+            address:profile.address
           }
           store.dispatch({type:"SET_PROFILE",profile:obj});
         }
-      })
+      }).catch(err=>console.log(err));
       /*
       {
         "success": true,

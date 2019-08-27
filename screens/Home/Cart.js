@@ -85,7 +85,7 @@ class Cart extends Component {
          this.props.loading?
          <Loader/>
          :totalPrice>0?
-           <Wrapper>
+           <Wrapper noBackground>
             <View style={styles.container}>
                 <View> 
                     <ScrollView style={{paddingBottom:20}}>
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ecf0f1',
         paddingBottom:30,
         paddingTop:30
     },

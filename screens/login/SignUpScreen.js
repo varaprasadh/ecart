@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { StyleSheet,ScrollView ,Button,KeyboardAvoidingView,TouchableOpacity} from 'react-native';
+import { StyleSheet,ScrollView ,ImageBackground,KeyboardAvoidingView,TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
 import {Text,View,Input} from 'native-base';
 import {Ionicons} from '@expo/vector-icons';
 import {Constants,Font,Asset} from "expo";
@@ -8,6 +8,7 @@ import {Constants,Font,Asset} from "expo";
 import {connect} from "react-redux";
 
 import Loader from "../major_components/Loader";
+import Wrapper from '../Home/Wrapper';
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -109,20 +110,24 @@ class SignUpScreen extends Component {
     render() {
         return (
           this.state.loading?<Loader/>:
+      <Wrapper>
+        <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
           <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
-          <View style={styles.container}>
-                    <View style={{flex:1}}>
-                    <View style={{paddingTop:5,paddingBottom:5,display:"flex"}}>
+            <View style={{padding:5,display:"flex",backgroundColor:"#192a56"}}>
+                <TouchableWithoutFeedback onPress={()=>this.props.navigation.goBack()}>
                         <View style={{flexDirection:"row",alignItems:"center"}}>
-                            <Ionicons name="ios-arrow-back" size={32} color="black" />
-                            <Text onPress={()=>this.props.navigation.goBack()} style={{marginLeft:10}}>Back</Text>
+                            <Ionicons name="ios-arrow-back" size={32} color="#fff" />
+                            <Text style={{marginLeft:10,color:"#fff"}}>Back</Text>
                         </View>
-                    </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.container}>
+                  <View style={{flex:1}}>
                     <View className="wrapper" style={styles.wrapper}>
                         <View className="title">
                           <Text style={styles.title}>Sign Up</Text>
                         </View>
-                            <ScrollView className="form" style={{paddingLeft:10,paddingRight:10,height:450}} >
+                            <ScrollView className="form" showsVerticalScrollIndicator={false} style={{paddingLeft:10,paddingRight:10,height:450}} >
                                <View style={{paddingBottom:10}}>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label}>First Name</Text>
@@ -202,7 +207,7 @@ class SignUpScreen extends Component {
                                         <Input ref={area=>this.area=area} 
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
-                                        placeholder="area..."
+                                        placeholder="area"
                                         onSubmitEditing={({nativeEvent:{text}})=>{
                                             this.setState({area:text});
                                             this.validate();
@@ -214,7 +219,7 @@ class SignUpScreen extends Component {
                                         <Input ref={block=>this.block=block} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="block..."
+                                        placeholder="block"
                                         onSubmitEditing={({nativeEvent:{text}})=>{
                                             this.setState({block:text});
                                             this.validate();
@@ -226,7 +231,7 @@ class SignUpScreen extends Component {
                                         <Input ref={street=>this.street=street} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="street..."
+                                        placeholder="street"
                                         onSubmitEditing={({nativeEvent:{text}})=>{
                                             this.setState({street:text});
                                             this.validate();
@@ -238,7 +243,7 @@ class SignUpScreen extends Component {
                                         <Input ref={lane=>this.lane=lane} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="lane..."
+                                        placeholder="lane"
                                         onSubmitEditing={({nativeEvent:{text}})=>{
                                             this.setState({lane:text});
                                             this.validate();
@@ -254,6 +259,7 @@ class SignUpScreen extends Component {
                                          ref={password=>this.password=password}
                                          style={[styles.inputline,styles.input]}
                                          returnKeyType="next"
+                                         secureTextEntry={true}
                                          onSubmitEditing={({nativeEvent:{text}})=>{
                                              this.setState({password:text});
                                              this.validate();
@@ -274,24 +280,23 @@ class SignUpScreen extends Component {
                                              console.log(this.state); 
                                              this.validate();
                                          }}
+                                         secureTextEntry={true}
                                          onChangeText={text=> {
                                            this.setState({ password_confirmation :text});
                                            this,this.validate();
-                                         }}
-                                         
-                                         
-                                         />  
+                                         }}/>  
                                     </View>
-                           
                                 </View>
                             </ScrollView>  
                     </View>
                 </View>
           </View>
+          </KeyboardAvoidingView>
           <TouchableOpacity onPress={this.signUP.bind(this)} disabled={this.buttonDisabled()}  style={[styles.btn_signup,{backgroundColor:this.buttonDisabled()?"#7f8c8d":"#2ecc71"}]}>
                <Text style={{color:"white"}}>SIGN UP</Text>
-          </TouchableOpacity> 
-          </KeyboardAvoidingView>
+          </TouchableOpacity>
+        </ImageBackground>
+        </Wrapper>
         );
     }
 }
@@ -301,9 +306,8 @@ class SignUpScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding:20,
+        padding:10,
         paddingTop:Constants.statusBarHeight,
-        backgroundColor:"#F5F5F5"
     },
     title:{
         fontWeight:"bold",
@@ -312,7 +316,7 @@ const styles = StyleSheet.create({
     wrapper:{
         flex:1,
         padding:10,
-        marginTop: 20,
+        borderRadius:10,
         backgroundColor:"#fff",
         elevation:1
       },

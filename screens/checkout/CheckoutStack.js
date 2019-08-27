@@ -6,7 +6,6 @@ import CheckPayment from "./CheckPayment";
 import CheckSummery from "./CheckSummery";
 
 
-
 const CheckoutStack=createStackNavigator({
     CheckAddress:CheckAddress,
     CheckPayment:CheckPayment,

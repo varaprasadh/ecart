@@ -71,11 +71,11 @@ export class CheckPayment extends Component {
     render() {
         return (
            <Wrapper>
-             <View style={{marginTop:-10,flex:1}}>
+             <View style={{flex:1,backgroundColor:"#d2dae2"}}>
               <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
                     <Header title="Checkout" backbutton={true} backHandler={this.props.navigation.goBack}/> 
                     <View style={{flex:1}}>
-                            <Text style={{fontWeight:"bold",fontSize:18,paddingHorizontal:10,paddingVertical:10,color:"#2980b9"}}>Choose Payment Options</Text>
+                            <Text style={[styles.stext,styles.styltext]}>Payment Type</Text>
                             <View style={styles.tab}>
                                 <TouchableWithoutFeedback onPress={()=>this.setState({paymentMode:"Cash"})}>
                                     <View style={styles.row} >
@@ -86,7 +86,7 @@ export class CheckPayment extends Component {
                                         <Text style={styles.label}>Cash</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={()=>this.setState({paymentMode:"Card"})}>
+                                {/* <TouchableWithoutFeedback onPress={()=>this.setState({paymentMode:"Card"})}>
                                     <View style={styles.row}>
                                         <Image 
                                         source={this.state.paymentMode=="Card"?this.box_checked:this.box_unchecked} 
@@ -94,7 +94,7 @@ export class CheckPayment extends Component {
                                         <Ionicons name="ios-card" size={30}/>
                                         <Text  style={styles.label}>Card</Text>
                                     </View>
-                                </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback> */}
                             </View>
                         </View>
                        <View style={{flex:3}}>
@@ -270,7 +270,7 @@ const styles=StyleSheet.create({
     },
     checkouttab:{
         display:"flex",
-        backgroundColor:"#fff",
+        backgroundColor: "#dff9fb",
         height:70,
         flexDirection:"row",
         paddingTop:10,
@@ -295,7 +295,19 @@ const styles=StyleSheet.create({
         fontWeight:"bold",
         color:"#27ae60",
         paddingHorizontal:5,
-
+    },
+    stext: {
+        fontSize:18,
+        textAlign:"center",
+        fontWeight:"bold"
+    },
+    styltext:{
+        borderRadius: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: "#2ecc71",
+        color: "#fff",
+        marginVertical:10,
     }
 })
 mapState=state=>{

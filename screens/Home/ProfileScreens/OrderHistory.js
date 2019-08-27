@@ -14,31 +14,43 @@ class OrderHistory extends Component {
             orders:[]
         }
     }
-    onClick(productId){
-         console.log(productId);
-         this.props.navigation.push('OrderItemDetail');
+    onClick(index){
+        console.log(index);
+        console.log(this.state.orders[index]);
+         this.props.navigation.push('OrderItemDetail',{order:this.state.orders[index]});
     }
     componentWillMount(){
-      this.setState({
-          loading:true
-      });
-       fetch(`${this.props.baseUrl}/orders`,{
-           method:"GET",
-           headers:{
-               "AUTH_TOKEN":this.props.AUTH_TOKEN
-           }
-       }).then(res=>res.json()).then(data=>{
-           console.log(data);
-           if(data.success==true){
-              myOrders = data.my_orders;
-              this.setState({
-                  orders:myOrders
-              });
-           }
-           this.setState({
-               loading:false
-           });
-       })
+    myOrders=my_orders.map(orderArray=>{
+        return orderArray[0];
+    });
+    this.setState({
+        orders:myOrders
+    });
+    console.log(myOrders);
+
+    //   this.setState({
+    //       loading:true
+    //   });
+    //    fetch(`${this.props.baseUrl}/orders`,{
+    //        method:"GET",
+    //        headers:{
+    //            "AUTH_TOKEN":this.props.AUTH_TOKEN
+    //        }
+    //    }).then(res=>res.json()).then(data=>{
+    //        console.log(data);
+    //        if(data.success==true){
+    //           myOrders = data.my_orders;
+    //           myOrders=my_orders.map(orderArray=>{
+    //              return orderArray[0];
+    //           });
+    //           this.setState({
+    //               orders:myOrders
+    //           });
+    //        }
+    //        this.setState({
+    //            loading:false
+    //        });
+    //    }).catch(err=>console.log(err));
     }
 
     render() {
@@ -54,15 +66,13 @@ class OrderHistory extends Component {
                           data={this.state.orders}
                           keyExtractor={(item,index)=>index+''} 
                           renderItem={({item,index})=>(
-                          <OrderItem data={{index:index+1,...item}}
+                          <OrderItem data={{index:index,...item}}
                               onClick={this.onClick.bind(this)}
                           />
                           )}
                       /> 
                     </ScrollView>  
-                  </View>
-                    
-                     
+                  </View> 
                   </View>
                 </View>
             </Wrapper>
@@ -70,7 +80,6 @@ class OrderHistory extends Component {
         );  
     }
 }
-
 
 
 const styles = StyleSheet.create({
@@ -89,12 +98,13 @@ mapState=state=>{
 
 export default connect(mapState)(OrderHistory);
 
-/*
-{
-    "success": true,
-    "my_orders": [
+
+
+   
+const my_orders= [
         [{
             "date": "2019-08-22",
+            "delivery_date":"2019-08-07",
             "order": {
                 "id": 33,
                 "user_id": 6,
@@ -125,6 +135,7 @@ export default connect(mapState)(OrderHistory);
         }],
         [{
             "date": "2019-08-19",
+            "delivery_date": "2019-08-07",
             "order": {
                 "id": 17,
                 "user_id": 6,
@@ -779,5 +790,3 @@ export default connect(mapState)(OrderHistory);
             }]
         }]
     ]
-}
-*/

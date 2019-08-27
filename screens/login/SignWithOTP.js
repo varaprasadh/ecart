@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input} from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input,ImageBackground} from 'react-native';
+import Wrapper from '../Home/Wrapper';
 
 class MyClass extends Component {
      
@@ -40,38 +41,39 @@ class MyClass extends Component {
 
     render() { 
         return (
-            <View style={styles.container}>
-                
-                <View style={styles.card}>
-                      <View><Text style={styles.label}>Verification</Text></View>
-                      <View style={{width:200}}>
-                        <Text style={styles.text}>Enter your registered mobile number</Text>
-                      </View>
-                      <View 
-                       style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
-                       > 
-                        <Input 
-                        value="+965" disabled 
-                        style={[
-                            {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
-                        />
-                        <Input 
-                        style={{flex:3,fontSize:20,}}
-                        ref={input=>this.input=input}
-                        onSubmitEditing={()=>this.input.blur()}
-                        returnKeyType="go"
-                        keyboardType="number-pad"
-                        onChangeText={this.handleChange}
-                        />
-                      </View>
-                     
-                      <TouchableOpacity disabled={this.state.submit_disabled} 
-                        onPress={()=>this.props.navigation.push('OTP')}
-                        style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
-                        <Text style={{fontSize:20,color:"white",elevation:6}}>Get OTP</Text>
-                      </TouchableOpacity>
+               <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
+                <View style={styles.container}>
+                    <View style={styles.card}>
+                        <View><Text style={styles.label}>Verification</Text></View>
+                        <View style={{width:200}}>
+                            <Text style={styles.text}>Enter your registered mobile number</Text>
+                        </View>
+                        <View 
+                        style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
+                        > 
+                            <Input 
+                            value="+965" disabled  
+                            style={[
+                                {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
+                            />
+                            <Input 
+                            style={{flex:3,fontSize:20,}}
+                            ref={input=>this.input=input}
+                            onSubmitEditing={()=>this.input.blur()}
+                            returnKeyType="go"
+                            keyboardType="number-pad"
+                            onChangeText={this.handleChange}
+                            />
+                        </View>
+                        
+                        <TouchableOpacity disabled={this.state.submit_disabled} 
+                            onPress={()=>this.props.navigation.push('OTP')}
+                            style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
+                            <Text style={{fontSize:20,color:"white",elevation:6}}>CONTINUE</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+                </ImageBackground>
         );
     }
 }
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ecf0f1',
+        // backgroundColor: '#ecf0f1',
     },
    
     inputline:{

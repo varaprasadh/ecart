@@ -1,9 +1,10 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TextInput,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,TextInput,TouchableOpacity,ImageBackground} from 'react-native';
 import styled from 'styled-components';
 import Loader from '../major_components/Loader';
 import {connect} from 'react-redux'
+import Wrapper from '../Home/Wrapper';
 
 class MyClass extends Component {
     
@@ -78,6 +79,7 @@ class MyClass extends Component {
     render() {
         return (
         this.state.loading?<Loader/>:
+       <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={styles.card}>
              <Text style={styles.label}>Verification</Text>
@@ -111,6 +113,7 @@ class MyClass extends Component {
               </TouchableOpacity> 
             </View>
         </View>
+        </ImageBackground>
         );
     }
 }
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems:"center",
-        backgroundColor: '#ecf0f1',
+        // backgroundColor: '#ecf0f1',
        
     },
     otp_input_style:{
