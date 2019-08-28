@@ -22,8 +22,7 @@ class Explore extends Component {
 
    onProductSelect(product){
        //open product screen
-       this.props.setCurrentProduct(product);
-       this.props.navigation.push("ExploreProduct"); 
+       this.props.navigation.push("ExploreProduct",{id:product.id}); 
    }
   loadMoreProducts(){
 

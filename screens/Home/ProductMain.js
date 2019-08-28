@@ -14,10 +14,9 @@ import Loader from '../major_components/Loader';
 class ProductMain extends Component {
   constructor(props) {
     super(props);
-    prodObj = this.props.product;
-    availableQuantity=prodObj.quantity
+    this.id=this.props.navigation.getParam('id');
     this.state={
-      product:{...prodObj,quantity:1,availableQuantity},
+      product:null,
       loading:true
     }
     this.imgOpacity=new Animated.Value(0);
@@ -25,12 +24,49 @@ class ProductMain extends Component {
   } 
 
  componentDidMount(){
-  Animated.timing(this.imgOpacity,{ 
+  Animated.timing(this.imgOpacity,{  
         duration:300,
         toValue:1,
         easing:Easing.ease
       }).start(); 
-      console.log(this.state.product);
+ }
+ componentWillMount(){
+   fetch(`${this.props.baseUrl}/product/${this.id}`,{
+     method:"GET",
+     headers:{
+       "content-type":"application/json",
+       "AUTH_TOKEN":this.props.AUTH_TOKEN
+     }
+   }).then(res=>res.json()).then(data=>{
+     if(data.success){
+      product=data.product;
+      carouselImages=product.images.map(imgurl=>{
+           return {
+             uri:imgurl
+        }});
+      parsedProduct = {
+           id: product.id,
+           title: product.item_name,
+           category: product.category,
+           description: product.description, 
+           price: product.price,
+           isInCart: product.is_incart,
+           isinWishlist: product.is_inwishlist,
+           images:carouselImages.length?carouselImages:[require("../Home/product_images/noimage.jpg")],
+           img: product.images[0] ? {
+             uri: product.images[0]
+           }: require("../Home/product_images/noimage.jpg"),
+           availableQuantity: product.quantity,
+           quantity:1
+      };
+      this.props.setCurrentProduct(parsedProduct);
+      this.setState({
+        product:parsedProduct,
+        loading:false
+      }); 
+       
+    }
+   });
  }
 
 addToCart(){
@@ -87,10 +123,13 @@ addToWishlist(){
 }
  
   render() {
-    let instock=this.props.product.quantity>0;
+   
     return (
       this.state.loading?<Loader/>: 
       <Wrapper noBackground>
+      {
+         instock = this.props.product.quantity > 0
+      }
         <View style={[styles.container,{marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>
           <View style={styles.backBtn}>
@@ -129,7 +168,7 @@ addToWishlist(){
           </ScrollView>
         </View>
          <View style={styles.actions}>
-              <TouchableOpacity style={{flex:1}} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
+              <TouchableOpacity style={[{flex:1},{...!instock?{display:"none"}:{}}]} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
                  <Text style={[styles.btn,styles.action_cart]}>
                     {this.props.product.isInCart?"IN CART":"ADD TO CART"}
                  </Text>
@@ -231,9 +270,11 @@ const styles=StyleSheet.create({
 
 
 mapStateToProps=state=>{
+  Addition= state.Addition;
+  console.log(Addition);
 
   return {
-    Addition:state.Addition,
+    product: Addition.currentProduct,
     wishlistItems:state.Wishlist.items,
     cartItems:state.Cart.items,
     product:state.Addition.currentProduct,
@@ -249,7 +290,8 @@ mapDispatch=dispatch=>{
     removeFromWishlist:(id)=>{dispatch({type:"REMOVE_FROM_WISHLIST",id})},
     changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
     changeWishlistStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_WISHLIST_STATUS",id,value})},
-    changeCurrentStatus:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
+    changeCurrentStatus:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})},
+    setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})}
   }
 }
 export default connect(mapStateToProps, mapDispatch)(ProductMain);

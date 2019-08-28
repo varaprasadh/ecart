@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import {createStackNavigator} from "react-navigation";
+import {createStackNavigator,createDrawerNavigator} from "react-navigation";
 import Explore from "./Explore";
 import ProductMain from './ProductMain';
 import SearchResult from "./SearchResult";
 import ProductResult from "./ProductResult";
-const ExplorStack =createStackNavigator({
+import Categories from "./Categories";
+
+const ExplorStackRAW =createStackNavigator({
     ExploreMain:Explore,
     ExploreProduct:ProductMain,
     SearchResult: SearchResult,
@@ -14,5 +16,11 @@ const ExplorStack =createStackNavigator({
     // initialRouteName:"ExploreCategory",
     headerMode:"none"
 });
+  
 
+const ExplorStack=createDrawerNavigator({
+   ExplorStackRAW
+},{
+    contentComponent: Categories
+})
 export default ExplorStack;
