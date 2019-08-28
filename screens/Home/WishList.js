@@ -68,7 +68,7 @@ class WishList extends Component {
                         </ScrollView> 
                     </View>
             </Wrapper>:
-            <EmptyItems message="no items in wish list yet!!!"/>
+            <EmptyItems message="Wishlist is Empty!"/>
         )    
             
     }

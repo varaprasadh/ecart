@@ -10,6 +10,10 @@ class Drawer extends Component {
     this.state = {
     };
   }
+  onItemClick(query){
+    this.props.navigation.closeDrawer();
+    this.props.navigation.push('SearchResult',{query:query});
+  }
 
   render() {
     return (
@@ -25,7 +29,7 @@ class Drawer extends Component {
                         </View>
                     </TouchableOpacity>
               </View>
-              <Categories/>
+              <Categories onItemClick={this.onItemClick.bind(this)}/>
             </View>
       </Wrapper>
     );

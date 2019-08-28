@@ -10,7 +10,7 @@ class Categories extends Component {
     super(props);
   }
  onItemClick(query){
-   console.log("clicked",query);
+  this.props.onItemClick(query);
  }
   render() {
 
@@ -116,7 +116,7 @@ const styles=StyleSheet.create({
 })
 mapState=state=>{
   let {Explore} = state;
-  console.log(Explore);
+  // console.log(Explore);
   return {
      categories:Explore.categories
   }

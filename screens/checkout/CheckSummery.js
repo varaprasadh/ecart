@@ -98,7 +98,7 @@ export class CheckSummery extends Component {
             this.state.triedCheckout != true ?
             <Wrapper>
                <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
-                <Header title="summery" backbutton backHandler={this.props.navigation.goBack}/>
+                <Header title="Summary" backbutton backHandler={this.props.navigation.goBack}/>
                 <View style={{flex:1,padding:10}}>
                  <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
                      <View style={styles.row}>

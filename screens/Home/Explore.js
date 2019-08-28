@@ -62,23 +62,11 @@ class Explore extends Component {
               this.props.loadProducts(data.products);
           }
       }).catch(err=>console.log(err)); 
-
-
   }
 
   onSearch(text){
      if(text.trim()!==''){
-        //  this.props.navigation.push('SearchResult',{query:text});
-        q = "shesha"
-        fetch(`${this.props.baseUrl}/products?q=${q}`, {
-            method:"GET",
-            headers:{
-                "AUTH_TOKEN":this.props.AUTH_TOKEN,
-                "content-type":"application/json"
-            }
-        }).then(res=>res.json()).then(data=>{
-            console.log("queried data",data);
-        })
+         this.props.navigation.push('SearchResult',{query:text});
      }
  }
  openDrawer(){

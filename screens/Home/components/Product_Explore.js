@@ -22,7 +22,7 @@ class Product_Explore extends Component {
             <View style={styles.details}>
                 <Text style={{fontWeight:"bold",fontSize:18}}>{this.state.product.title}</Text>
                 <Text style={{color:"#7f8c8d"}}>{this.state.product.category}</Text>
-                <Text style={{color:"#2ecc71",fontSize:20,alignSelf:"flex-end"}}>{this.state.product.price}$</Text>
+                <Text style={{color:"#2ecc71",fontSize:20,alignSelf:"flex-end"}}>{Number(this.state.product.price).toFixed(3)} KD</Text>
             </View>
         </View>
     </TouchableWithoutFeedback> 

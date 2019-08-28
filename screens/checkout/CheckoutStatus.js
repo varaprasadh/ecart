@@ -4,12 +4,11 @@ import Wrapper from '../Home/Wrapper';
 
 export class CheckoutStatus extends Component {
     constructor(props){
-        super(props);
-        
-    }  
+        super(props);  
+    }
     render() {
         return (
-           <Wrapper>
+           <Wrapper noBackground>
                <View style={styles.container}>
                   <View style={styles.card}>
                       <Image style={styles.img} source={this.props.status?require("./icons/checkmark.gif"):require("./icons/error.png")}/>

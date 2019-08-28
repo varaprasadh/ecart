@@ -4,14 +4,12 @@ import {createStackNavigator,createDrawerNavigator} from "react-navigation";
 import Explore from "./Explore";
 import ProductMain from './ProductMain';
 import SearchResult from "./SearchResult";
-import ProductResult from "./ProductResult";
 import Drawer from "./Drawer";
 
 const ExplorStackRAW =createStackNavigator({
     ExploreMain:Explore,
     ExploreProduct:ProductMain,
     SearchResult: SearchResult,
-    ProductResult:ProductResult
 },{
     // initialRouteName:"ExploreCategory",
     headerMode:"none"

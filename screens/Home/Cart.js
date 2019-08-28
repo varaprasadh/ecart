@@ -107,7 +107,7 @@ class Cart extends Component {
                 </View>
             </View>
             </Wrapper>
-            :<EmptyItems message="you got no items in cart yet!"/>
+            :<EmptyItems message="Cart is Empty!"/>
         );
     }
 }

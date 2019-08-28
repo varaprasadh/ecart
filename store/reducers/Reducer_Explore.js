@@ -3,42 +3,20 @@ const explore = {
   loading:true,
   products:[],
   categories: [{
-      name: "cat1",
-      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+      name: "Sports",
+      subcategories: ["Tennis", "cricket", "hockey"]
     },
     {
-      name: "cat2",
-      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+      name: "Genaral",
+      subcategories: ["shesha", "toys"]
     },
     {
-      name: "cat3",
-      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+      name: "Shesha",
     },
-    {
-      name: "cat4",
-    }
   ]
 };
 
 
-//loaderstate on explore screen,
-//load products
-//load categories
-//load more products
-/*
- {
-   id: 4,
-   title: "shesma medium",
-   category: "devotional",
-   description: "some description about the product",
-   price: 20,
-   img: require('../product_images/shesma_medium.jpg'), //main
-   images:['','','']
-   isInCart: false,
-   isinWishlist: false,
-   quantity: 4
- }
-*/
  
 export default function(state = explore, action) {
   switch (action.type) {
@@ -76,7 +54,7 @@ export default function(state = explore, action) {
           state.products.push(p);
         })
         return state;
-        
+      //need to remove below both
       case "MODIFY_ITEM_CART_STATUS":
         products = state.products;
         products.forEach(product=>{

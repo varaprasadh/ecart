@@ -82,7 +82,7 @@ addToCart(){
       "AUTH_TOKEN": this.props.AUTH_TOKEN
    }
   }).then(res=>res.json()).then(data=>{
-    console.log("added to cart",data);
+    // console.log("added to cart",data);
     if(data.success==true){
       this.props.changeCartStatus(this.state.product.id, true);
       this.props.addToCart(this.state.product);
@@ -95,6 +95,9 @@ addToCart(){
 
 buy(){
   this.props.addToCart(this.state.product);
+   this.props.changeCurrentStatus(this.state.product.id, {
+     isInCart: true
+   });
   this.props.navigation.navigate('Cart');
 }    
 addToWishlist(){
@@ -109,7 +112,7 @@ addToWishlist(){
     },
     body:JSON.stringify(obj)
   }).then(res=>res.json()).then(data=>{
-    console.log("adding to wishlist",data)
+    // console.log("adding to wishlist",data)
     if(data.success){
         this.props.changeWishlistStatus(this.state.product.id, true);
         this.props.addToWishlist(this.state.product);
@@ -157,14 +160,14 @@ addToWishlist(){
                <Text style={styles.pCat}>{this.state.product.category}</Text>
                <View style={[styles.pPrice,{flexDirection:"row",alignItems:"center"}]}>
                  {/* <Text style={{fontWeight:"bold",color:"#27ae60",fontSize:20}}></Text> */}
-                 <Text style={styles.styledPrice}>{this.state.product.price} KD</Text>
+                 <Text style={styles.styledPrice}>{Number(this.state.product.price).toFixed(3)} KD</Text>
                </View>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
                   <Text style={styles.descText}>{this.state.product.description} </Text>
                </View>
             </View> 
-          </ScrollView>
+          </ScrollView> 
         </View>
          <View style={styles.actions}>
               <TouchableOpacity style={[{flex:1},{...!instock?{display:"none"}:{}}]} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
@@ -272,7 +275,7 @@ const styles=StyleSheet.create({
 
 mapStateToProps=state=>{
   Addition= state.Addition;
-  console.log(Addition);
+  // console.log(Addition);
 
   return {
     product: Addition.currentProduct,
