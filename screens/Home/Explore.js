@@ -1,10 +1,11 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar ,ScrollView,ImageBackground} from 'react-native';
+import { View, Text, StyleSheet,StatusBar ,ScrollView,ImageBackground,TouchableWithoutFeedback} from 'react-native';
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Products from "./components/Products";
 import LoadMoreButton from "./components/LoadMoreButton";
+import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from 'react-redux';
 
@@ -21,7 +22,6 @@ class Explore extends Component {
     }
 
    onProductSelect(product){
-       //open product screen
        this.props.navigation.push("ExploreProduct",{id:product.id}); 
    }
   loadMoreProducts(){
@@ -48,10 +48,8 @@ class Explore extends Component {
     //    })
        
   }
- 
-//?page=${this.state.page}&per_page=10
+  
   componentWillMount(){
-
       fetch(`${this.props.baseUrl}/products`,{
           method:"GET",
           headers:{ 
@@ -64,12 +62,27 @@ class Explore extends Component {
               this.props.loadProducts(data.products);
           }
       }).catch(err=>console.log(err)); 
+
+
   }
 
   onSearch(text){
      if(text.trim()!==''){
-         this.props.navigation.push('SearchResult',{query:text});
+        //  this.props.navigation.push('SearchResult',{query:text});
+        q = "shesha"
+        fetch(`${this.props.baseUrl}/products?q=${q}`, {
+            method:"GET",
+            headers:{
+                "AUTH_TOKEN":this.props.AUTH_TOKEN,
+                "content-type":"application/json"
+            }
+        }).then(res=>res.json()).then(data=>{
+            console.log("queried data",data);
+        })
      }
+ }
+ openDrawer(){
+     this.props.navigation.openDrawer();
  }
     render() { 
        
@@ -78,7 +91,16 @@ class Explore extends Component {
              <Wrapper noBackground>
                 {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
-                    <SearchBar onSearch={this.onSearch.bind(this)} />
+                   <View style={{flexDirection:"row",alignItems:"center",paddingLeft:10}}>
+                        <TouchableWithoutFeedback
+                         onPress={this.openDrawer.bind(this)}
+                         >
+                            <Ionicons name="ios-menu" size={45} color="#fff"/> 
+                        </TouchableWithoutFeedback>
+                        <View style={{flex:1}}>
+                            <SearchBar onSearch={this.onSearch.bind(this)}/>
+                        </View>
+                   </View>
                     <ScrollView>
                         <Text style={styles.label}>Latest Products</Text>
                         <Products

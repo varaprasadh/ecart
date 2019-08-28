@@ -64,7 +64,6 @@ class ProductMain extends Component {
         product:parsedProduct,
         loading:false
       }); 
-       
     }
    });
  }
@@ -241,7 +240,9 @@ const styles=StyleSheet.create({
     flex:1,
     flexDirection:"row",
     alignSelf:"stretch",
-    backgroundColor:"red"
+    backgroundColor:"red",
+    borderColor: "#27ae60",
+    borderWidth: 2,
   },
   action_cart:{
     backgroundColor:"#fff",
@@ -249,7 +250,7 @@ const styles=StyleSheet.create({
   },
   btn:{
     paddingHorizontal:10,
-    paddingVertical:10,
+    paddingVertical:15,
     backgroundColor:"#27ae60",
     fontSize:18,
     fontWeight:"bold",

@@ -1,9 +1,23 @@
-import {LOAD_EXPLORE,LOAD_CATEGORIES,LOAD_MORE} from '../actions/types';
-
 
 const explore = {
   loading:true,
   products:[],
+  categories: [{
+      name: "cat1",
+      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+    },
+    {
+      name: "cat2",
+      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+    },
+    {
+      name: "cat3",
+      subcategories: ["subcat1", "subcat2", "subcat3", "subcat4"]
+    },
+    {
+      name: "cat4",
+    }
+  ]
 };
 
 
@@ -143,3 +157,17 @@ const tempProducts = [{
   isinWishlist: false,
   quantity: 4
 }]
+const tempCats=[
+  {
+    name:"cat1",
+    subcats:["subcat1","subcat2","subcat3","subcat4"]
+  },
+  {
+    name:"cat2",
+    subcats:["subcat1","subcat2","subcat3","subcat4"]
+  },
+  {
+    name:"cat3",
+    subcats:["subcat1","subcat2","subcat3","subcat4"]
+  }
+]

@@ -5,7 +5,7 @@ import Explore from "./Explore";
 import ProductMain from './ProductMain';
 import SearchResult from "./SearchResult";
 import ProductResult from "./ProductResult";
-import Categories from "./Categories";
+import Drawer from "./Drawer";
 
 const ExplorStackRAW =createStackNavigator({
     ExploreMain:Explore,
@@ -21,6 +21,12 @@ const ExplorStackRAW =createStackNavigator({
 const ExplorStack=createDrawerNavigator({
    ExplorStackRAW
 },{
-    contentComponent: Categories
-})
+    initialRouteName: 'ExplorStackRAW',
+    contentComponent:Drawer,
+    hideStatusBar: true,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle'
+});
+
 export default ExplorStack;
