@@ -3,9 +3,16 @@
 const global={
     currentProduct:null,
     profile:{
-        name:"",
+        firstName:"",
+        lastName:"",
         mobile:"",
-        email:""
+        email:"",
+        address:{
+            area:"",
+            block:"",
+            street:"",
+            lane:''
+        }
     },
 }
 
@@ -23,6 +30,8 @@ export default function (state = global, action) {
             return newState;
         case "SET_PROFILE":
             return {...state,profile:action.profile}
+        case "UPDATE_LOCAL_NAME":
+            return {...state,profile:{...state.profile,...action.obj}}
         default:
             return state;
     }

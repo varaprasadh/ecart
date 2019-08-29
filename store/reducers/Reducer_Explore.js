@@ -80,6 +80,8 @@ export default function(state = explore, action) {
          return newState;
       default:
       return state;
+      case "LOAD_CATS":
+        return {...state,categories:action.categories}
   }
 }
 

@@ -351,7 +351,8 @@ const styles = StyleSheet.create({
 });
 mapState=state=>{
     return {
-        baseUrl: state.Config.base_url
+        baseUrl: state.Config.base_url,
+        AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
 

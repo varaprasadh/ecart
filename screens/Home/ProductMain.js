@@ -135,8 +135,8 @@ addToWishlist(){
         <View style={[styles.container,{marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>
           <View style={styles.backBtn}>
-              <Ionicons name="ios-arrow-back" size={30}/>
-              <Text style={{paddingHorizontal:10}}>Back</Text>
+              <Ionicons name="ios-arrow-back" size={30} color="#27ae60"/>
+              <Text style={{paddingHorizontal:10,color:"#27ae60",fontWeight:"bold"}}>Back</Text>
           </View>
           </TouchableWithoutFeedback>
           <ScrollView scrollEventThrottle={16}>
@@ -164,7 +164,9 @@ addToWishlist(){
                </View>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
-                  <Text style={styles.descText}>{this.state.product.description} </Text>
+                  <Text style={styles.descText}>
+                     {this.state.product.description?this.state.product.description:"description not available"} 
+                  </Text>
                </View>
             </View> 
           </ScrollView> 
@@ -198,12 +200,14 @@ const styles=StyleSheet.create({
    left:10,
    zIndex:10,
    paddingHorizontal:10,
-   backgroundColor:"#fff",
+   backgroundColor: "#fff",
    height:50,
    justifyContent:"space-around",
    alignItems:"center",
-   borderRadius:50,
-   flexDirection:"row"
+   borderRadius:20,
+   flexDirection:"row",
+   elevation:3
+   
   },
   Favourite:{
      position:"absolute",
@@ -219,7 +223,7 @@ const styles=StyleSheet.create({
   image:{
     flex:1,
   },
-  pName:{fontSize:22,fontWeight:"bold",color:"#2980b9",textTransform:"capitalize"},
+  pName:{fontSize:22,fontWeight:"bold",color:"#fff",textTransform:"capitalize"},
   pCat:{fontWeight:"bold",fontSize:18,color:"#7f8c8d"},
   pPrice:{fontWeight:"bold",color:"green",fontSize:20,alignSelf:"flex-end"},
   details:{
@@ -234,7 +238,7 @@ const styles=StyleSheet.create({
   }, 
   descText:{
      fontSize:18,
-     color:"#34495e"
+     color:"#fff"
   },
   actions:{
     position:"absolute",

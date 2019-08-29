@@ -20,26 +20,41 @@ class CheckAddress extends Component {
  
     constructor(props){
         super(props);
+        this.customAddress=this.props.navigation.getParam('custom')||false;
+        let {profile}=this.props;
+        let address=profile.address||{};
+        console.log(this.customAddress,profile);
         this.state={
-          firstName:'',
-          lastName:'',
-          mobile:'',
-          area:'',
-          block:'',
-          street:'',
-          lane:''
+          firstName:this.customAddress?'':profile.firstName,
+          lastName: this.customAddress ? '' : profile.lastName,
+          mobile: this.customAddress ? '' : profile.mobile,
+          area: this.customAddress ? '' : address.area || '',
+          block: this.customAddress ? '' : address.block || '',
+          street: this.customAddress ? '' : address.street || '',
+          lane: this.customAddress ? '' : address.lane || ''
         }
     }
    
   onCheckout(){
-          this.props.setAddress(this.state);
+         let {firstName,lastName,mobile,area,block,street,lane}=this.state;
+         let billingAddress= {
+             firstname:firstName,
+             lastname: lastName, 
+             mobile: mobile,
+             area: area,
+             street: street,
+             block:block,
+             lane: lane
+         }
+          this.props.setAddress(billingAddress);
           this.props.navigation.push('CheckPayment');
   }
   isValid(state){
-      flag=false;
+      flag=false; 
       for (entry of Object.entries(state)){
           key=entry[0];
-          value=entry[1];
+          value=entry[1];  
+          console.log(key,value); 
           if(value.trim()==''){
                return false;
           }
@@ -63,56 +78,106 @@ class CheckAddress extends Component {
                     <Text style={[styles.text,styles.styltext]}>SET DELIVERY ADDRESS</Text>
                     <ScrollView>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="First Name"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>First Name:</Text>
+                            <TextInput placeholder="Enter First Name"
                             style={styles.input} 
+                            value={this.state.firstName}
+                            editable={this.customAddress}
+                            returnKeyType="next"
+                            onSubmitEditing={()=>this.lastName.focus()}
                             onChangeText={text=>this.setState({firstName:text})}
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Last Name"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Last Name:</Text>
+                            <TextInput placeholder="Enter Last Name"
                             style={styles.input}
+                            value={this.state.lastName}
+                            editable={this.customAddress}
+                            returnKeyType="next"
+                            onSubmitEditing={()=>this.mobile.focus()}
+                            ref={lastName=>this.lastName=lastName}
                             onChangeText={text=>this.setState({lastName:text})} 
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Mobile Number"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Mobile:</Text>
+                            <TextInput placeholder="Enter Mobile Number"
                             style={styles.input}
+                            value={this.state.mobile}
+                            editable={this.customAddress}
+                            returnKeyType="next"
+                            onSubmitEditing={()=>this.area.focus()}
+                            ref={mobile=>this.mobile=mobile}
                             onChangeText={text=>this.setState({mobile:text})} 
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Area"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Area:</Text>
+                            <TextInput placeholder="Enter Area"
                             style={styles.input} 
+                            value={this.state.area}
+                            editable={this.customAddress}
+                            returnKeyType="next"
+                            onSubmitEditing={()=>this.block.focus()}
+                            ref={area=>this.area=area}
                             onChangeText={text=>this.setState({area:text})}
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Block"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Block:</Text>
+                            <TextInput placeholder="Enter Block"
                             style={styles.input}
+                            value={this.state.block}
+                            editable={this.customAddress}
+                            onSubmitEditing={()=>this.street.focus()}
+                            ref={block=>this.block=block}
+                            returnKeyType="next"
                             onChangeText={text=>this.setState({block:text})} 
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Street"
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Street:</Text>
+                            <TextInput placeholder="Enter Street"
                             style={styles.input} 
+                            value={this.state.street}
+                            returnKeyType="next"
+                            onSubmitEditing={()=>this.lane.focus()}
+                            ref={street=>this.street=street}
+                            editable={this.customAddress}
                             onChangeText={text=>this.setState({street:text})}
                             /> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <TextInput placeholder="Lane" 
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Lane:</Text>
+                            <TextInput placeholder="Enter Lane" 
                             style={styles.input}
+                            value={this.state.lane}
+                            ref={lane=>this.lane=lane}
+                            returnKeyType="go"
+                            editable={this.customAddress}
                             onChangeText={text=>this.setState({lane:text})}
                             /> 
                         </View>
                         </ScrollView> 
                     </View>
-            </KeyboardAvoidingView>   
-            <View className="bottombar" style={styles.checkouttab}>
+            </KeyboardAvoidingView>
+            
+               
+           
+            <View className="bottombar" style={[styles.checkouttab,this.customAddress?{justifyContent:"flex-end"}:{}]}>
+                   {!this.customAddress &&
+                    <TouchableOpacity 
+                    onPress={()=>this.props.navigation.push('CheckAddress',{custom:true})}
+                    style={[styles.btn,{backgroundColor:"#16a085"}]} >
+                        <Text style={{color:"white",fontWeight:"bold"}}>ADD ADDRESS</Text>
+                    </TouchableOpacity>
+                   } 
                     <TouchableOpacity 
                         disabled={btn_disabled} 
                         style={[styles.btn,btn_disabled?styles.btn_disabled:{}]} 
                         onPress={this.onCheckout.bind(this)}>
-                        <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
+                        <Text style={{color:"white",fontWeight:"bold"}}>{this.customAddress?"NEXT":"USE THIS ADDRESS"}</Text>
                     </TouchableOpacity>   
             </View>   
         </KeyboardAvoidingView>
@@ -138,26 +203,23 @@ const styles = StyleSheet.create({
     btn:{
         backgroundColor:"#27ae60",
         justifyContent:"center",
-        paddingTop:5,
-        paddingBottom:5,
-        paddingLeft:40,
-        paddingRight:40,
-        borderRadius:5,  
-        marginRight:20 
+        alignItems:"center",
+        borderRadius:5, 
+        paddingHorizontal:30,
+        paddingVertical:5,
     },
     btn_disabled:{
          backgroundColor:"#bdc3c7"
     },
     checkouttab:{
         display:"flex",
-        // backgroundColor: "#fff",
         borderWidth:2,
         borderColor: "#44bd32",
         height:70,
         flexDirection:"row",
-        paddingTop:10,
-        paddingBottom:10,
-        justifyContent:"flex-end",
+        paddingVertical:10,
+        paddingHorizontal:20,
+        justifyContent:"space-between",
         elevation:3
     },
     text: {
@@ -176,8 +238,10 @@ const styles = StyleSheet.create({
 });
 
 mapStateToProps=state=>{
+     let {Addition}=state;
+     let {profile}=Addition;
     return {
-        
+        profile
     }
 }
 mapDispatch=dispatch=>{

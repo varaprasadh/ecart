@@ -32,7 +32,9 @@ class WishList extends Component {
             }
         }).catch(err=>console.error(err));
     }
-   
+   openProductPage(id){
+       this.props.navigation.navigate('ExploreProduct',{id})
+   }
     removeItem(id){ 
         obj={
             product_id:id 
@@ -55,7 +57,7 @@ class WishList extends Component {
         Items=[];
         this.props.wishlistItems.forEach((item,i)=>{
             Items.push(
-                <Product key={i} productdata={item} onRemove={this.removeItem.bind(this)} />
+                <Product key={i} onClick={this.openProductPage.bind(this)} productdata={item} onRemove={this.removeItem.bind(this)} />
             ); 
         }) 
         return (

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 
 
@@ -18,6 +18,7 @@ class Product extends Component {
         quantity=this.props.productdata.quantity||0;
         instock=quantity>0
         return (
+      <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
           <View style={{height:150}}>
             <View style={styles.container}>
                 <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
@@ -30,17 +31,17 @@ class Product extends Component {
                     <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
                             {this.props.productdata.title}
                         </Text>
-                    </View>
-                    <View>
+                    </View> 
+                    <View> 
                     <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                        $ {this.props.productdata.price}
+                        {Number(this.props.productdata.price).toFixed(3)} KD
                         </Text>
                     </View>
                     <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
                        <Text 
                             style={[styles.remove_btn_stock,
-                                (()=>instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c",paddingHorizontal:5})()]}>
-                            {instock?" in stock":"out of stock"}
+                                (()=>instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
+                            {instock?" IN STOCK":"OUT OF STOCK"}
                         </Text>
                         <TouchableOpacity onPress={()=>this.remove()}>
                             <Text style={styles.remove_btn}>Remove</Text>
@@ -49,7 +50,7 @@ class Product extends Component {
                 </View>
             </View>
           </View>
-          
+          </TouchableWithoutFeedback>
         );
     } // StatusBar.currentHeight
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View,StyleSheet,Image,TouchableOpacity} from 'react-native'
 import Wrapper from '../Home/Wrapper';
+import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail";
+
 
 export class CheckoutStatus extends Component {
     constructor(props){
@@ -15,6 +17,9 @@ export class CheckoutStatus extends Component {
                       <Text style={this.props.status?styles.done:styles.failed}>
                          {this.props.status?"Order placed Successfully":"something went wrong"}
                       </Text>
+                      <View style={{flex:1}}>
+                          {this.props.children}
+                      </View>
                       <TouchableOpacity 
                         style={[styles.btn,this.props.status?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c"}]}
                         onPress={this.props.onContinue}

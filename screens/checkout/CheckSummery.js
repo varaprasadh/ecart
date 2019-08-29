@@ -34,7 +34,7 @@ export class CheckSummery extends Component {
     processOrder(){
 
 
-     let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
+     let {firstname,lastname,email,mobile,area,street,block,lane}=this.state.address
      let items=[];
      total_cart_cost=0;
      this.props.cartItems.forEach(item=>{
@@ -48,8 +48,8 @@ export class CheckSummery extends Component {
      })   
     let obj={
         billing_address:{
-            first_name:firstName,
-            last_name:lastName,
+            first_name:firstname,
+            last_name:lastname,
             email,
             phone_number:mobile,
             area,street,block,lane
@@ -58,6 +58,7 @@ export class CheckSummery extends Component {
         total_cart_cost,
         payment_mode:this.state.payType
     }
+
    this.setState({
        loading:true
    })
@@ -89,9 +90,8 @@ export class CheckSummery extends Component {
     }
 
     render() {
-       let {firstName,lastName,email,mobile,area,street,block,lane}=this.state.address
-       billingAddress= `${firstName} ${lastName},${email},${mobile},${area},${street},${block},${lane}`
-       billingAddress= "some lorem,sfsfs,sfsfssse,sdgsgsgsegse,ssgsgsgs,sfsfsse,sdfsfsfse,sdfsf"
+       let {firstname,lastname,mobile,area,street,block,lane}=this.state.address
+       billingAddress= `${firstname} ${lastname},${mobile},${area},${street},${block},${lane}`
       
         return (
             this.state.loading?<Loader/>:
@@ -105,19 +105,7 @@ export class CheckSummery extends Component {
                          <Text style={styles.label}>Payment Type :</Text>
                          <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
                      </View>
-                    {/* { this.state.payType!="Cash"?(
-                        <View style={{borderBottomWidth:1,borderBottomColor:"#7f8c8d"}}>
-                        <View style={{flexDirection:"row",justifyContent:"space-between"}} >
-                           <Text style={styles.label}>card number:</Text>
-                           <Text>{"****".repeat(3)+this.state.cardNum.substr(-4)}</Text>
-                        </View>
-                        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-                           <Text style={styles.label}>name on card:</Text>
-                           <Text>{this.state.cardName}</Text>
-                        </View>
-                     </View>
-                    ):null  
-                    } */}
+
                      <View style={[]}>
                          <Text style={[styles.label]}>Billing Address:</Text>
                          <Text style={[styles.text]}>{billingAddress}</Text>
@@ -140,9 +128,12 @@ export class CheckSummery extends Component {
                                <Text style={{color:"white",fontWeight:"bold"}}>CONFIRM</Text>
                         </TouchableOpacity>   
                     </View>
-                </View>
+                </View> 
               </ImageBackground>
-            </Wrapper>:<CheckoutStatus  onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}/>
+            </Wrapper>:
+            <CheckoutStatus onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}>
+               this.state.checkout_done&& 
+            </CheckoutStatus>
         )
     }
 }

@@ -37,12 +37,15 @@ class Product extends Component {
    }
 
     render() {
-        return (
+        return (  
+            <TouchableWithoutFeedback
+             onPress={()=>this.props.onClick(this.props.productdata.id)}
+            >
           <View style={styles.container} >
            <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
                 <Image source={this.props.productdata.img} loadingIndicatorSource={require("./assets/img_loading.gif")}
                 style={{flex:1,width:null,height:null,borderRadius:10,}}
-                />
+                /> 
            </View>
            <View style={{flex:4}} style={styles.productInfo}>
              <View>
@@ -52,10 +55,11 @@ class Product extends Component {
              </View>
              <View>
                <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                $ {this.props.productdata.price}
+                {Number(this.props.productdata.price).toFixed(3)} KD
                 </Text>
              </View>
              <View style={styles.ctrlwrapper}>
+             <TouchableWithoutFeedback>
                <View style={styles.qtyControls}>
                    <View style={styles.qtbtn}>
                        <TouchableWithoutFeedback onPress={this.decrease.bind(this)}>
@@ -69,6 +73,7 @@ class Product extends Component {
                        </TouchableWithoutFeedback>
                    </View>
                </View>
+               </TouchableWithoutFeedback>
                <View>
                    <TouchableOpacity onPress={()=>this.props.onRemove(this.props.productdata.id)}>
                        <Text style={styles.remove_btn}>Remove</Text>
@@ -77,6 +82,7 @@ class Product extends Component {
              </View>
            </View>
           </View>
+          </TouchableWithoutFeedback>
         );
     }
 }

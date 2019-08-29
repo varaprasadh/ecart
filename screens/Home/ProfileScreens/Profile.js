@@ -54,7 +54,7 @@ class Profile extends Component {
                                 <Text style={styles.btn_text}>Edit Profile</Text>
                             </View>   
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ShippingAddress")} >
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigation.push("ChangePassword")} >
                             <View style={[styles.row]}> 
                                 <Ionicons name="ios-hammer" color="#fff" size={25}/>
                                 <Text style={styles.btn_text} >Change Password</Text>  
@@ -153,7 +153,7 @@ mapState=state=>{
     let {Addition}=state;
     let {profile}=Addition;
     return {
-        name:profile.name,
+        name:profile.firstName+" "+profile.lastName,
         mobile:profile.mobile,
         email:profile.email
     }

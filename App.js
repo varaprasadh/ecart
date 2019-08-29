@@ -4,11 +4,13 @@ import LoginStack from './screens/login/LoginStack';
 import { createAppContainer,createStackNavigator,createSwitchNavigator } from 'react-navigation';
 import HomeStack from "./screens/Home/HomeStack";
 
-import ShippingAddress from "./screens/Home/ProfileScreens/ShippingAddress";
 import OrderHistory from "./screens/Home/ProfileScreens/OrderHistory";
 import OrderItemDetail from "./screens/Home/ProfileScreens/OrderItemDetail";
 
 import CheckoutStack from "./screens/checkout/CheckoutStack";
+
+import EditProfile from "./screens/Home/ProfileScreens/EditProfile";
+import ChangePassword from "./screens/Home/ProfileScreens/ChangePassword";
 
 import {Provider} from 'react-redux';
 
@@ -19,10 +21,12 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 const rootStack=createStackNavigator({
   HomeStack:HomeStack,
-  ShippingAddress:ShippingAddress,
   OrderHistory:OrderHistory,
   Checkout:CheckoutStack,
+  EditProfile:EditProfile,
+  ChangePassword: ChangePassword,
   OrderItemDetail:OrderItemDetail,
+
 },{
   initialRouteName: "HomeStack",
   headerMode:"none"
@@ -57,38 +61,52 @@ export default class App extends Component{
         }
       }).then(res=>res.json()).then(data=>{
         if(data.success==true){
-          profile=data.profile;
+          profile = data.profile;
           let obj={
-            name: profile.first_name + " " + profile.last_name,
+            firstName: profile.first_name,
+            lastName: profile.last_name,
             mobile: profile.phone_number,
             email: profile.email,
-            address:profile.address
+            address: profile.user_address
           }
           store.dispatch({type:"SET_PROFILE",profile:obj});
         }
       }).catch(err=>console.log(err));
-      /*
-      {
-        "success": true,
-        "profile": {
-          "id": 8,
-          "first_name": "Admin",
-          "last_name": null,
-          "phone_number": "8990",
-          "email": "hafed_admin@gmail.com",
-          "password_digest": "$2a$12$sAxtJjHjhZ4jgSy37MDYguhIG321mBvp7oqMgq4.VefOOVfWqFWsW",
-          "address": null,
-          "role": "Admin",
-          "active": true,
-          "created_at": "2019-08-10T11:06:20.901Z",
-          "updated_at": "2019-08-10T11:06:20.901Z",
-          "user_address": null
+      fetch(`${baseUrl}/category_with_sub_category`,{
+        method:"GET",
+        headers:{
+           "AUTH_TOKEN": AUTH_TOKEN
         }
-      }
-      
-      */
+      }).then(res=>res.json()).then(data=>{
+        if(data.success==true){
+          let rawCats = data.categories;
+          let categories=rawCats.map(cat=>{
+            let subcats = cat.sub_categories.map(subcat=>{
+              return subcat.name;
+            });
+            return {
+              name: cat.category.name,
+              subcategories:subcats
+            }
+          });
+          store.dispatch({type:"LOAD_CATS",categories});
+        }
+      })
     } 
-
+  /*
+   categories: [{
+       name: "Sports",
+       subcategories: ["Tennis", "cricket", "hockey"]
+     },
+     {
+       name: "Genaral",
+       subcategories: ["shesha", "toys"]
+     },
+     {
+       name: "Shesha",
+     },
+   ]
+  */
     componentDidMount() {
       
       NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);

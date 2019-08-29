@@ -65,7 +65,9 @@ class Cart extends Component {
         }
     }).catch(err=>console.log(err));
  }
-   
+   openProductPage(id){
+       this.props.navigation.navigate("ExploreProduct",{id});
+   }
     render() {
         cartProducts=[];
         console.log("rerender of cart")
@@ -74,6 +76,7 @@ class Cart extends Component {
             totalPrice+=item.price*(item.quantity?item.quantity:1)
             cartProducts.push(
                 <Product 
+                    onClick={this.openProductPage.bind(this)}
                     productdata={item} 
                     key={item.id} 
                     onRemove={this.removeFromCart.bind(this)}
@@ -96,7 +99,7 @@ class Cart extends Component {
                     <View style={styles.checkouttab}>
                         <View>
                             <Text>Total</Text>
-                            <Text style={{fontWeight:"bold",fontSize:18,color:"green"}}>{totalPrice}$</Text>
+                            <Text style={{fontWeight:"bold",fontSize:18,color:"green"}}>{Number(totalPrice).toFixed(3)} KD</Text>
                         </View>
                         <TouchableOpacity 
                                 style={styles.btn}
