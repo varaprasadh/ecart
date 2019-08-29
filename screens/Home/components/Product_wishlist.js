@@ -80,13 +80,12 @@ const styles = StyleSheet.create({
         borderRadius:10
     },
     remove_btn:{
-        color:"red",
+        color:"#fff",
         fontSize:18,
-        borderWidth:1,
-        borderColor:"red",
+        backgroundColor: "#e74c3c",
         paddingVertical:5,
         paddingHorizontal:20,
-        borderRadius:5
+        borderRadius:1
     },
     remove_btn_stock:{
         color:"#fff",

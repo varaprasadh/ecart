@@ -113,12 +113,11 @@ const styles = StyleSheet.create({
         borderRadius:10
     },
     remove_btn:{
-        color:"red",
-        borderWidth:1,
-        borderColor:"red",
+        color:"#fff",
         paddingVertical:5,
         paddingHorizontal:10,
-        borderRadius:5
+        borderRadius:1,
+        backgroundColor: "#e74c3c"
     },
     qtyControls: {
         flexDirection: "row",

@@ -11,7 +11,7 @@ import CheckoutStack from "./screens/checkout/CheckoutStack";
 
 import EditProfile from "./screens/Home/ProfileScreens/EditProfile";
 import ChangePassword from "./screens/Home/ProfileScreens/ChangePassword";
-
+import ProductMain from "./screens/Home/ProductMain"
 import {Provider} from 'react-redux';
 
 import store from "./store/store";
@@ -22,6 +22,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 const rootStack=createStackNavigator({
   HomeStack:HomeStack,
   OrderHistory:OrderHistory,
+  ExploreProduct:ProductMain,
   Checkout:CheckoutStack,
   EditProfile:EditProfile,
   ChangePassword: ChangePassword,

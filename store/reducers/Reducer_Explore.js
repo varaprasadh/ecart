@@ -15,7 +15,28 @@ const explore = {
     },
   ]
 };
-
+function parseProduct(p){
+ carouselImages=p.images.map(imgurl=>{
+           return {
+             uri:imgurl
+           }
+         });
+    let parsedProduct = {
+      id: p.id,
+      title: p.item_name,
+      category: p.category,
+      description: p.category, 
+      price: p.price,
+      isInCart: p.is_incart,
+      isinWishlist: p.is_inwishlist,
+      images:carouselImages.length?carouselImages:[require('../product_images/noimage.jpg')],
+      img: p.images[0] ? {
+        uri: p.images[0]
+      } : require('../product_images/noimage.jpg'),
+      quantity: p.quantity
+    }
+      return parsedProduct;
+}
 
  
 export default function(state = explore, action) {
@@ -23,37 +44,16 @@ export default function(state = explore, action) {
     case "LOAD_EXPLORE":
        products=action.products;
        products=products.map(p=>{
-         carouselImages=p.images.map(imgurl=>{
-           return {
-             uri:imgurl
-           }
-         })
-         let parsedProduct = {
-           id: p.id,
-           title: p.item_name,
-           category: p.category,
-           description: p.category, 
-           price: p.price,
-           isInCart: p.is_incart,
-           isinWishlist: p.is_inwishlist,
-           images:carouselImages.length?carouselImages:[require('../product_images/noimage.jpg')],
-           img: p.images[0] ? {
-             uri: p.images[0]
-           } : require('../product_images/noimage.jpg'),
-           quantity: p.quantity
-         }
-      return parsedProduct;
+        return parseProduct(p);
       })    
-        
       return {...state,products:[...state.products,...products]};
  
       case "LOAD_MORE":
         products = action.products;
-        products.forEach(p=>{
-         
-          state.products.push(p);
+        products = products.map(p => {
+          return parseProduct(p);
         })
-        return state;
+        return {...state,products:[...state.products,...products]};
       //need to remove below both
       case "MODIFY_ITEM_CART_STATUS":
         products = state.products;
