@@ -10,34 +10,34 @@ import ForgetPassword from "./ForgetPassword";
 
 import DeliveryStack from "../delivery_module/DeliveryStack";
 
-const drawer = createDrawerNavigator({
-    MainLogin: {
-        screen: LoginScreen,
-        navigationOptions: {
-            title: "customer login",
-        }
-    },
-    DLogin: {
-        screen: DeliveryStack,
-        navigationOptions: {
-            title: "delivery men login",
-        }
-    }
-}, {
-    initialRouteName: "MainLogin" 
-})
+// const drawer = createDrawerNavigator({
+//     MainLogin: {
+//         screen: LoginScreen,
+//         navigationOptions: {
+//             title: "customer login",
+//         }
+//     },
+//     DLogin: {
+//         screen: DeliveryStack,
+//         navigationOptions: {
+//             title: "delivery men login",
+//         }
+//     }
+// }, {
+//     initialRouteName: "MainLogin" 
+// })
  
 
 const LoginStack =createStackNavigator({
-    Login:drawer, 
+    Login: LoginScreen,
     SignUP:SignUpScreen,
     OTP:OTPScreen,
     SignWithOTP:SignWithOTP,
     ForgetPassword: ForgetPassword
-},{
+},{ 
     initialRouteName: "Login",
     headerMode:"none"
-})
+});
 
 
 

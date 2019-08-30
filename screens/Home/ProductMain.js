@@ -57,7 +57,8 @@ class ProductMain extends Component {
              uri: product.images[0]
            }: require("../Home/product_images/noimage.jpg"),
            availableQuantity: product.quantity,
-           quantity:1
+           quantity:1,
+           is_active:product.is_active
       };
       this.props.setCurrentProduct(parsedProduct);
       this.setState({
@@ -130,7 +131,7 @@ addToWishlist(){
       this.state.loading?<Loader/>: 
       <Wrapper noBackground>
       {
-         instock = this.props.product.quantity > 0
+         instock = this.state.product.quantity > 0 && this.state.product.is_active
       }
         <View style={[styles.container,{marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>
@@ -220,7 +221,7 @@ const styles=StyleSheet.create({
      paddingVertical:5,
      paddingHorizontal:10
   },
-  image:{
+  image:{ 
     flex:1,
   },
   pName:{fontSize:22,fontWeight:"bold",color:"#fff",textTransform:"capitalize"},

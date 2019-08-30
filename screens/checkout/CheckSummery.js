@@ -34,7 +34,7 @@ export class CheckSummery extends Component {
     processOrder(){
 
 
-     let {firstname,lastname,email,mobile,area,street,block,lane}=this.state.address
+     let {firstname,lastname,email,mobile,area,street,block,lane,id}=this.state.address
      let items=[];
      total_cart_cost=0;
      this.props.cartItems.forEach(item=>{
@@ -48,17 +48,39 @@ export class CheckSummery extends Component {
      })   
     let obj={
         billing_address:{
+            billing_address_id:id||null,
             first_name:firstname,
             last_name:lastname,
             email,
             phone_number:mobile,
             area,street,block,lane
         },
+
         items,
         total_cart_cost,
         payment_mode:this.state.payType
     }
-
+  /*
+  {
+      "billing_address": {
+          "billing_address_id": 25,
+          "first_name": "zdgse",
+          "last_name": "sgsgsg",
+          "email": "sgsg.sgs@sgs.com",
+          "phone_number": "8106492369",
+          "area": "fsfsfs",
+          "street": "fsfsfs",
+          "block": "gsgsfss",
+          "lane": "sgsggs"
+      },
+      "items": [{
+          "product_id": 2,
+          "quantity": 2
+      }],
+      "total_cart_cost": 50,
+      "payment_mode": "Cash"
+  }
+  */
    this.setState({
        loading:true
    })
@@ -67,7 +89,7 @@ export class CheckSummery extends Component {
        body:JSON.stringify(obj),
        headers:{
            'content-type':"application/json",
-            AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNiJ9."
+            "AUTH_TOKEN": this.props.AUTH_TOKEN
        }
    }).then(res=>res.json()).then(data=>{
        console.log(data)
@@ -132,7 +154,9 @@ export class CheckSummery extends Component {
               </ImageBackground>
             </Wrapper>:
             <CheckoutStatus onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}>
-               this.state.checkout_done&& 
+               {this.state.checkout_done&& 
+                     <OrderItemsTable items={this.props.cartItems}/>
+               }
             </CheckoutStatus>
         )
     }
@@ -206,7 +230,8 @@ mapStateToProps=state=>{
     return {
      cartItems:state.Cart.items,
      checkoutData:state.Checkout,
-     baseUrl: state.Config.base_url
+     baseUrl: state.Config.base_url,
+     AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{

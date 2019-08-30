@@ -18,9 +18,26 @@ class Profile extends Component {
        }
        this.logout=this.logout.bind(this);
    } 
-   componentDidMount(){
-    //  this.props.navigation.push("OrderHistory");
-   } 
+   componentWillMount() {
+       fetch(`${this.props.baseUrl}/profile`, {
+           method: "GET",
+           headers: {
+               "AUTH_TOKEN": this.props.AUTH_TOKEN
+           }
+       }).then(res => res.json()).then(data => {
+           if (data.success == true) {
+               profile = data.profile;
+               let obj = {
+                   firstName: profile.first_name,
+                   lastName: profile.last_name,
+                   mobile: profile.phone_number,
+                   email: profile.email,
+                   address: profile.user_address
+               }
+               this.props.setProfile(obj);
+           }
+       }).catch(err => console.log(err));
+   }
      
    logout(){
     //clear data and redirect to login screen
@@ -151,12 +168,19 @@ const styles = StyleSheet.create({
 mapState=state=>{
     console.log(state);
     let {Addition}=state;
-    let {profile}=Addition;
+    let {profile}=Addition; 
     return {
         name:profile.firstName+" "+profile.lastName,
         mobile:profile.mobile,
-        email:profile.email
+        email:profile.email,
+        baseUrl: state.Config.base_url,
+        AUTH_TOKEN: state.Config.AUTH_TOKEN
+    }
+}
+mapDispatch=dispatch=>{
+    return {
+         setProfile:(obj)=>{dispatch({type: "SET_PROFILE",profile: obj})}
     }
 }
 
-export default connect(mapState)(Profile);
+export default connect(mapState,mapDispatch)(Profile);

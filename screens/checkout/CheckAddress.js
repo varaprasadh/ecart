@@ -165,19 +165,13 @@ class CheckAddress extends Component {
             
                
            
-            <View className="bottombar" style={[styles.checkouttab,this.customAddress?{justifyContent:"flex-end"}:{}]}>
-                   {!this.customAddress &&
-                    <TouchableOpacity 
-                    onPress={()=>this.props.navigation.push('CheckAddress',{custom:true})}
-                    style={[styles.btn,{backgroundColor:"#16a085"}]} >
-                        <Text style={{color:"white",fontWeight:"bold"}}>ADD ADDRESS</Text>
-                    </TouchableOpacity>
-                   } 
+            <View className="bottombar" style={[styles.checkouttab]}>
+                  
                     <TouchableOpacity 
                         disabled={btn_disabled} 
                         style={[styles.btn,btn_disabled?styles.btn_disabled:{}]} 
                         onPress={this.onCheckout.bind(this)}>
-                        <Text style={{color:"white",fontWeight:"bold"}}>{this.customAddress?"NEXT":"USE THIS ADDRESS"}</Text>
+                        <Text style={{color:"white",fontWeight:"bold"}}>NEXT</Text>
                     </TouchableOpacity>   
             </View>   
         </KeyboardAvoidingView>
@@ -219,7 +213,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         paddingVertical:10,
         paddingHorizontal:20,
-        justifyContent:"space-between",
+        justifyContent:"flex-end",
         elevation:3
     },
     text: {

@@ -48,9 +48,9 @@ const HomeStack =createMaterialBottomTabNavigator({
               <Ionicons name="ios-cart" color={tintColor} size={24} />
             )
           }
-    }
+    } 
 },{
-    initialRouteName: "Profile",
+    initialRouteName: "Explore",
     activeTintColor: '#2ecc71',
     shifting: true,
     order:["Explore","WishList","Cart","Profile"],

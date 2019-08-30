@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Loader from '../major_components/Loader';
 import {connect} from 'react-redux'
 import Wrapper from '../Home/Wrapper';
+import {showMessage} from "react-native-flash-message";
 
 class MyClass extends Component {
     
@@ -13,6 +14,7 @@ class MyClass extends Component {
         this.state={
             btnDisabled:false,
             mobile:this.props.navigation.getParam('mobile'),
+            type:this.props.navigation.getParam('type'),
             loading:false
         }
         this.handleChange=this.handleChange.bind(this);
@@ -32,7 +34,7 @@ class MyClass extends Component {
            this.inputrefs[5].blur();
         }
     }
-   
+    
     handleKeyPress(event,current){
         let {key}=event.nativeEvent;
         console.log(key); 
@@ -44,36 +46,63 @@ class MyClass extends Component {
         this.inputrefs[0].focus();
     }
     login(){
-        /*
-        {
-            "phone_number": "+918500589739",
-            "otp": "256035"
-        }*/
+       
         otpString = this.passcodes.join("");
-        let obj={
+        obj={
             phone_number:this.state.mobile,
             otp:otpString
         };
         this.setState({
             loading:true
         });
-        
-       fetch(`${this.props.baseUrl}/confirm_registration`,{
-           method:"post",
-           body:JSON.stringify(obj),
-           headers:{
-               "content-type":"application/json"
-           }
-       }).then(res=>res.json()).then(data=>{
-           if(data.success==true){
-               //set config
-               this.props.navagation.navigate('')
-           }
-           this.setState({
-               loading:false
-           })
-           console.log(data);
-       })
+      if(this.state.type=="signup")  {
+          console.log("signing up");
+           fetch(`${this.props.baseUrl}/confirm_registration`, {
+               method: "post",
+               body: JSON.stringify(obj),
+               headers: {
+                   "content-type": "application/json"
+               }
+           }).then(res => res.json()).then(data => {
+               if (data.success == true) {
+                   //set config
+                   //store auth_key in local
+
+                   this.props.navagation.navigate('')
+               }
+               this.setState({
+                   loading: false
+               })
+               console.log(data);
+           }).catch(err => console.log(err)); 
+      }
+      if (this.state.type == "signin_with_otp"){
+          console.log("login with otp");
+          fetch(`${this.props.baseUrl}/login_with_otp`,{
+              method:"POST",
+              headers:{
+                  "content-Type":"application/json"
+              },
+              body:JSON.stringify(obj)
+          }).then(res=>res.json()).then(data=>{
+              if(data.success==true){
+                 // save auth token
+                 //navigate to main 
+              }else{
+               showMessage({
+                   message:"wrong credintials",
+                   description:"your mobile number or OTP might be wrong!",
+                   autoHide:true,
+                   type:"danger"
+               });
+               this.props.navigation.goBack();
+              }
+              this.setState({
+                  loading:false
+              })
+          })
+      }
+      
 
     }
     render() {
@@ -107,7 +136,7 @@ class MyClass extends Component {
                 <Text style={{textAlign:"center",fontSize:18,fontWeight:"bold",color:"#7f8c8d"}}>we have sent you a OTP to your Mobile Number! Enter here!</Text>
               </View>
               <TouchableOpacity
-                   onPress={this.login}
+                   onPress={this.login.bind(this)}
                    disabled={this.state.btnDisabled}  style={[styles.btn_signup,{backgroundColor:"#2ecc71"}]}>
                <Text style={{color:"white"}}>CONTINUE</Text>
               </TouchableOpacity> 
@@ -124,8 +153,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems:"center",
-        // backgroundColor: '#ecf0f1',
-       
     },
     otp_input_style:{
         fontSize:30,

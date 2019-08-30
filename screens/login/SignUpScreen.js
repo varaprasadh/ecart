@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 
 import Loader from "../major_components/Loader";
 import Wrapper from '../Home/Wrapper';
+import Header from '../major_components/Header';
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -24,8 +25,6 @@ class SignUpScreen extends Component {
             lane:"",
             password:"",
             password_confirmation:"",
-            submit_enabled:false,
-
             loading:false
         }
 
@@ -33,11 +32,7 @@ class SignUpScreen extends Component {
       this.signUP=this.signUP.bind(this);
     }
      
-   buttonDisabled(){
-       return !this.state.submit_enabled;
-   }
    validate(){
-       console.log("calling function")
       const regex={
           firstname: /^[a-zA-Z]+$/,
           lastname: /^[a-zA-Z]+$/,
@@ -67,11 +62,11 @@ class SignUpScreen extends Component {
             }
          }
      }
-         this.setState({
-            submit_enabled:validFlag?true:false
-         })
+    return validFlag;
    }
    signUP(){
+
+    console.log("signing up");
          let obj={
             email:this.state.email,
             first_name:this.state.firstname,
@@ -98,7 +93,7 @@ class SignUpScreen extends Component {
         }).then(res=>res.json()).then(data=>{
             console.log(data);
             if(data.success==true){
-                this.props.navigation.push('OTP',{mobile:this.state.mobile});
+                this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"signup"});
             }
         }).catch(err=>{
             this.setState({
@@ -108,42 +103,32 @@ class SignUpScreen extends Component {
    }
 
     render() {
+       isValid=this.validate();
         return (
           this.state.loading?<Loader/>:
       <Wrapper>
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
           <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
-            <View style={{padding:5,display:"flex",backgroundColor:"#192a56"}}>
-                <TouchableWithoutFeedback onPress={()=>this.props.navigation.goBack()}>
-                        <View style={{flexDirection:"row",alignItems:"center"}}>
-                            <Ionicons name="ios-arrow-back" size={32} color="#fff" />
-                            <Text style={{marginLeft:10,color:"#fff"}}>Back</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
+            <Header backbutton title="Signup"/>
                 <View style={styles.container}>
                   <View style={{flex:1}}>
                     <View className="wrapper" style={styles.wrapper}>
                         <View className="title">
-                          <Text style={styles.title}>Sign Up</Text>
+                          {/* <Text style={styles.title}>Sign Up</Text> */}
                         </View>
                             <ScrollView className="form" showsVerticalScrollIndicator={false} style={{paddingLeft:10,paddingRight:10,height:450}} >
                                <View style={{paddingBottom:10}}>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label}>First Name</Text>
-                                        <Input 
+                                        <Input  
                                         ref={firstname=>this.firstname=firstname}
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({firstname:text})
-                                            this.validate();
-                                            this.lastname._root.focus();
-
-                                            }
-                                        }
+                                        placeholder="Enter First Name"
+                                        placeholderTextColor = "#bdc3c7"
+                                        onSubmitEditing={()=>this.lastname._root.focus()}
                                         onChangeText={text=>this.setState({firstname:text})}
-                                        />
+                                        /> 
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
                                         <Text style={styles.label} >Last Name</Text>
@@ -151,12 +136,9 @@ class SignUpScreen extends Component {
                                         ref={lastname=>this.lastname=lastname} 
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({lastname:text});
-                                            this.validate();
-                                            this.mobile._root.focus()
-                                            }
-                                        }
+                                        placeholder="Enter Last Name"
+                                        placeholderTextColor = "#bdc3c7"
+                                        onSubmitEditing={()=> this.mobile._root.focus()}
                                         onChangeText={text=>this.setState({lastname:text})}
                                         />
                                     </View>
@@ -166,20 +148,17 @@ class SignUpScreen extends Component {
                                          style={[styles.inputline,styles.input,{flex:4},{display:"flex",flexDirection:"row",paddingLeft:0}]}
                                         >
                                             <Input value="+965"
-                                              style={[{flex:1,backgroundColor:"#ecf0f1",textAlign:"center"}]}
-                                              disabled />
+                                              style={[{flex:1,textAlign:"center",color:"#fff"}]}
+                                              editable={false} />
                                             <Input 
                                             ref={mobile=>this.mobile=mobile}
-                                            style={[{flex:4}]}
+                                            style={[{flex:4,color:"#fff"}]}
                                             textContentType="telephoneNumber"
                                             keyboardType="number-pad"
                                             returnKeyType="next"
-                                            onSubmitEditing={({nativeEvent:{text}})=>{
-                                                this.setState({mobile:text});
-                                                this.validate();
-                                                this.email._root.focus()
-                                                }
-                                            } 
+                                            placeholder="Enter Mobile Number"
+                                            placeholderTextColor = "#bdc3c7"
+                                            onSubmitEditing={()=>this.email._root.focus()} 
                                             onChangeText={text=>this.setState({mobile:text})}
                                             />
                                         </View>
@@ -188,15 +167,12 @@ class SignUpScreen extends Component {
                                         <Text style={styles.label} >Email</Text>
                                         <Input ref={email=>this.email=email} 
                                         returnKeyType="next"
+                                        placeholderTextColor = "#bdc3c7"
                                         textContentType="emailAddress" 
                                         keyboardType="email-address"
+                                        placeholder="Enter Email"
                                         style={[styles.inputline,styles.input]}
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({email:text});
-                                            this.validate();
-                                            this.area._root.focus()
-                                            }
-                                        }
+                                        onSubmitEditing={()=>this.area._root.focus()}
                                         onChangeText={text=> this.setState({email:text})}
                                         />
                                     </View>
@@ -207,49 +183,33 @@ class SignUpScreen extends Component {
                                         <Input ref={area=>this.area=area} 
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
-                                        placeholder="area"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({area:text});
-                                            this.validate();
-                                            this.block._root.focus()
-                                           }
-                                        }
+                                        placeholderTextColor = "#bdc3c7"
+                                        placeholder="Enter area"
+                                        onSubmitEditing={()=>this.block._root.focus()}
                                         onChangeText={text=>this.setState({area:text})}
                                         />
                                         <Input ref={block=>this.block=block} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="block"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({block:text});
-                                            this.validate();
-                                            this.street._root.focus()
-                                           }
-                                        }
+                                        placeholderTextColor = "#bdc3c7"
+                                        placeholder="Enter block"
+                                        onSubmitEditing={()=>this.street._root.focus()}
                                         onChangeText={text=>this.setState({block:text})}
                                         />
                                         <Input ref={street=>this.street=street} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="street"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({street:text});
-                                            this.validate();
-                                            this.lane._root.focus()
-                                           }
-                                        }
+                                        placeholderTextColor = "#bdc3c7"
+                                        placeholder="Enter street"
+                                        onSubmitEditing={()=> this.lane._root.focus()}
                                         onChangeText={text=>this.setState({street:text})}
                                         />
                                         <Input ref={lane=>this.lane=lane} 
                                         style={[styles.inputline,styles.input,{marginTop:3}]}
                                         returnKeyType="next"
-                                        placeholder="lane"
-                                        onSubmitEditing={({nativeEvent:{text}})=>{
-                                            this.setState({lane:text});
-                                            this.validate();
-                                            this.password._root.focus()
-                                           }
-                                        }
+                                        placeholderTextColor = "#bdc3c7"
+                                        placeholder="Enter lane"
+                                        onSubmitEditing={()=>this.password._root.focus()}
                                         onChangeText={text=>this.setState({lane:text})}
                                         />
                                     </View>
@@ -259,14 +219,11 @@ class SignUpScreen extends Component {
                                          ref={password=>this.password=password}
                                          style={[styles.inputline,styles.input]}
                                          returnKeyType="next"
+                                         placeholder="Enter password"
+                                         placeholderTextColor = "#bdc3c7"
                                          secureTextEntry={true}
-                                         onSubmitEditing={({nativeEvent:{text}})=>{
-                                             this.setState({password:text});
-                                             this.validate();
-                                             this.c_password._root.focus()
-                                             }
-                                         }
-                                             onChangeText={text=> this.setState({password:text})}
+                                         onSubmitEditing={()=>this.c_password._root.focus()}
+                                         onChangeText={text=> this.setState({password:text})}
                                          />
                                     </View>
                                     <View className="input-row" style={styles.inputRow}>
@@ -275,15 +232,12 @@ class SignUpScreen extends Component {
                                          ref={c_password=>this.c_password=c_password}
                                          style={[styles.inputline,styles.input]}
                                          returnKeyType="go"
-                                         onSubmitEditing={({nativeEvent:{text}})=>{
-                                             this.setState({password_confirmation:text});
-                                             console.log(this.state); 
-                                             this.validate();
-                                         }}
+                                         placeholder="Confirm password" 
+                                         placeholderTextColor = "#bdc3c7"
+                                         onChangeText={text=>this.setState({password_confirmation:text})}
                                          secureTextEntry={true}
                                          onChangeText={text=> {
                                            this.setState({ password_confirmation :text});
-                                           this,this.validate();
                                          }}/>  
                                     </View>
                                 </View>
@@ -292,12 +246,12 @@ class SignUpScreen extends Component {
                 </View>
           </View>
           </KeyboardAvoidingView>
-          <TouchableOpacity onPress={this.signUP.bind(this)} disabled={this.buttonDisabled()}  style={[styles.btn_signup,{backgroundColor:this.buttonDisabled()?"#7f8c8d":"#2ecc71"}]}>
+          <TouchableOpacity onPress={this.signUP.bind(this)} disabled={!isValid}  style={[styles.btn_signup,{backgroundColor:!isValid?"#7f8c8d":"#2ecc71"}]}>
                <Text style={{color:"white"}}>SIGN UP</Text>
           </TouchableOpacity>
         </ImageBackground>
         </Wrapper>
-        );
+        ); 
     }
 }
 
@@ -307,7 +261,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding:10,
-        paddingTop:Constants.statusBarHeight,
     },
     title:{
         fontWeight:"bold",
@@ -315,20 +268,22 @@ const styles = StyleSheet.create({
     },
     wrapper:{
         flex:1,
-        padding:10,
+        paddingHorizontal:10,
         borderRadius:10,
-        backgroundColor:"#fff",
+        // backgroundColor:"#fff",
         elevation:1
       },
       input:{
         fontSize:20,
         paddingRight:10,
         paddingTop:1,
-        paddingLeft:10
+        paddingLeft:10,
+        color:"#fff",
        },
        inputline:{
          borderWidth:1,
-         borderColor:"#7f8c8d",
+        //  borderColor:"#7f8c8d",
+         borderColor:"#FFF",
          borderRadius: 5,
     },
     inputRow:{
@@ -346,7 +301,8 @@ const styles = StyleSheet.create({
    },
    label:{
        fontWeight:"bold",
-       color:"#2ecc71"
+    //    color:"#2ecc71",
+       color: "#fff",
    }
 });
 mapState=state=>{

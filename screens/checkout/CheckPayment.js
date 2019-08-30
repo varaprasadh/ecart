@@ -4,7 +4,8 @@ import {
     StyleSheet,Image,
     TouchableOpacity,
     TouchableWithoutFeedback,TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ImageBackground
 } from 'react-native'
 import Header from "../major_components/Header";
 import {Ionicons} from "@expo/vector-icons";
@@ -67,11 +68,12 @@ export class CheckPayment extends Component {
             cvv:text
         })
     }
-
+ 
     render() {
         return (
            <Wrapper>
-             <View style={{flex:1,backgroundColor:"#d2dae2"}}>
+            <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
+             <View style={{flex:1}}>
               <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
                     <Header title="Checkout" backbutton={true} backHandler={this.props.navigation.goBack}/> 
                     <View style={{flex:1}}>
@@ -123,7 +125,7 @@ export class CheckPayment extends Component {
                     </View>
                 </KeyboardAvoidingView>
              </View>
-
+            </ImageBackground>
            </Wrapper>
                
                

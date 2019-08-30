@@ -25,7 +25,6 @@ class MyClass extends Component {
           },()=>{
            if( this.state.number.length==10 ){ 
                this.input.blur();
-               //enable submit button
                this.setState({
                    submit_disabled:false
                });
@@ -37,11 +36,15 @@ class MyClass extends Component {
           });
     
     }
+    continue(){
+       this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
+    }
  
 
     render() { 
         return (
                <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
+                
                 <View style={styles.container}>
                     <View style={styles.card}>
                         <View><Text style={styles.label}>Verification</Text></View>
@@ -52,12 +55,14 @@ class MyClass extends Component {
                         style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
                         > 
                             <Input 
-                            value="+965" disabled  
+                            value="+965"
+                            editable={false} 
                             style={[
-                                {backgroundColor:"#ecf0f1",paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
+                                {paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
                             />
                             <Input 
-                            style={{flex:3,fontSize:20,}}
+                            style={{flex:3,fontSize:20,}}  
+                            maxLength={10}
                             ref={input=>this.input=input}
                             onSubmitEditing={()=>this.input.blur()}
                             returnKeyType="go"
@@ -67,7 +72,7 @@ class MyClass extends Component {
                         </View>
                         
                         <TouchableOpacity disabled={this.state.submit_disabled} 
-                            onPress={()=>this.props.navigation.push('OTP')}
+                            onPress={this.continue.bind(this)}
                             style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
                             <Text style={{fontSize:20,color:"white",elevation:6}}>CONTINUE</Text>
                         </TouchableOpacity>

@@ -5,6 +5,7 @@ import Products from './components/Products';
 import Header from '../major_components/Header';
 
 import {connect} from 'react-redux';
+import Loader from '../major_components/Loader';
 
 
 class SearchResult extends Component {
@@ -16,6 +17,9 @@ class SearchResult extends Component {
     };
   }
   componentWillMount(){
+    this.setState({
+      loading:true
+    })
     fetch(`${this.props.baseUrl}/products?q=${this.state.query}`, {
       method: "GET",
       headers: {
@@ -43,10 +47,13 @@ class SearchResult extends Component {
                   return parsedProduct;
               });
             this.setState({
-              products:products
+              products:products,
             });
 
        }
+       this.setState({
+         loading:false
+       })
     }).catch(err=>console.log(err));
 
   }
@@ -56,6 +63,7 @@ class SearchResult extends Component {
   }
   render() {
     return ( 
+      this.state.loading?<Loader/>:
       <Wrapper>
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={{marginBottom:40}}>

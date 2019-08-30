@@ -1,61 +1,41 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity,ImageBackground} from 'react-native';
-import {Input} from 'native-base';
+import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as Input} from 'react-native';
 // create a component
 class ForgetPassword extends Component {
     constructor(props){
         super(props);
         this.state={
             submit_disabled:true,
-            password1:'',
-            password2:''
+            email:''
         }
-        this.validate=this.validate.bind(this);
-
     }
-
-   validate(key,value){
-    this.setState({
-        [key]:value
-    },()=>{
-        let {password1,password2}=this.state;
-        this.setState({
-            submit_disabled:!(password1==password2 && password1!=''&& password1.length>4)
-        })
-    })
-   }
-   changePassword(){
+    
+   confirm(){
 
    } 
     render() {
+        submit_disabled = !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email);
         return (
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={[styles.card]}>
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View className="input-row" style={styles.inputRow}>
-                    <Text style={styles.label} >Password</Text>
+                    <Text style={styles.label} >
+                     Please provide us your registered email address.
+                    </Text>
                     <Input 
                         ref={password=>this.password=password}
                         style={[styles.inputline,styles.input]}
-                        secureTextEntry={true}
-                        onChangeText={text=>this.validate("password1",text)}
-                        returnKeyType="next"/>
-                </View>
-                <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >Confirm Password</Text>
-                        <Input
-                            ref={c_password=>this.c_password=c_password}
-                            style={[styles.inputline,styles.input]}
-                            onChangeText={text=>this.validate("password2",text)}
-                            secureTextEntry={true}
-                            returnKeyType="go"/> 
+                        keyboardType="email-address"
+                        onChangeText={text=>this.setState({email:text})}
+                        returnKeyType="go"/>
                 </View>
                 <TouchableOpacity 
-                    onPress={this.changePassword.bind(this)} 
-                    disabled={this.state.submit_disabled} 
-                        style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
+                    onPress={this.confirm.bind(this)} 
+                    disabled={submit_disabled} 
+                        style={[styles.btn,{backgroundColor:submit_disabled?"gray":"green"}]}>
                         <Text style={{fontSize:20,color:"white",elevation:6}}>Confirm</Text>
                 </TouchableOpacity>
             </View>   
@@ -77,7 +57,7 @@ const styles = StyleSheet.create({
         paddingRight:10,
         paddingTop:1,
         paddingLeft:10,
-        width:300
+        fontSize:16
        },
        inputline:{
          borderWidth:1,
@@ -87,11 +67,11 @@ const styles = StyleSheet.create({
     inputRow:{
         display:"flex",
         marginBottom:5,
-        height:50
       },
       label:{
         fontWeight:"bold",
-        color:"#2ecc71"
+        color: "#e74c3c",
+        marginBottom:20
     },
     card:{
         backgroundColor:"white",

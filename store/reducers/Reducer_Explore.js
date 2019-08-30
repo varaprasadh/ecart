@@ -2,18 +2,7 @@
 const explore = {
   loading:true,
   products:[],
-  categories: [{
-      name: "Sports",
-      subcategories: ["Tennis", "cricket", "hockey"]
-    },
-    {
-      name: "Genaral",
-      subcategories: ["shesha", "toys"]
-    },
-    {
-      name: "Shesha",
-    },
-  ]
+  categories: []
 };
 function parseProduct(p){
  carouselImages=p.images.map(imgurl=>{
@@ -33,7 +22,7 @@ function parseProduct(p){
       img: p.images[0] ? {
         uri: p.images[0]
       } : require('../product_images/noimage.jpg'),
-      quantity: p.quantity
+      quantity: p.quantity,
     }
       return parsedProduct;
 }
@@ -85,69 +74,3 @@ export default function(state = explore, action) {
   }
 }
 
-const tempProducts = [{
-  id: 1,
-  title: "prayer beads",
-  category: "devotional",
-  price: 20,
-  description:"some description about the product",
-  img: require('../product_images/prayerbeads.jpg'),
-  isInCart: false,
-  isinWishlist: false,
-  quantity:0
-}, {
-  id: 2,
-  title: "sewing_kit",
-  category: "devotional",
-  price: 20,
-  description: "some description about the product",
-  img: require('../product_images/sewing_kit.jpg'),
-  isInCart: false,
-  isinWishlist: false,
-  quantity: 4,
-}, {
-  id: 3,
-  title: "sheha fatoota",
-  category: "devotional",
-  price: 20,
-  description: "some description about the product",
-  img: require('../product_images/sheha_fatoota.jpg'),
-  isInCart: false,
-  isinWishlist: false,
-  quantity: 0
-
-}, {
-  id: 4,
-  title: "shesma medium",
-  category: "devotional",
-  description: "some description about the product",
-  price: 20,
-  img: require('../product_images/shesma_medium.jpg'),
-  isInCart: false,
-  isinWishlist: false,
-  quantity: 4
-}, {
-  id: 5,
-  title: "wooden burner",
-  category: "devotional",
-  price: 20,
-  description: "some description about the product",
-  img: require('../product_images/wooden_burner2.jpg'),
-  isInCart: false,
-  isinWishlist: false,
-  quantity: 4
-}]
-const tempCats=[
-  {
-    name:"cat1",
-    subcats:["subcat1","subcat2","subcat3","subcat4"]
-  },
-  {
-    name:"cat2",
-    subcats:["subcat1","subcat2","subcat3","subcat4"]
-  },
-  {
-    name:"cat3",
-    subcats:["subcat1","subcat2","subcat3","subcat4"]
-  }
-]

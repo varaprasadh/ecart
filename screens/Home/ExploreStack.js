@@ -8,8 +8,8 @@ import Drawer from "./Drawer";
 
 const ExplorStackRAW =createStackNavigator({
     ExploreMain:Explore,
-    ExploreProduct:ProductMain,
-    SearchResult: SearchResult,
+    // ExploreProduct:ProductMain,
+    // SearchResult: SearchResult,
 },{
     // initialRouteName:"ExploreCategory",
     headerMode:"none"

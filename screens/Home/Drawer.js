@@ -11,6 +11,7 @@ class Drawer extends Component {
     };
   }
   onItemClick(query){
+    console.log(query);
     this.props.navigation.closeDrawer();
     this.props.navigation.push('SearchResult',{query:query});
   }

@@ -49,11 +49,17 @@ class Category extends Component{
       open:!this.state.open
     })
   }
+  openResult(){
+    this.props.onItemClick(this.props.name);
+  }
+  toggleOrOpen(){
+    this.props.subcategories.length ? this.toggleExpand() : this.openResult()
+  }
   render(){
     return(
       <View style={styles.cat_container}>
         <TouchableWithoutFeedback
-         onPress={this.props.subcategories?this.toggleExpand.bind(this):()=>this.props.onItemClick(this.props.name)}
+         onPress={this.toggleOrOpen.bind(this)}
         >
           <View style={styles.cat}>
               <Text style={styles.catTitle}>{this.props.name}</Text>

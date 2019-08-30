@@ -12,12 +12,15 @@ class EditProfile extends Component {
     this.state = {
       first_name:this.props.first_name,
       last_name:this.props.last_name,
+      mobile:this.props.mobile,
       loading:false
     };
     this.saveProfile=this.saveProfile.bind(this);
     this.isStateValid=this.isStateValid.bind(this);
 
   }  
+
+
   isStateValid(){
     let {first_name,last_name,mobile}=this.state;
     if(first_name.trim()!='' && last_name.trim()!==''){
@@ -29,7 +32,8 @@ class EditProfile extends Component {
   saveProfile(){
     let obj={
       first_name:this.state.first_name,
-      last_name:this.state.last_name
+      last_name:this.state.last_name,
+      phone_number:this.state.mobile
     }
     this.setState({
       loading:true
@@ -51,7 +55,8 @@ class EditProfile extends Component {
        });
        let localNameObj={
          firstName:this.state.first_name,
-         lastName:this.state.last_name
+         lastName:this.state.last_name,
+         
        }
        this.props.updateLocalName(localNameObj);
        this.props.navigation.goBack();
@@ -177,6 +182,7 @@ mapState=state=>{
   return {
     first_name:profile.firstName,
     last_name:profile.lastName,
+    mobile:profile.mobile,
     baseUrl: state.Config.base_url,
     AUTH_TOKEN: state.Config.AUTH_TOKEN
   }
@@ -184,7 +190,8 @@ mapState=state=>{
 
 mapDispatch=dispatch=>{
   return {
-    updateLocalName:(obj)=>{dispatch({type:"UPDATE_LOCAL_NAME",obj})}
+    updateLocalName:(obj)=>{dispatch({type:"UPDATE_LOCAL_NAME",obj})},
+   
   }
-}
+} 
 export default connect(mapState,mapDispatch)(EditProfile);

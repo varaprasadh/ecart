@@ -10,23 +10,24 @@ export class CheckoutStatus extends Component {
     }
     render() {
         return (
-           <Wrapper noBackground>
+           <Wrapper>
                <View style={styles.container}>
-                  <View style={styles.card}>
                       <Image style={styles.img} source={this.props.status?require("./icons/checkmark.gif"):require("./icons/error.png")}/>
                       <Text style={this.props.status?styles.done:styles.failed}>
                          {this.props.status?"Order placed Successfully":"something went wrong"}
                       </Text>
-                      <View style={{flex:1}}>
-                          {this.props.children}
+                     {this.props.status && <View style={{flex:1,alignSelf:"stretch",padding:20,backgroundColor:"#fff",borderRadius:10}}>
+                          <View style={{flex:1}}>
+                              { this.props.children}
+                          </View>
                       </View>
+                     }
                       <TouchableOpacity 
                         style={[styles.btn,this.props.status?{backgroundColor:"#27ae60"}:{backgroundColor:"#e74c3c"}]}
                         onPress={this.props.onContinue}
                         >
                           <Text style={styles.cont_text}>{this.props.status?"Continue Shopping":"Try again Later"}</Text>
                       </TouchableOpacity>
-                  </View>
                </View>
            </Wrapper>
         )
@@ -34,10 +35,11 @@ export class CheckoutStatus extends Component {
 }
 const styles=StyleSheet.create({
     container:{
-        paddingHorizontal:10,
+        paddingHorizontal:20,
         paddingVertical:10,
         justifyContent:"center",
         alignItems:"center",
+        backgroundColor:"#fff",
         flex:1
     },
     card:{

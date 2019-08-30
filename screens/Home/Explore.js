@@ -10,14 +10,17 @@ import {Ionicons} from "@expo/vector-icons";
 import {connect} from 'react-redux';
 
 import Loader from "../major_components/Loader";
+import EmptyItems from '../major_components/EmptyItems';
 
 
 class Explore extends Component {
     constructor(props){
         super(props);
         this.state={
+            Mloading:false,
             loading:false,  
-            page:1
+            page:1,
+            error:false
         }
        
     }
@@ -47,7 +50,10 @@ class Explore extends Component {
        
   }
   
-  componentWillMount(){
+  loadInitialProducts(){
+       this.setState({
+          Mloading:true
+      });
       fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
           method:"GET",
           headers:{ 
@@ -58,10 +64,42 @@ class Explore extends Component {
               this.setState({
                   page:this.state.page+1
               });
-              this.props.toggleLoading();
+            //   this.props.toggleLoading();
               this.props.loadProducts(data.products);
           }
-      }).catch(err=>console.log(err)); 
+          this.setState({
+              Mloading:false
+          })
+      }).catch(err=>{
+          this.setState({
+              Mloading:false,
+              error:true
+          });
+      }); 
+  }
+  componentWillMount(){ 
+      this.loadInitialProducts();
+      fetch(`${this.props.baseUrl}/category_with_sub_category`,{
+        method:"GET",
+        headers:{
+           "AUTH_TOKEN": this.props.AUTH_TOKEN
+        }
+      }).then(res=>res.json()).then(data=>{
+        if(data.success==true){
+          let rawCats = data.categories;
+          let categories=rawCats.map(cat=>{
+            let subcats = cat.sub_categories.map(subcat=>{
+              return subcat.name;
+            });
+            return {
+              name: cat.category.name,
+              subcategories:subcats
+            }
+          });
+         this.props.setCategories(categories)
+        }
+      }).catch(err=>console.log(err));
+
   }
 
   onSearch(text){
@@ -69,13 +107,17 @@ class Explore extends Component {
          this.props.navigation.push('SearchResult',{query:text});
      }
  }
+ handler(){
+     this.loadInitialProducts();
+ }
  openDrawer(){
      this.props.navigation.openDrawer();
  }
     render() { 
        
         return ( 
-            this.props.loading?<Loader/> :
+            this.state.Mloading?<Loader/> :
+            this.state.error?<EmptyItems retryButton message="something went wrong" handler={this.handler.bind(this)}/>:
              <Wrapper noBackground>
                 {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
@@ -148,7 +190,8 @@ mapDispatchToProps=(dispatch)=> ({
     toggleLoading:()=>{
         dispatch({type:"TOGGLE_EXPLORE_LOADING"})
     },
-    setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})}
+    setCurrentProduct:(product)=>{dispatch({type:"SET_CURRENT_PRODUCT",product})},
+    setCategories:(categories)=>{dispatch({type:"LOAD_CATS",categories})}
 });
 
 

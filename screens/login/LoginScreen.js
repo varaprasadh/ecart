@@ -54,7 +54,9 @@ class LoginScreen extends Component {
     }
     
   }
- 
+  forgetPassword(){
+    this.props.navigation.push("ForgetPassword");
+  }
   
     render() { 
         return (
@@ -80,7 +82,7 @@ class LoginScreen extends Component {
                                 <TextInput
                                     onChangeText={text=>this.setState({password:text})} 
                                     returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input]} />
-                                <TouchableOpacity onPress={()=>this.props.navigation.push("ForgetPassword")} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
+                                <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
                                   <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </View> 
