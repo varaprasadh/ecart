@@ -36,7 +36,8 @@ class LoginScreen extends Component {
           console.log(data)
           if (data.success == true) {
             AsyncStorage.setItem('AUTH_TOKEN', data.auth_token,(err)=>{
-              console.log("saved")
+              AsyncStorage.setItem('ROLE', data.role);
+              this.props.setAuthToken(data.auth_token);
               this.props.navigation.navigate('Main');
             })
           }else {
@@ -72,19 +73,21 @@ class LoginScreen extends Component {
                     </View>
                     <View className="form" style={[styles.form]}>
                             <View className="input-row" style={styles.inputRow}>
-                                <Text>Email or Mobile</Text>
-                                <TextInput onSubmitEditing={()=>this.passwordInput.focus()}
-                                onChangeText={text=>this.setState({Email_Mobile:text})}
+                                <Text style={styles.formLable}>Email</Text>
+                                <TextInput 
+                                   onSubmitEditing={()=>this.passwordInput.focus()}
+                                   onChangeText={text=>this.setState({Email_Mobile:text})}
+                                   keyboardType="email-address"
                                    returnKeyType="next" style={[styles.inputline,styles.input]}/>
                             </View>
                             <View className="input-row" style={styles.inputRow} >
-                                <Text>Password</Text>
+                                <Text style={styles.formLable}>Password</Text>
                                 <TextInput
                                     onChangeText={text=>this.setState({password:text})} 
-                                    returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input]} />
-                                <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
+                                    returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input,{marginBottom:10}]} />
+                                {/* <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
                                   <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View> 
                             <TouchableOpacity style={styles.customBtn} onPress={this.signIn.bind(this)}>
                                <Text style={{color:"white",fontWeight:"bold"}}>Sign In</Text>
@@ -119,7 +122,6 @@ class LoginScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#130f40",
         alignItems:"center",
         padding:10,
     },
@@ -134,16 +136,21 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation:3
     },
+    formLable:{
+        fontWeight:"bold",
+    
+      },
     title:{
         fontWeight:"bold",
         fontSize:32
     },
     input:{
-     fontSize:20,
+     fontSize:18,
      paddingRight:10,
      paddingTop:5,
      paddingBottom:5,
-     paddingLeft:10
+     paddingLeft:10,
+     color: "#2980b9"
     },
     form:{
       padding:5,
@@ -189,5 +196,10 @@ mapState = state => {
     baseUrl: state.Config.base_url
   }
 }
+mapDispatch=dispatch=>{
+  return {
+    setAuthToken:(AUTH_TOKEN)=>{dispatch({type:"SET_AUTH_TOKEN",AUTH_TOKEN})}
+  }
+}
 
-export default connect(mapState)(LoginScreen);
+export default connect(mapState,mapDispatch)(LoginScreen);

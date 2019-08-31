@@ -1,115 +1,258 @@
 import React, { Component} from 'react'
-import { Text, View ,StyleSheet,TouchableOpacity,CheckBox} from 'react-native'
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    CheckBox,
+    ImageBackground,
+    Alert,
+    ScrollView
+} from 'react-native'
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { OrderItemsTable } from '../Home/ProfileScreens/OrderItemDetail';
+
+import {connect} from "react-redux";
+import { showMessage } from 'react-native-flash-message';
+import Loader from '../major_components/Loader';
+
 
 export class DeliveryDetails extends Component {
     constructor(props){
         super(props);
+        let Morder=this.props.navigation.getParam('order');
+        let index = this.props.navigation.getParam('index');
+        console.log("\n\n\n",index);
+        let billing_address=Morder.billing_address||{}
+        let order =Morder.order;
+        let products= Morder.products;
         this.state={
-            checked:false,
-            paid:false,
-            name:"john doe",
-            mobile:"9988776655",
-            orderId:"99887766",
-            amount:"340$"
+           billing_address,
+           order,
+           products,index
         }
+        console.log(Morder);
     }
     confirmDelivery(){
-        //update deliver status
+       Alert.alert("confirmation", "the order will be marked as delivered, do you want to proceed?", [{
+           text: 'Cancel',
+           type: 'cancel'
+       }, {
+           text:"proceed",
+           onPress: () => this.processOrder('Delivered')
+       }]);
+       /*
+       {
+           "order_id": 99,
+           "status": "Delivered"
+       }
+       */
+    }
+    cancelDelivery(){
+      Alert.alert("confirmation", "the order will be marked as delivered, do you want to proceed?", [{
+           text: 'Cancel',
+           type: 'cancel'
+       }, {
+           text:"proceed",
+           onPress: () => this.processOrder('Cancelled')
+       }]);
+       
+    }
+    processOrder(status){
+         console.log(status);
+
+            let obj = {
+                status: status,
+                order_id: this.state.order.id
+            }
+            this.setState({
+                loading: true
+            });
+            fetch(`${this.props.baseUrl}/deliver_order`, {
+                method: "POST",
+                headers: {
+                    "AUTH_TOKEN": this.props.AUTH_TOKEN,
+                    "content-Type":"application/json"
+                 }, 
+                body: JSON.stringify(obj)
+            }).then(res => res.json()).then(data => {
+                console.log(data);
+                if (data.success == true) {
+                
+                    showMessage({
+                        type: "success",
+                        message: "success",
+                        description: `order ${status} successfully`,
+                        autoHide: true
+                    });
+                    this.props.modifyStatus(this.state.index,status);
+                    this.props.navigation.goBack();
+                }else{
+                     showMessage({
+                        type:"danger",
+                        message: "failed",
+                        description: `order ${status} failed,try again later`,
+                        autoHide: true
+                    });
+                }
+                this.setState({
+                    loading:false
+                })
+            }).catch(err=>console.log(err));
+        
     }
     render() {
+        let first_name=this.state.billing_address.first_name||'';
+        let last_name=this.state.billing_address.last_name||'';
+        let mobile=this.state.billing_address.phone_number||'';
+        let order = this.state.order
+        let delivered = /delivered/i.test(order.status);
+        let pending = /pending/i.test(order.status);
+        let cancelled = /cancelled/i.test(order.status)
         return (
+            this.state.loading?<Loader/>:
            <Wrapper>
-              <View style={{marginTop:-10}}>
-                  <Header title="delivery details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
-              </View>
-              <View style={{paddingHorizontal:10,flex:1}}>
-                <View style={{flexDirection:"row",paddingVertical:20,}}>
+             <Header title="delivery details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
+              <ScrollView style={{flex:1}}>
+              <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
+             
+              <View style={styles.container}>
+                <View style={{flexDirection:"row",paddingVertical:20,...styles.main}}>
                   <View style={{flex:1}}>
                         <View style={styles.frow}>
-                            <Text style={styles.label}>order Id:</Text>
-                            <Text style={styles.text}>{this.state.orderId}</Text>
+                            <Text style={styles.label}>Order ID:</Text>
+                            <Text style={styles.text}>{this.state.order.id}</Text>
                         </View>
                         <View style={styles.frow}>
-                            <Text style={styles.label}>customer name:</Text>
-                            <Text style={styles.text}>{this.state.name}</Text>
+                            <Text style={styles.label}>Customer Name:</Text>
+                            <Text style={styles.text}>{first_name+" "+last_name}</Text>
                         </View>
                         <View style={styles.frow}>
-                            <Text style={styles.label}>mobile number:</Text>
-                            <Text style={styles.text}>{this.state.mobile}</Text>
+                            <Text style={styles.label}>Mobile Number:</Text>
+                            <Text style={styles.text}>{mobile}</Text>
                         </View>
                     </View>
                     <View>
                         <View style={styles.amount}>
                             <Text style={{color:"#27ae60"}}>total Amount</Text>
-                            <Text style={{color:"#27ae60",fontWeight:"bold",fontSize:16}}>{this.state.amount}</Text>
+                            <Text style={{color:"#27ae60",fontWeight:"bold",fontSize:16}}>{Number(this.state.order.total_price).toFixed(3)} KD</Text>
                         </View>
-                        <View style={{alignItems:"center",marginTop:10}}>
-                            <Text 
-                                style={[styles.paid,{
-                                backgroundColor:this.state.paid?"#27ae60":"#e74c3c"}]}>
-                              {this.state.paid?"paid":"not paid yet"}
-                            </Text>
-                        </View>
+                       <View style={{alignItems:"center"}}>
+                           <Text style={[{fontWeight:"bold",color:"#fff",paddingHorizontal:20,paddingVertical:10,marginTop:10},
+                             delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
+                             ]}>{delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
+                       </View>
                     </View> 
                 </View>
-                <View>
+                <View style={styles.address}>
                     <Text style={styles.title}>Address:</Text>
-                    <Text style={styles.address} >
-                        lorem ipsum lorem ipsum
-                    </Text>
+                    <View>
+                       <View style={[styles.frow,styles.adrstyles]}>
+                           <Text style={styles.label}>Area :</Text>
+                           <Text style={styles.adrtext}>{this.state.billing_address.area||""}</Text>
+                       </View>
+                       <View style={[styles.frow,styles.adrstyles]}>
+                           <Text style={styles.label}>Street :</Text>
+                           <Text style={styles.adrtext}>{this.state.billing_address.street||""}</Text>
+                       </View>
+                       <View style={[styles.frow,styles.adrstyles]}>
+                           <Text style={styles.label}>Block :</Text>
+                           <Text style={styles.adrtext}>{this.state.billing_address.block||""}</Text>
+                       </View>
+                       <View style={[styles.frow,styles.adrstyles]}>
+                           <Text style={styles.label}>Lane :</Text>
+                           <Text style={styles.adrtext}>{this.state.billing_address.lane||""}</Text>
+                       </View>
+                    </View>
                 </View>
-                <View style={{flexDirection:"row",alignItems:"center"}}> 
-                    <CheckBox 
-                        value={this.state.checked} 
-                        label="check if the product is delivered"
-                        onChange={()=>{this.setState({checked:!this.state.checked})}}/>
-                        <TouchableWithoutFeedback onPress={()=>{this.setState({checked:!this.state.checked})}}>
-                            <Text style={{color:"#e74c3c"}}>check this if product is delivered</Text>
-                        </TouchableWithoutFeedback>
+                <View style={styles.itemtable}>
+                    <Text style={styles.title}>Contents :</Text>
+                    <OrderItemsTable items={this.state.products}/>
                 </View>
+                <View style={styles.controls}>
+                <Text style={styles.label}>if order is successfully delivered to the customer.</Text>
                  <TouchableOpacity
-                     style={[styles.customBtn,
-                        !this.state.checked?{backgroundColor:"#7f8c8d"}:{}]}
-                     disabled={!this.state.checked}
+                     style={[styles.customBtn,]}
                      onPress={this.confirmDelivery.bind(this)}
                      >
                     <Text 
-                         style={[{color:"white",fontWeight:"bold"}]}>confirm delivery</Text>
+                         style={[{color:"white",fontWeight:"bold"}]}>CONFIRM DELIVERY</Text>
                 </TouchableOpacity>
+                </View>
+                <View style={[styles.controls,{marginBottom:10}]}>
+                 <Text style={styles.label}>if Order is not Deliverable.</Text>
+                 <TouchableOpacity
+                     style={[styles.customBtn,{backgroundColor:"#e74c3c"}]}
+                     onPress={this.cancelDelivery.bind(this)}
+                     >
+                    <Text 
+                         style={[{color:"white",fontWeight:"bold"}]}>CANCEL DELIVERY</Text>
+                </TouchableOpacity>
+                </View>
               </View>
+            </ImageBackground>
+             </ScrollView>
            </Wrapper>
         )
     }
 }
 const styles=StyleSheet.create({
     frow:{
-        flexDirection:"row"
+        flexDirection:"row",
+        padding:5
     },
-    amount:{
-            alignItems: "center",
-            alignSelf: "flex-start",
-            paddingHorizontal: 20,
-            marginHorizontal: 20,
-            paddingVertical:10,
-            borderRadius:10,
-            borderWidth:1,
-            borderColor:"#27ae60"
+    main:{
+        backgroundColor:"#fff",
+        marginVertical:10,
+        borderRadius:5
+    },
+    
+    container:{
+        paddingHorizontal: 10,
+        flex: 1,
+        paddingBottom:10
+    },
+    itemtable:{
+    backgroundColor: "#fff",
+    marginTop: 10,
+    borderRadius: 5,
+    padding: 10
 
+    },
+    adrstyles:{
+        borderBottomWidth:1,
+        borderBottomColor: "#7f8c8d"
+    },
+    adrtext:{
+        fontWeight:"bold",
+        color: "#2980b9"
+    },
+  
+    amount:{
+    alignItems: "center",
+    alignSelf: "flex-start",
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    paddingVertical:10,
+    borderRadius:10,
+    borderWidth:1,
+    borderColor:"#27ae60"
     },
     label:{
        flex:1,
-       color: "#2c3e50"
+       color: "#7f8c8d",
+       fontWeight:"bold"
     },
     text:{
         fontWeight:"bold",
-        color: "#2980b9"
+        color: "#27ae60" 
     },
     title:{
         fontWeight:"bold",
         fontSize:18,
+        color: "#2c3e50",
+        padding:5
     },
     address:{
         fontSize:16,
@@ -117,26 +260,36 @@ const styles=StyleSheet.create({
         paddingVertical:10,
         fontWeight:"bold",
         color: "#34495e",
-        
+        backgroundColor: "#fff",
+        borderRadius:5
     },
      customBtn: {
          display: "flex",
          justifyContent: "center",
          alignItems: "center",
-         borderWidth: 2,
          borderRadius: 5,
-         borderColor: "#2ecc71",
          backgroundColor: "#2ecc71",
          paddingTop: 5,
          paddingBottom: 5,
          marginTop:20
      },
-     paid:{
-          paddingHorizontal: 20,
-          paddingVertical: 5, 
-          borderRadius: 5, 
-          color: "#fff",
+     controls:{
+         backgroundColor:"#fff",
+         marginTop:10,
+         padding:10,
+         borderRadius:5,
      }
 })
 
-export default DeliveryDetails
+mapState=state=>{
+    return {
+        baseUrl: state.Config.base_url,
+        AUTH_TOKEN: state.Config.AUTH_TOKEN
+    }
+}
+mapDispatch=dispatch=>{
+    return {
+        modifyStatus:(index,status)=>{dispatch({type:"MODIFY_STATUS",index,status})}
+    }
+}
+export default connect(mapState,mapDispatch)(DeliveryDetails);

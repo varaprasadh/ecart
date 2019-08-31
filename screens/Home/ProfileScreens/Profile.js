@@ -1,12 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image,TouchableWithoutFeedback} from 'react-native';
+import { View, Text, StyleSheet,Image,TouchableWithoutFeedback,AsyncStorage} from 'react-native';
 import Header from "../../major_components/Header";
 import Wrapper from '../Wrapper';
 
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
+import Loader from '../../major_components/Loader';
 // write a function to logout
 
 
@@ -16,7 +17,6 @@ class Profile extends Component {
        this.state={
 
        }
-       this.logout=this.logout.bind(this);
    } 
    componentWillMount() {
        fetch(`${this.props.baseUrl}/profile`, {
@@ -40,10 +40,33 @@ class Profile extends Component {
    }
      
    logout(){
-    //clear data and redirect to login screen
-   }
+    this.setState({
+        loading:true
+    });
+    fetch(`${this.props.baseUrl}/logout`,{
+        method:"GET",
+        headers:{
+            "AUTH_TOKEN":this.props.AUTH_TOKEN
+        }
+    }).then(res=>res.json()).then(data=>{
+        if(data.success==true){
+            AsyncStorage.removeItem('AUTH_TOKEN',(err)=>{
+                if(err) console.log(err.message);
+                this.props.clearAuthToken();
+                console.log("clearing auth token");
+                this.props.navigation.navigate('LoginStack');
+            });
+        }  
+        else{
+            this.setState({
+                loading: false
+            })
+        }
+    })
+}
     render() {
         return (
+            this.state.loading?<Loader/>:
             <Wrapper noBackground>
                <View style={{flex:1}}>
                     {/* <Header title="Profile"/> */}
@@ -84,7 +107,7 @@ class Profile extends Component {
                                 <Text style={styles.btn_text} >My Orders</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={this.logout} >
+                        <TouchableWithoutFeedback onPress={this.logout.bind(this)} >
                             <View style={[styles.row]}>
                                 <Ionicons name="ios-exit" color="#fff" size={25}/>
                                 <Text style={[styles.btn_text]} >Logout</Text>
@@ -179,7 +202,8 @@ mapState=state=>{
 }
 mapDispatch=dispatch=>{
     return {
-         setProfile:(obj)=>{dispatch({type: "SET_PROFILE",profile: obj})}
+         setProfile:(obj)=>{dispatch({type: "SET_PROFILE",profile: obj})},
+         clearAuthToken:()=>{dispatch({type:"CLEAR_AUTH_TOKEN"})}
     }
 }
 

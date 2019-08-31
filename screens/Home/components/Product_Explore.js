@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image,TouchableWithoutFeedback} from 'react-native';
+import { View, Text,StyleSheet,Image,TouchableWithoutFeedback,Dimensions} from 'react-native';
 
+const WINDOW_WIDTH=Dimensions.get('window').width;
+const ITEM_WIDTH=Math.floor(WINDOW_WIDTH/2)-15;
 class Product_Explore extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,8 @@ const styles=StyleSheet.create({
     container:{
       paddingBottom:5,
       backgroundColor:"#fff",
-      width:180,
+      width: ITEM_WIDTH,
+      // flex:1,
       marginVertical:5,
       marginHorizontal:5,
       borderRadius:15,
@@ -41,7 +44,7 @@ const styles=StyleSheet.create({
       elevation:3
     },
     image:{
-       width:180,
+       width: ITEM_WIDTH,
        height:250,
        resizeMode:"cover"
     },

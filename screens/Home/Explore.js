@@ -66,9 +66,10 @@ class Explore extends Component {
               });
             //   this.props.toggleLoading();
               this.props.loadProducts(data.products);
-          }
+          } 
           this.setState({
-              Mloading:false
+              Mloading:false,
+              error:false
           })
       }).catch(err=>{
           this.setState({
@@ -130,15 +131,15 @@ class Explore extends Component {
                         <View style={{flex:1}}>
                             <SearchBar onSearch={this.onSearch.bind(this)}/>
                         </View>
-                   </View>
-                    <ScrollView>
-                        <Text style={styles.label}>Latest Products</Text>
-                        <Products
-                            products={this.props.products}
-                            onProductSelect={this.onProductSelect.bind(this)}
-                        />
-                    <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
-                    </ScrollView>
+                   </View>     
+                        <ScrollView>
+                            <Text style={styles.label}>Latest Products</Text>
+                            <Products
+                                products={this.props.products}
+                                onProductSelect={this.onProductSelect.bind(this)}
+                            />
+                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                        </ScrollView>
                 </ImageBackground>
                 {/* </View> */}
               </Wrapper>
@@ -148,12 +149,7 @@ class Explore extends Component {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop:StatusBar.currentHeight,
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
+  
     label:{
         fontWeight:"bold",
         fontSize:25,

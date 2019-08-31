@@ -13,8 +13,11 @@ import EditProfile from "./screens/Home/ProfileScreens/EditProfile";
 import ChangePassword from "./screens/Home/ProfileScreens/ChangePassword";
 import ProductMain from "./screens/Home/ProductMain"
 import SearchResult from "./screens/Home/SearchResult";
-import {Provider} from 'react-redux';
 
+import DeliveryStack from "./screens/delivery_module/DeliveryStack";
+
+
+import {Provider} from 'react-redux';
 import store from "./store/store";
 
 import FlashMessage from 'react-native-flash-message';
@@ -31,19 +34,19 @@ const rootStack=createStackNavigator({
   OrderItemDetail:OrderItemDetail,
 
 },{
-  initialRouteName: "HomeStack",
-  headerMode:"none"
+  initialRouteName: "OrderHistory", 
+  headerMode:"none"                                                                                                                                                                                                                                       
 })
  
 const root = createSwitchNavigator({
    LoginStack: LoginStack,
    Main:rootStack,
-  //  Delivery:null
-},{ 
+   Delivery: DeliveryStack
+},{  
   initialRouteName: "Main",
   headerMode:"none",
 })
-
+ 
 const GlobalState = store.getState();
 
 baseUrl=GlobalState.Config.base_url;

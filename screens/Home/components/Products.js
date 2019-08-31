@@ -8,7 +8,7 @@ class Products extends Component {
     }
     render() {
         return (
-            <View>
+            <View style={{paddingHorizontal:10}} >
                     <FlatList
                         data={this.props.products}
                         numColumns={2}

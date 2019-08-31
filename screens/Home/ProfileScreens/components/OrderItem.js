@@ -11,31 +11,40 @@ export default class OrderItem extends Component{
         }
     }
     render(){
+           let order = this.state.orderobj.order;  
+           let delivered = /delivered/i.test(order.status);
+           let pending = /pending/i.test(order.status);
+           let cancelled = /cancelled/i.test(order.status)
         return (
         <TouchableWithoutFeedback
          onPress={()=>this.props.onClick(this.state.orderobj.index)}
         >
             <View style={styles.listContainer}>
                 <View style={{flex:1,alignItems:"center"}}>
-                  <Text style={styles.index}>{this.state.orderobj.index}</Text>
+                  <Text style={styles.index}>{this.state.orderobj.index+1}</Text>
                 </View>
                 <View style={styles.right}> 
-                    <View style={{flex:6}}>
+                    <View style={{flex:4}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Order ID:</Text>
                             <Text style={styles.value}>{this.state.orderinfo.id}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.label}>Amount:</Text>  
-                            <Text style={styles.price}>{this.state.orderinfo.total_price} KD</Text>  
+                            <Text style={styles.price}>{Number(this.state.orderinfo.total_price).toFixed(3)} KD</Text>  
                         </View>
                     </View>
-                    <View style={{flex:2,marginRight:10,alignItems:"center"}}>
-                    {this.state.orderobj.delivery_date!=null?(
-                        <Ionicons name="ios-done-all" color="#2ecc71" size={25}/>)
-                        :(<Ionicons name="ios-airplane" color="#e74c3c" size={25}/>)
-                    }
-                    <Text style={this.state.orderobj.delivery_date!=null?styles.done:styles.pending}>{this.state.delivered?"Delivered":"Pending"}</Text>
+                       <View style={{alignItems:"center",flex:3}}>
+                        {delivered?
+                        <Ionicons name="ios-done-all" color="#27ae60" size={30}/>
+                        :pending?
+                        <Ionicons name="ios-time"  color="#e67e22" size={30}/>:
+                        cancelled?
+                        <Ionicons name="ios-close-circle" color="#e74c3c" size={30}/>:
+                        null}
+                        <Text style={[{fontWeight:"bold"},
+                        delivered ? {color:"#27ae60"} : pending ?{color:"#e67e22"} : cancelled ? {color:"#e74c3c"} : {}
+                        ]}>{delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                     </View>
                     <View style={{flex:1,alignItems:"flex-end",marginRight:10}}>
                         <Ionicons name="ios-arrow-forward" size={25}/>

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,ImageBackground } from 'react-native';
+import { View, Text,StyleSheet,ImageBackground,TouchableOpacity} from 'react-native';
 import Wrapper from '../Wrapper';
 import Header from '../../major_components/Header';
+
+import {connect} from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
+import Loader from '../../major_components/Loader';
 
 class OrderItemDetail extends Component {
   constructor(props) {
@@ -16,11 +20,51 @@ class OrderItemDetail extends Component {
       }
   }
 
-
+cancelOrder(){
+   let obj = {
+       order_id: this.state.orderInfo.id
+   }
+   this.setState({
+       loading:true
+   })
+   fetch(`${this.props.baseUrl}/cancel_order`,{
+       method:"POST",
+       headers:{
+           "content-Type":"application/json",
+           "AUTH_TOKEN":this.props.AUTH_TOKEN
+       },
+       body:JSON.stringify(obj)
+   }).then(res=>res.json()).then(data=>{ 
+       if(data.success==true){
+           showMessage({
+               type:"success",
+               message:"success",
+               description:"order cancelled successfully",
+               autoHide:true
+           });
+           this.props.navigation.goBack();
+       }else{
+          showMessage({
+              type:"danger",
+              message: "failed",
+              description: "something went wrong..try again later",
+              autoHide: true
+          });
+       }
+       this.setState({
+           loading:false
+       })
+   })
+}
   render() {
-      delivered = this.state.orderObj.delivery_date != null;
- 
+    //   delivered = this.state.orderObj.delivery_date != null;
+       let order = this.state.orderObj.order
+       let delivered = /delivered/i.test(order.status);
+       let pending = /pending/i.test(order.status);
+       let cancelled = /cancelled/i.test(order.status)
+       console.log("status",order.status);
     return (
+      this.state.loading?<Loader/>:
       <Wrapper>
         <View> 
           <Header title="Order Information" backbutton backHandler={this.props.navigation.goBack}/>
@@ -34,15 +78,17 @@ class OrderItemDetail extends Component {
                 <View style={styles.jrow}>
                     <Text style={styles.label}>Ordered On:</Text><Text>{this.state.orderObj.date}</Text>
                 </View>
-               {delivered?<View style={styles.jrow}>
+               {/* {delivered?<View style={styles.jrow}>
                     <Text style={styles.label}>Delivered On:</Text><Text>12-33-1999</Text>
                 </View>:null
-               }
+               } */}
                 <View style={styles.jrow} >
                     <Text style={styles.label}>Delivery Status:</Text>
-                    <Text style={[styles.status,delivered?styles.done:styles.pending,]}>
-                    {delivered?"Delivered":"Pending"}
-                    </Text>
+                    
+                    <Text style={[styles.status,{fontWeight:"bold",color:"#fff",paddingHorizontal:20,paddingVertical:10,marginTop:10},
+                         delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
+                        ]}>
+                     {delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                 </View>
             </View>
             <View style={{backgroundColor:"#fff",paddingHorizontal:10}}>
@@ -50,6 +96,14 @@ class OrderItemDetail extends Component {
                 <OrderItemsTable items={this.state.products}/>
             </View> 
         </View>
+       {!delivered && !cancelled && <View>
+            <TouchableOpacity
+             onPress={this.cancelOrder.bind(this)}
+            >
+                <Text style={styles.btn}>CANCEL ORDER</Text>
+            </TouchableOpacity>
+        </View>
+       }
         </ImageBackground>
       </Wrapper>
     );
@@ -89,7 +143,7 @@ const styles = StyleSheet.create({
     label:{
       fontSize:16,
       fontWeight:"bold",
-      color:"#2c3e50",
+      color: "#7f8c8d",
     },
     status:{
         color:"white",
@@ -98,16 +152,15 @@ const styles = StyleSheet.create({
         paddingVertical:3,
         borderRadius:4
     },
-    done:{
-      backgroundColor:"#27ae60",
-       
-    },
-    pending:{
-        backgroundColor:'#d35400',
+    btn:{
+        textAlign:"center",
+        padding:10,
+        backgroundColor: "#e74c3c",
+        color:"#fff",
+        fontWeight:"bold",
     }
   });
 
-export default OrderItemDetail;
 
 export class OrderItemsTable extends Component{
     constructor(props){
@@ -153,3 +206,12 @@ export class OrderItemsTable extends Component{
         )
     }
 }
+
+mapState = state => {
+    return {
+        baseUrl: state.Config.base_url,
+        AUTH_TOKEN: state.Config.AUTH_TOKEN
+    }
+}
+
+export default connect(mapState)(OrderItemDetail);

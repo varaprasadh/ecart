@@ -8,25 +8,7 @@ import OTPScreen from "./OTPScreen";
 import SignWithOTP from "./SignWithOTP";
 import ForgetPassword from "./ForgetPassword";
 
-import DeliveryStack from "../delivery_module/DeliveryStack";
 
-// const drawer = createDrawerNavigator({
-//     MainLogin: {
-//         screen: LoginScreen,
-//         navigationOptions: {
-//             title: "customer login",
-//         }
-//     },
-//     DLogin: {
-//         screen: DeliveryStack,
-//         navigationOptions: {
-//             title: "delivery men login",
-//         }
-//     }
-// }, {
-//     initialRouteName: "MainLogin" 
-// })
- 
 
 const LoginStack =createStackNavigator({
     Login: LoginScreen,
