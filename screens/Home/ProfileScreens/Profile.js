@@ -50,10 +50,11 @@ class Profile extends Component {
         }
     }).then(res=>res.json()).then(data=>{
         if(data.success==true){
-            AsyncStorage.clear('AUTH_TOKEN',(err)=>{
-                if(err) console.log(err.message);
+            AsyncStorage.clear().then(()=>{
                 this.props.clearAuthToken();
                 this.props.navigation.navigate('LoginStack');
+            }).catch(err=>{
+                console.log(err);
             });
         }  
         else{

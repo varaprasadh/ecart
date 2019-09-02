@@ -43,7 +43,7 @@ class Initialiser extends Component{
         try {
           let role = await AsyncStorage.getItem('ROLE');
           let AUTH_TOKEN = await AsyncStorage.getItem('AUTH_TOKEN');
-          // console.log("initializer",role,AUTH_TOKEN);
+          console.log("initializer",role,AUTH_TOKEN);
 
           if (role != null && AUTH_TOKEN != null) {
             store.dispatch({
@@ -54,7 +54,7 @@ class Initialiser extends Component{
               this.props.navigation.navigate('Main');
             } else if (/DeliveryAgent/i.test(role)) {
               this.props.navigation.navigate('Delivery');
-              // console.log("going to del Agent");
+              console.log("going to del Agent");
             }
           }else{
             this.props.navigation.navigate('LoginStack');
