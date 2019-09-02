@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import Loader from "../major_components/Loader";
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
+import { showMessage } from 'react-native-flash-message';
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -94,7 +95,17 @@ class SignUpScreen extends Component {
             console.log(data);
             if(data.success==true){
                 this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"signup"});
+            }else{
+                showMessage({
+                    type:"danger",
+                    message:"OOPS",
+                    description:"something went wrong,try again!",
+                    autoHide:true
+                });
             }
+            this.setState({
+                loading:false
+            })
         }).catch(err=>{
             this.setState({
                 loading:false
@@ -270,7 +281,7 @@ const styles = StyleSheet.create({
         flex:1,
         paddingHorizontal:10,
         borderRadius:10,
-        // backgroundColor:"#fff",
+        backgroundColor:"#000000A1",
         elevation:1
       },
       input:{
@@ -281,9 +292,8 @@ const styles = StyleSheet.create({
         color:"#fff",
        },
        inputline:{
-         borderWidth:1,
-        //  borderColor:"#7f8c8d",
-         borderColor:"#FFF",
+         borderWidth:2,
+         borderColor: "#27ae60",
          borderRadius: 5,
     },
     inputRow:{

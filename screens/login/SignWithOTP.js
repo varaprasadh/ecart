@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input,ImageBackground} from 'react-native';
-import Wrapper from '../Home/Wrapper';
+
+import {connect} from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
 
 class MyClass extends Component {
      
@@ -37,7 +39,37 @@ class MyClass extends Component {
     
     }
     continue(){
-       this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
+        let obj={
+            	phone_number:this.state.number
+        }
+
+        this.setState({
+            loading:true
+        });
+        
+        fetch(`${this.props.baseUrl}/generate_otp`,{
+            method:"POST",
+            headers:{
+                "content-Type":"application/json"
+            },
+            body:JSON.stringif(obj)
+        }).then(res=>res.json()).then(data=>{
+            if(data.success==true){
+             this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
+            }
+            else{
+                showMessage({
+                    type:"warning",
+                    message:"Error",
+                    description:"something went wrong,try again",
+                    autoHide:true
+                });
+            }
+            this.setState({
+                loading:false
+            })
+        });
+       
     }
  
 
@@ -123,6 +155,10 @@ const styles = StyleSheet.create({
         borderRadius:5
     }
 });
+mapState=state=>{
+    return {
+        baseUrl: state.Config.base_url,
+    }
+}
 
-//make this component available to the app
-export default MyClass;
+export default connect(mapState)(MyClass);

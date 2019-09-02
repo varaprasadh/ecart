@@ -33,12 +33,24 @@ class LoginScreen extends Component {
             "content-type": "application/json"
           }
         }).then(res => res.json()).then(data => {
-          console.log(data)
+          console.log(data) 
           if (data.success == true) {
             AsyncStorage.setItem('AUTH_TOKEN', data.auth_token,(err)=>{
               AsyncStorage.setItem('ROLE', data.role);
               this.props.setAuthToken(data.auth_token);
-              this.props.navigation.navigate('Main');
+              if(/customer/i.test(data.role)){
+                 this.props.navigation.navigate('Main');
+              } else if (/DeliveryAgent/i.test(data.role)){
+                this.props.navigation.navigate('Delivery');
+              }else{
+                showMessage({
+                  type:"danger",
+                  message:"Access Denied",
+                  description:"you can't go inside the app",
+                  autoHide:true
+                });
+              }
+
             })
           }else {
               this.setState({

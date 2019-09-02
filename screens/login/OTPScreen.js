@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TextInput,TouchableOpacity,ImageBackground} from 'react-native';
+import { View, Text, StyleSheet,TextInput,TouchableOpacity,ImageBackground,AsyncStorage} from 'react-native';
 import styled from 'styled-components';
 import Loader from '../major_components/Loader';
 import {connect} from 'react-redux'
@@ -67,13 +67,28 @@ class MyClass extends Component {
                if (data.success == true) {
                    //set config
                    //store auth_key in local
+               
+                   showMessage({
+                         type:"success",
+                         message:"Success",
+                         description:"Account Created Successfully.",
+                         autoHide:true
+                   });
+                   this.props.navagation.navigate('LoginStack');
+               }else{
+                   showMessage({
+                       type:"danger",
+                       message:"Failed",
+                       description:"invalid OTP,try again",
+                       autoHide:true
+                   });
 
-                   this.props.navagation.navigate('')
                }
                this.setState({
                    loading: false
-               })
-               console.log(data);
+               });
+ 
+              
            }).catch(err => console.log(err)); 
       }
       if (this.state.type == "signin_with_otp"){
@@ -88,6 +103,21 @@ class MyClass extends Component {
               if(data.success==true){
                  // save auth token
                  //navigate to main 
+                     let AUTH_TOKEN = data.auth_token;
+                     let role=data.role;
+                     this.props.setAuthToken(AUTH_TOKEN);
+                     AsyncStorage.setItem('AUTH_TOKEN',AUTH_TOKEN);
+                     AsyncStorage.setItem('ROLE',role);
+                     if(/customer/i.test(role)){
+                         this.props.navigation.navigate('Main');
+                     }else{
+                         showMessage({
+                             type:"warning",
+                             message:"Access Denied",
+                             description:"only customers can access",
+                             autoHide:true
+                         });
+                     }
               }else{
                showMessage({
                    message:"wrong credintials",
@@ -99,7 +129,17 @@ class MyClass extends Component {
               }
               this.setState({
                   loading:false
-              })
+              });
+              /*
+                   {
+                       message: "Verified successfully",
+                       role: user.role,
+                       success: true,
+                       profile: user,
+                       auth_token: generate_auth_token(user)
+                   }
+                   
+                   */
           })
       }
       
@@ -192,5 +232,10 @@ mapState = state => {
         baseUrl: state.Config.base_url
     }
 }
+mapDispatch=dispatch=>{
+    return {
+        setAuthToken: (AUTH_TOKEN)=>{dispatch({type:"SET_AUTH_TOKEN",AUTH_TOKEN})}
+    }
+}
 
-export default connect(mapState)(MyClass);
+export default connect(mapState,mapDispatch)(MyClass);
