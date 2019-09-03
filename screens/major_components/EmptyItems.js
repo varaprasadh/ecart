@@ -11,11 +11,7 @@ export class EmptyItems extends Component {
                     <View style={styles.container}>
                         <Ionicons name={this.props.icon||"ios-nutrition"} size={50} color="#2ecc71"/>
                         <Text style={styles.text}>{this.props.message||"404 not found"}</Text>
-                        <TouchableOpacity
-                          onPress={()=>this.props.handler()}
-                        >
-                          <Text style={styles.retry}>Retry</Text>
-                        </TouchableOpacity> 
+                        {this.props.children}
                     </View>
             </View>
            </Wrapper>
@@ -33,13 +29,7 @@ const styles=StyleSheet.create({
         fontSize:20,
         color: "#fff"
     },
-    retry:{
-        margin:10,
-        paddingHorizontal:30,
-        paddingVertical:10,
-        backgroundColor: "#e74c3c",
-        color:"#fff"
-    }
+    
 })
 
 export default EmptyItems

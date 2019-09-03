@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,FlatList} from 'react-native';
+import { View, Text, StyleSheet,FlatList,RefreshControl} from 'react-native';
 import Product_Explore from "./Product_Explore";
+import {connect} from "react-redux";
+
 
 class Products extends Component {
     constructor(props){
@@ -32,5 +34,13 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
 });
+mapState=state=>{
+    return {}
+}
+mapDispatch=dispatch=>{
+    return {
+        loadProducts:(products)=>{dispatch({type:"LOAD_EXPLORE",products})},
+    }
+}
 
-export default Products;
+export default connect()(Products);

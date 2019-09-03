@@ -1,8 +1,8 @@
 
 const config={ 
-    base_url: "https://913de35c.ngrok.io",
+    base_url: "https://350552c8.ngrok.io",
     AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNSJ9.",
-    // AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiMjEifQ.", del
+    // AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiMjEifQ.",
 }                   
         //     
 export default function (state = config, action) {
@@ -14,6 +14,6 @@ export default function (state = config, action) {
         default:
             return state; 
     }
-}
+} 
    
             

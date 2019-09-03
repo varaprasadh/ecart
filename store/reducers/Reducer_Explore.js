@@ -35,7 +35,7 @@ export default function(state = explore, action) {
        products=products.map(p=>{
         return parseProduct(p);
       })    
-      return {...state,products:[...state.products,...products]};
+      return {...state,products:[...products]};
  
       case "LOAD_MORE":
         products = action.products;

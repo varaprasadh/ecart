@@ -1,6 +1,15 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar ,ScrollView,ImageBackground,TouchableWithoutFeedback} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    StatusBar,
+    RefreshControl,
+    ScrollView,
+    ImageBackground,
+    TouchableWithoutFeedback
+} from 'react-native';
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Products from "./components/Products";
@@ -11,6 +20,7 @@ import {connect} from 'react-redux';
 
 import Loader from "../major_components/Loader";
 import EmptyItems from '../major_components/EmptyItems';
+import RetryButton from '../major_components/RetryButton';
 
 
 class Explore extends Component {
@@ -20,9 +30,11 @@ class Explore extends Component {
             Mloading:false,
             loading:false,  
             page:1,
-            error:false
+            error:false,
+            refreshing:false
         }
-       
+       this.loadCats=this.loadCats.bind(this);
+       this.onRefresh=this.onRefresh.bind(this);
     }
 
    onProductSelect(product){
@@ -69,40 +81,56 @@ class Explore extends Component {
           } 
           this.setState({
               Mloading:false,
-              error:false
+              error:false,
+              refreshing: false
           })
       }).catch(err=>{
           this.setState({
+              page:1,
               Mloading:false,
-              error:true
+              error:true,
+              refreshing:false
           });
       }); 
   }
-  componentWillMount(){ 
+ 
+  onRefresh(){
+      this.setState({
+          page:1,
+          refreshing:true
+      });
       this.loadInitialProducts();
-      fetch(`${this.props.baseUrl}/category_with_sub_category`,{
-        method:"GET",
-        headers:{
-           "AUTH_TOKEN": this.props.AUTH_TOKEN
-        }
-      }).then(res=>res.json()).then(data=>{
-        if(data.success==true){
-          let rawCats = data.categories;
-          let categories=rawCats.map(cat=>{
-            let subcats = cat.sub_categories.map(subcat=>{
-              return subcat.name;
-            });
-            return {
-              name: cat.category.name,
-              subcategories:subcats
-            }
-          });
-         this.props.setCategories(categories)
-        }
-      }).catch(err=>console.log(err));
 
   }
 
+  componentWillMount(){ 
+      this.loadInitialProducts();
+      this.loadCats();
+  }
+ 
+  loadCats(){
+        fetch(`${this.props.baseUrl}/category_with_sub_category`, {
+            method: "GET",
+            headers: {
+                "AUTH_TOKEN": this.props.AUTH_TOKEN
+            }
+        }).then(res => res.json()).then(data => {
+            if (data.success == true) {
+                let rawCats = data.categories;
+                let categories = rawCats.map(cat => {
+                    let subcats = cat.sub_categories.map(subcat => {
+                        return subcat.name;
+                    });
+                    return {
+                        name: cat.category.name,
+                        subcategories: subcats
+                    }
+                });
+                this.props.setCategories(categories)
+            }
+        }).catch(err => console.log(err));
+  }
+  
   onSearch(text){
      if(text.trim()!==''){
          this.props.navigation.push('SearchResult',{query:text});
@@ -110,15 +138,18 @@ class Explore extends Component {
  }
  handler(){
      this.loadInitialProducts();
+     this.loadCats();
  }
- openDrawer(){
+ openDrawer(){ 
      this.props.navigation.openDrawer();
  }
     render() { 
        
-        return ( 
+        return (  
             this.state.Mloading?<Loader/> :
-            this.state.error?<EmptyItems retryButton message="something went wrong" handler={this.handler.bind(this)}/>:
+            this.state.error?<EmptyItems  message="something went wrong">
+                <RetryButton onRetry={this.handler.bind(this)}/>
+            </EmptyItems>:
              <Wrapper noBackground>
                 {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
@@ -135,6 +166,8 @@ class Explore extends Component {
                         <ScrollView>
                             <Text style={styles.label}>Latest Products</Text>
                             <Products
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh}
                                 products={this.props.products}
                                 onProductSelect={this.onProductSelect.bind(this)}
                             />

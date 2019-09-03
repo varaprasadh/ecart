@@ -16,7 +16,9 @@ class OrderItemDetail extends Component {
         orderObj:orderObj,
         orderInfo:orderObj.order,
         products:orderObj.products,
-        items:[]
+        items:[],
+        index:this.props.navigation.getParam('index'),
+
       }
   }
 
@@ -42,7 +44,12 @@ cancelOrder(){
                description:"order cancelled successfully",
                autoHide:true
            });
-           this.props.navigation.goBack();
+           this.setState({
+               cancelled:true
+           });
+        //    this.props.navigation.goBack();
+        //update button status
+       this.props.modifyStatus(this.state.index,'Cancelled');
        }else{
           showMessage({
               type:"danger",
@@ -95,12 +102,14 @@ cancelOrder(){
                 <Text style={[styles.label,{color:"#c0392b"}]}>Order Contents:</Text>
                 <OrderItemsTable items={this.state.products}/>
             </View> 
-        </View>
-       {!delivered && !cancelled && <View>
+        </View> 
+       {!delivered && !cancelled && 
+       <View> 
             <TouchableOpacity
+            disabled={this.state.cancelled}
              onPress={this.cancelOrder.bind(this)}
             >
-                <Text style={styles.btn}>CANCEL ORDER</Text>
+                <Text style={styles.btn}>{this.state.cancelled?"CANCELLED":"CANCEL ORDER"}</Text>
             </TouchableOpacity>
         </View>
        }
@@ -213,5 +222,10 @@ mapState = state => {
         AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
+mapDispatch=dispatch=>{
+    return {
+        modifyStatus:(index,status)=>{dispatch({type:"MODIFY_STATUS",index,status})}
+    }
+}
 
-export default connect(mapState)(OrderItemDetail);
+export default connect(mapState,mapDispatch)(OrderItemDetail);

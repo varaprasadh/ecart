@@ -6,6 +6,9 @@ import {Ionicons} from "@expo/vector-icons"
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import { showMessage } from 'react-native-flash-message';
+import EmptyItems from "../major_components/EmptyItems";
+import RetryButton from "../major_components/RetryButton";
+
 
 
 class DeliveryMain extends Component {
@@ -13,8 +16,10 @@ class DeliveryMain extends Component {
     super(props);
     this.state = {
         loading:false,
-        orders:[]
+        orders:[],
+        refreshing:false
     };
+    this.loadData=this.loadData.bind(this);
   }
  
   onSelect(order,index){
@@ -22,38 +27,51 @@ class DeliveryMain extends Component {
   }
 
  componentWillMount(){
-     this.setState({
-         loading:true
-     });
-     fetch(`${this.props.baseUrl}/orders`,{
-         method:"GET",
-         headers:{
-             "AUTH_TOKEN":this.props.AUTH_TOKEN
-         }
-     }).then(res=>res.json()).then(data=>{
-         if(data.success){
-             myOrders = data.my_orders;
-             myOrders=myOrders.map(orderAr=>{
-                 return orderAr[0];
-             });
-             console.log(myOrders);
-             this.props.setOrders(myOrders);
-             this.setState({
-                 error:false
-             })
-         }
-         else{
-             this.setState({
-                 error:true
-             });
-         }
-         this.setState({
-             loading:false
-         });
-     })
+   this.loadData();
+ }
+ retry(){
+   this.loadData();
  }
  
-
+loadData(){
+      this.setState({
+          loading: true && !this.state.refreshing
+      });
+      fetch(`${this.props.baseUrl}/orders`, {
+          method: "GET",
+          headers: {
+              "AUTH_TOKEN": this.props.AUTH_TOKEN
+          }
+      }).then(res => res.json()).then(data => {
+          if (data.success) {
+              myOrders = data.my_orders;
+              myOrders = myOrders.map(orderAr => {
+                  return orderAr[0];
+              });
+              console.log(myOrders);
+            //   this.props.setOrders(myOrders);
+              this.setState({
+                  orders:myOrders,
+                  error: false,
+                  refreshing:false,
+                  loading:false
+              })
+          } else {
+              this.setState({
+                  error: true,
+                  refreshing:false
+              });
+          }
+          this.setState({
+              loading: false
+          });
+      }).catch(err => {
+          this.setState({
+              loading: false,
+              error: true
+          })
+      })
+}
   logout(){
         this.setState({loading:true});
         fetch(`${this.props.baseUrl}/logout`,{
@@ -79,15 +97,27 @@ class DeliveryMain extends Component {
             }
         })
   }
+  refresh(){
+    this.setState({
+        refreshing:true
+    },()=>{
+        this.loadData();
+    });
+  }
   changePassword(){
       this.props.navigation.push('ChangePassword');
   }
-  componentWillUpdate(){
-      
-  }
+ retry(){
+     this.loadData();
+ }
+
   render() {
+      let orders=this.state.orders;
     return (
-     this.state.loading?<Loader/>: 
+     this.state.loading?<Loader/>: this.state.error?
+     <EmptyItems message="something went wrong">
+         <RetryButton onRetry={this.retry.bind(this)}/>
+     </EmptyItems>:
       <Wrapper noBackground>
           <View style={styles.container}>
               <View style={{flexDirection:"row"}} >
@@ -110,9 +140,11 @@ class DeliveryMain extends Component {
                    </View>
               </View>
               <View style={{flex:1}}>
-                  <FlatList data={this.props.orders} 
+                  <FlatList data={orders} 
                    keyExtractor={(item,i)=>i+''} 
-                   extraData={this.props}
+                   extraData={this.state}
+                   refreshing={this.state.refreshing}
+                   onRefresh={this.refresh.bind(this)}
                    renderItem={({item,index})=>
                       <Item data={item} index={index} onSelect={this.onSelect.bind(this)}/>
                       }

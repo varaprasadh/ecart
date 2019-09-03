@@ -91,7 +91,8 @@ class Cart extends Component {
            <Wrapper noBackground>
             <View style={styles.container}>
                 <View> 
-                    <ScrollView style={{paddingBottom:20}}>
+                    <ScrollView 
+                    style={{paddingBottom:20}}>
                     {(()=>cartProducts)()}
                     </ScrollView>
                 </View>

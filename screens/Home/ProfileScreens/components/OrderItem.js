@@ -7,7 +7,8 @@ export default class OrderItem extends Component{
         super(props);
         this.state={
             orderobj:props.data,
-            orderinfo:props.data.order
+            orderinfo:props.data.order,
+            index:this.props.navigation
         }
     }
     render(){

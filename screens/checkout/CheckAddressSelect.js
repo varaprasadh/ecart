@@ -19,6 +19,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
+import RetryButton from '../major_components/RetryButton';
 
 class CheckAddressSelect extends Component {
  
@@ -30,29 +31,43 @@ class CheckAddressSelect extends Component {
             loading:false
         }
         this.setSelected=this.setSelected.bind(this);
-
+        this.loadData=this.loadData.bind(this);
     }
-    componentWillMount(){
+   loadData(){ 
         this.setState({
-            loading:true
+            loading: true
         })
-        fetch(`${this.props.baseUrl}/user_billing_address`,{
-            method:"GET",
-            headers:{
-                "content-Type":"application/json",
-                "AUTH_TOKEN":this.props.AUTH_TOKEN
+        fetch(`${this.props.baseUrl}/user_billing_address`, {
+            method: "GET",
+            headers: {
+                "content-Type": "application/json",
+                "AUTH_TOKEN": this.props.AUTH_TOKEN
             }
-        }).then(res=>res.json()).then(data=>{
-            if(data.success==true){
-               this.setState({
-                   prevAddress: data.billing_address
-               });
+        }).then(res => res.json()).then(data => {
+            if (data.success == true) {
+                this.setState({
+                    prevAddress: data.billing_address
+                });
             }
             this.setState({
-                loading:false
+                loading: false,
+                error: false
             })
+        }).catch(err => {
+            this.setState({
+                loading: false,
+                error: true
+            });
         })
+   }
+
+    componentWillMount(){
+        this.loadData();
     }
+   retry() {
+        this.loadData();
+   }
+
    setSelected(id){
      let addresses=this.state.prevAddress;
      addresses=addresses.map(address=>{
@@ -92,10 +107,14 @@ class CheckAddressSelect extends Component {
   isValid(state){
    
   }
+ 
   render() {
     //   let btn_disabled = !this.isValid(this.state);
     return (
-    this.state.loading?<Loader/>:
+    this.state.loading?<Loader/>:this.state.error?
+    <EmptyItems message="something went wrong">
+        <RetryButton onRetry={this.retry.bind(this)}/>
+    </EmptyItems>:
     <Wrapper>
      <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
       <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 

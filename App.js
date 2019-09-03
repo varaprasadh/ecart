@@ -34,8 +34,8 @@ const rootStack=createStackNavigator({
   ChangePassword: ChangePassword,
   OrderItemDetail:OrderItemDetail,
 
-},{
-  initialRouteName: "Checkout",
+},{ 
+  initialRouteName: "OrderHistory",
   headerMode:"none"                                                                                                                                                                                                                                       
 })
 class Initialiser extends Component{
@@ -66,7 +66,7 @@ class Initialiser extends Component{
 
   render(){
     return (
-      <Loader/>
+      <Loader/> 
     )
   }
 } 

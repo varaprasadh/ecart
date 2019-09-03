@@ -95,7 +95,8 @@ addToCart(){
 }
 
 buy(){
-  this.props.addToCart(this.state.product);
+   this.props.addToCart(this.state.product);
+   this.addToCart();
    this.props.changeCurrentStatus(this.state.product.id, {
      isInCart: true
    });

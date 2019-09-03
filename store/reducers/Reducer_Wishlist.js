@@ -34,7 +34,7 @@ export default function (state =wishlist, action) {
 
            return {
              ...state,
-             items: [...state.items, ...uniqueproducts]
+             items: [...uniqueproducts]
            };
 
     case "ADD_TO_WISHLIST":
