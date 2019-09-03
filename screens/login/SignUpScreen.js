@@ -37,7 +37,7 @@ class SignUpScreen extends Component {
       const regex={
           firstname: /^[a-zA-Z]+$/,
           lastname: /^[a-zA-Z]+$/,
-          mobile:/^\d{10}$/,
+          mobile:/^\d{8}$/,
           email:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
           area: /^\w+( +\w+)*$/,
           block: /^\w+( +\w+)*$/,
@@ -107,9 +107,13 @@ class SignUpScreen extends Component {
                 loading:false
             })
         }).catch(err=>{
-            this.setState({
-                loading:false
-            });            
+            showMessage({
+                type:"danger",
+                message:"Error",
+                description:"something went wrong,try again later",
+                autoHide:true
+            });
+            this.props.navigation.goBack();         
         });
    }
 
@@ -167,6 +171,7 @@ class SignUpScreen extends Component {
                                             textContentType="telephoneNumber"
                                             keyboardType="number-pad"
                                             returnKeyType="next"
+                                            maxLength={8}
                                             placeholder="Enter Mobile Number"
                                             placeholderTextColor = "#bdc3c7"
                                             onSubmitEditing={()=>this.email._root.focus()} 

@@ -21,4 +21,4 @@ export default function (state = Delivery, action) {
                 default:
                     return state;
     }
-}
+} 

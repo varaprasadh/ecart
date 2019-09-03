@@ -35,7 +35,7 @@ const rootStack=createStackNavigator({
   OrderItemDetail:OrderItemDetail,
 
 },{
-  initialRouteName: "HomeStack",
+  initialRouteName: "Checkout",
   headerMode:"none"                                                                                                                                                                                                                                       
 })
 class Initialiser extends Component{
@@ -77,7 +77,7 @@ const root = createSwitchNavigator({
    Main:rootStack,
    Delivery: DeliveryStack
 },{  
-  initialRouteName: "Initialiser",
+  initialRouteName: "Main",
   headerMode:"none",
 })
  

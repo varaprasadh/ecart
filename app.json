@@ -13,11 +13,11 @@
     "orientation": "portrait",
     "icon": "./assets/icons/icon72.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
+    "updates": { 
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [

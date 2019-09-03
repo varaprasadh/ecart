@@ -12,8 +12,6 @@ import Header from "../major_components/Header";
 
 import Wrapper from "../Home/Wrapper";
 
-import EmptyItems from "../major_components/EmptyItems";
-
 import {connect} from "react-redux";
 
 class CheckAddress extends Component {
@@ -60,7 +58,7 @@ class CheckAddress extends Component {
           }
           flag=true;
       } 
-      if(!/^\d{6,}$/.test(state.mobile)){
+      if(!/^\d{8}$/.test(state.mobile)){
           flag=false
       }
       return flag;
@@ -102,15 +100,22 @@ class CheckAddress extends Component {
                         </View>
                         <View style={styles.inputstyle} >
                             <Text style={[{color:"#fff",fontWeight:"bold"}]}>Mobile:</Text>
-                            <TextInput placeholder="Enter Mobile Number"
-                            style={styles.input}
-                            value={this.state.mobile}
-                            editable={this.customAddress}
-                            returnKeyType="next"
-                            onSubmitEditing={()=>this.area.focus()}
-                            ref={mobile=>this.mobile=mobile}
-                            onChangeText={text=>this.setState({mobile:text})} 
-                            /> 
+                            <View style={{flexDirection:"row"}}>
+                                <TextInput value="+965"
+                                style={[{flex:1,textAlign:"center",color:"#fff"}]}
+                                editable={false} />
+                                <TextInput placeholder="Enter Mobile Number"
+                                keyboardType="phone-pad"
+                                style={[styles.input,{flex:4}]}
+                                value={this.state.mobile}
+                                editable={this.customAddress}
+                                returnKeyType="next"
+                                maxLength={8}
+                                onSubmitEditing={()=>this.area.focus()}
+                                ref={mobile=>this.mobile=mobile}
+                                onChangeText={text=>this.setState({mobile:text})} 
+                                />
+                            </View> 
                         </View>
                         <View style={styles.inputstyle} >
                             <Text style={[{color:"#fff",fontWeight:"bold"}]}>Area:</Text>

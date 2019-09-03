@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input,ImageBackgro
 
 import {connect} from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
+import Loader from '../major_components/Loader';
 
 class MyClass extends Component {
      
@@ -25,7 +26,7 @@ class MyClass extends Component {
           this.setState({
               number:text
           },()=>{
-           if( this.state.number.length==10 ){ 
+           if( this.state.number.length==8 ){ 
                this.input.blur();
                this.setState({
                    submit_disabled:false
@@ -52,7 +53,7 @@ class MyClass extends Component {
             headers:{
                 "content-Type":"application/json"
             },
-            body:JSON.stringif(obj)
+            body:JSON.stringify(obj)
         }).then(res=>res.json()).then(data=>{
             if(data.success==true){
              this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
@@ -68,15 +69,23 @@ class MyClass extends Component {
             this.setState({
                 loading:false
             })
-        });
+        }).catch(err=>{
+            showMessage({
+                type:"danger",
+                message:"Failed",
+                description:"something went wrong,try again later",
+                autoHide:true
+            });
+            this.props.navigation.goBack();
+        })
        
     }
  
 
     render() { 
         return (
-               <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
-                
+              this.state.loading?<Loader/>:
+               <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>    
                 <View style={styles.container}>
                     <View style={styles.card}>
                         <View><Text style={styles.label}>Verification</Text></View>
@@ -94,7 +103,7 @@ class MyClass extends Component {
                             />
                             <Input 
                             style={{flex:3,fontSize:20,}}  
-                            maxLength={10}
+                            maxLength={8}
                             ref={input=>this.input=input}
                             onSubmitEditing={()=>this.input.blur()}
                             returnKeyType="go"

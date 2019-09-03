@@ -63,6 +63,13 @@ class LoginScreen extends Component {
                 autoHide:true
               });
           }
+        }).catch(err=>{
+          showMessage({
+            type:"danger",
+            message:"Error",
+            description:"something went wrong,try again",
+            autoHide:true
+          });
         })
     }
     
