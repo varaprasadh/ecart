@@ -115,12 +115,14 @@ export class DeliveryDetails extends Component {
         let cancelled = /cancelled/i.test(order.status)
         return (
             this.state.loading?<Loader/>:
+            
            <Wrapper>
              <Header title="delivery details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
+             <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
               <ScrollView style={{flex:1}}>
-              <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
+              
              
-              <View style={styles.container}>
+              <View style={[styles.container,{flex:1}]}>
                 <View style={{flexDirection:"row",paddingVertical:20,...styles.main}}>
                   <View style={{flex:1}}>
                         <View style={styles.frow}>
@@ -199,8 +201,8 @@ export class DeliveryDetails extends Component {
                 </View>
                 }
               </View>
-            </ImageBackground>
              </ScrollView>
+            </ImageBackground>
            </Wrapper>
         )
     }

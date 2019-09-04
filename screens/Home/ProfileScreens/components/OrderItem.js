@@ -35,7 +35,7 @@ export default class OrderItem extends Component{
                             <Text style={styles.price}>{Number(this.state.orderinfo.total_price).toFixed(3)} KD</Text>  
                         </View>
                     </View>
-                       {/* <View style={{alignItems:"center",flex:3}}>
+                       <View style={{alignItems:"center",flex:3}}>
                             {delivered?
                             <Ionicons name="ios-done-all" color="#27ae60" size={30}/>
                             :pending?
@@ -46,7 +46,7 @@ export default class OrderItem extends Component{
                             <Text style={[{fontWeight:"bold"},
                             delivered ? {color:"#27ae60"} : pending ?{color:"#e67e22"} : cancelled ? {color:"#e74c3c"} : {}
                             ]}>{delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
-                    </View> */}
+                    </View>
                     <View style={{flex:1,alignItems:"flex-end",marginRight:10}}>
                         <Ionicons name="ios-arrow-forward" size={25}/>
                     </View>

@@ -1,8 +1,8 @@
 
 const config={ 
-    base_url: "https://350552c8.ngrok.io",
+    base_url: "https://c350b741.ngrok.io",
     AUTH_TOKEN: "",
-    // AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNSJ9.",
+    //  AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNSJ9.",
     // AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiMjEifQ.",
 }                   
         //     

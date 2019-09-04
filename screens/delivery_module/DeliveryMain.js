@@ -49,7 +49,7 @@ loadData(){
                   return orderAr[0];
               });
               console.log(myOrders);
-            //   this.props.setOrders(myOrders);
+              this.props.setOrders(myOrders);
               this.setState({
                   orders:myOrders,
                   error: false,
@@ -112,7 +112,7 @@ loadData(){
  }
 
   render() {
-      let orders=this.state.orders;
+      let orders=this.props.orders; 
     return (
      this.state.loading?<Loader/>: this.state.error?
      <EmptyItems message="something went wrong">
@@ -142,7 +142,7 @@ loadData(){
               <View style={{flex:1}}>
                   <FlatList data={orders} 
                    keyExtractor={(item,i)=>i+''} 
-                   extraData={this.state}
+                   extraData={this.props}
                    refreshing={this.state.refreshing}
                    onRefresh={this.refresh.bind(this)}
                    renderItem={({item,index})=>
@@ -203,7 +203,7 @@ class Item extends Component{
                     <Text style={[styles.text,]} >{Number(this.state.Amount).toFixed(3)} KD</Text>
                 </View>
             </View>
-            {/* <View style={{alignItems:"center",flex:1}}>
+            <View style={{alignItems:"center",flex:1}}>
                 {delivered?
                 <Ionicons name="ios-done-all" color="#27ae60" size={30}/>
                 :pending?
@@ -214,7 +214,7 @@ class Item extends Component{
                 <Text style={[{fontWeight:"bold"},
                 delivered ? {color:"#27ae60"} : pending ?{color:"#e67e22"} : cancelled ? {color:"#e74c3c"} : {}
                 ]}>{delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
-            </View> */}
+            </View>
             <View style={{alignItems:"flex-end",flex:1,}}>
                 <Ionicons name="ios-arrow-forward" color="#27ae60" size={25}/>
             </View>
