@@ -14,7 +14,7 @@ import { showMessage } from 'react-native-flash-message';
 class SignUpScreen extends Component {
     
     constructor(props){
-        super(props);
+        super(props); 
         this.state={
             firstname:"",
             lastname:"",
@@ -164,7 +164,10 @@ class SignUpScreen extends Component {
                                         >
                                             <Input value="+965"
                                               style={[{flex:1,textAlign:"center",color:"#fff"}]}
-                                              editable={false} />
+                                              editable = {
+                                                  false
+                                              } 
+                                              />
                                             <Input 
                                             ref={mobile=>this.mobile=mobile}
                                             style={[{flex:4,color:"#fff"}]}

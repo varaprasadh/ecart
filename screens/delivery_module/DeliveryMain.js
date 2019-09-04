@@ -203,7 +203,7 @@ class Item extends Component{
                     <Text style={[styles.text,]} >{Number(this.state.Amount).toFixed(3)} KD</Text>
                 </View>
             </View>
-            <View style={{alignItems:"center",flex:1}}>
+            {/* <View style={{alignItems:"center",flex:1}}>
                 {delivered?
                 <Ionicons name="ios-done-all" color="#27ae60" size={30}/>
                 :pending?
@@ -214,7 +214,7 @@ class Item extends Component{
                 <Text style={[{fontWeight:"bold"},
                 delivered ? {color:"#27ae60"} : pending ?{color:"#e67e22"} : cancelled ? {color:"#e74c3c"} : {}
                 ]}>{delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
-            </View>
+            </View> */}
             <View style={{alignItems:"flex-end",flex:1,}}>
                 <Ionicons name="ios-arrow-forward" color="#27ae60" size={25}/>
             </View>

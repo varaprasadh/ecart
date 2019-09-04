@@ -87,7 +87,10 @@ export class DeliveryDetails extends Component {
                         autoHide: true
                     });
                     this.props.modifyStatus(this.state.index,status);
-                    this.props.navigation.goBack();
+                    this.setState({
+                        order:{...this.state.order,status}
+                    });
+                    // this.props.navigation.goBack();
                 }else{
                      showMessage({
                         type:"danger",
@@ -170,26 +173,31 @@ export class DeliveryDetails extends Component {
                     <Text style={styles.title}>Contents :</Text>
                     <OrderItemsTable items={this.state.products}/>
                 </View>
-                <View style={styles.controls}>
-                <Text style={styles.label}>if order is successfully delivered to the customer.</Text>
-                 <TouchableOpacity
-                     style={[styles.customBtn,]}
-                     onPress={this.confirmDelivery.bind(this)}
-                     >
-                    <Text 
-                         style={[{color:"white",fontWeight:"bold"}]}>CONFIRM DELIVERY</Text>
-                </TouchableOpacity>
+                {
+                  pending &&
+                  <View>
+                    <View style={styles.controls}>
+                        <Text style={styles.label}>if order is successfully delivered to the customer.</Text>
+                        <TouchableOpacity
+                            style={[styles.customBtn,]}
+                            onPress={this.confirmDelivery.bind(this)}
+                            >
+                            <Text 
+                                style={[{color:"white",fontWeight:"bold"}]}>CONFIRM DELIVERY</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.controls,{marginBottom:10}]}>
+                        <Text style={styles.label}>if Order is not Deliverable.</Text>
+                        <TouchableOpacity
+                            style={[styles.customBtn,{backgroundColor:"#e74c3c"}]}
+                            onPress={this.cancelDelivery.bind(this)}
+                            >
+                            <Text 
+                                style={[{color:"white",fontWeight:"bold"}]}>CANCEL DELIVERY</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={[styles.controls,{marginBottom:10}]}>
-                 <Text style={styles.label}>if Order is not Deliverable.</Text>
-                 <TouchableOpacity
-                     style={[styles.customBtn,{backgroundColor:"#e74c3c"}]}
-                     onPress={this.cancelDelivery.bind(this)}
-                     >
-                    <Text 
-                         style={[{color:"white",fontWeight:"bold"}]}>CANCEL DELIVERY</Text>
-                </TouchableOpacity>
-                </View>
+                }
               </View>
             </ImageBackground>
              </ScrollView>

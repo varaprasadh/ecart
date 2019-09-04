@@ -43,6 +43,7 @@ class LoginScreen extends Component {
               } else if (/DeliveryAgent/i.test(data.role)){
                 this.props.navigation.navigate('Delivery');
               }else{
+                
                 showMessage({
                   type:"danger",
                   message:"Access Denied",
@@ -53,9 +54,7 @@ class LoginScreen extends Component {
 
             })
           }else {
-              this.setState({
-                loading:false
-              });
+              
               showMessage({
                 message:"login failed",
                 type:"danger",
@@ -63,12 +62,22 @@ class LoginScreen extends Component {
                 autoHide:true
               });
           }
+          
+          this.setState({
+            loading: false,
+            error: false,
+
+          });
         }).catch(err=>{
           showMessage({
             type:"danger",
             message:"Error",
             description:"something went wrong,try again",
             autoHide:true
+          });
+          this.setState({
+            error:true,
+            loading:false
           });
         })
     }

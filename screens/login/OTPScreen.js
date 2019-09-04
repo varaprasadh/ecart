@@ -89,7 +89,11 @@ class MyClass extends Component {
                });
  
               
-           }).catch(err => console.log(err)); 
+           }).catch(err =>{
+               thi.setState({
+                   loading:false
+               })
+           }); 
       }
       if (this.state.type == "signin_with_otp"){
           console.log("login with otp");
