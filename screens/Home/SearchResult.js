@@ -6,6 +6,7 @@ import Header from '../major_components/Header';
 
 import {connect} from 'react-redux';
 import Loader from '../major_components/Loader';
+import EmptyItems from '../major_components/EmptyItems';
 
 
 class SearchResult extends Component {
@@ -68,12 +69,14 @@ class SearchResult extends Component {
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={{marginBottom:40}}>
             <Header title="Results" backbutton backHandler={this.props.navigation.goBack}/>
-              <ScrollView>
-                <Products notitle
-                    products={this.state.products}
-                    onProductSelect={this.onProductSelect.bind(this)}
-                />
-              </ScrollView>
+              { this.state.products.length>0?
+                <ScrollView>
+                    <Products notitle
+                      products={this.state.products}
+                      onProductSelect={this.onProductSelect.bind(this)}
+                  />
+                </ScrollView>
+            :<EmptyItems message="No Products Found!"/>}
         </View>
         </ImageBackground>
       </Wrapper>

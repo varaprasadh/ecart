@@ -73,7 +73,7 @@ addToCart(){
    obj={
      product_id: this.state.product.id,
      price: this.state.product.price, 
-     quantity: 1
+     quantity: this.state.product.quantity
    }; 
   fetch(`${this.props.baseUrl}/add_item_to_cart`,{
    method:"POST",
@@ -125,6 +125,20 @@ addToWishlist(){
   }).catch(err=>console.log(err));
 
 }
+increaseQTY(){
+   if(this.state.product.availableQuantity>this.state.product.quantity){
+     this.setState({
+       product:{...this.state.product,quantity: this.state.product.quantity + 1}
+     })
+   }
+}
+decreaseQTY(){
+  if(this.state.product.quantity>1){
+    this.setState({
+      product:{...this.state.product,quantity: this.state.product.quantity - 1}
+    })
+  }
+}
  
   render() {
    
@@ -174,6 +188,25 @@ addToWishlist(){
           </ScrollView> 
         </View>
          <View style={styles.actions}>
+            <View style={styles.qt_controls}>
+              <Text style={{padding:10,color:"#27ae60",fontWeight:"bold"}}>Choose Quantity</Text>
+              <View style={styles.qt_controls_btns}>
+                  <TouchableOpacity style={styles.qt_btn}
+                    onPress={this.decreaseQTY.bind(this)}
+                  >
+                    <Ionicons name="ios-remove" size={25}/>
+                  </TouchableOpacity>
+                  <Text style={styles.qtValue}>
+                    {this.state.product.quantity}
+                  </Text>
+                  <TouchableOpacity style={styles.qt_btn}
+                    onPress={this.increaseQTY.bind(this)}
+                  >
+                    <Ionicons name="ios-add" size={25} />
+                  </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{flexDirection:"row"}}>
               <TouchableOpacity style={[{flex:1},{...!instock?{display:"none"}:{}}]} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
                  <Text style={[styles.btn,styles.action_cart]}>
                     {this.props.product.isInCart?"IN CART":"ADD TO CART"}
@@ -184,6 +217,7 @@ addToWishlist(){
                     {instock?"BUY":"OUT OF STOCK"}
                   </Text>
               </TouchableOpacity>
+             </View>
           </View>
       </Wrapper>
     );
@@ -210,6 +244,27 @@ const styles=StyleSheet.create({
    flexDirection:"row",
    elevation:3
    
+  },
+  qt_controls:{
+     backgroundColor:"#fff"
+  },
+  qt_controls_btns:{
+    flexDirection:"row",
+    backgroundColor: "#bdc3c7"
+  },
+  qt_btn: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: 'center',
+    padding:10,
+    borderWidth:2,
+    borderColor:"#27ae60"
+  },
+  qtValue: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
+    backgroundColor: "#fff"
   },
   Favourite:{
      position:"absolute",
@@ -247,11 +302,10 @@ const styles=StyleSheet.create({
     bottom:0,
     width:"100%",
     flex:1,
-    flexDirection:"row",
     alignSelf:"stretch",
-    backgroundColor:"red",
-    borderColor: "#27ae60",
-    borderWidth: 2,
+    // backgroundColor:"red",
+    // borderColor: "#27ae60",
+    // borderWidth: 2,
   },
   action_cart:{
     backgroundColor:"#fff",

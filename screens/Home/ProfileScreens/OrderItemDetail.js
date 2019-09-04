@@ -68,7 +68,8 @@ cancelOrder(){
        let order = this.state.orderObj.order
        let delivered = /delivered/i.test(order.status);
        let pending = /pending/i.test(order.status);
-       let cancelled = /cancelled/i.test(order.status)
+       let cancelled = /cancelled/i.test(order.status);
+       let deliveredOn = order.updated_at.split('T')[0];
        console.log("status",order.status);
     return (
       this.state.loading?<Loader/>:
@@ -85,10 +86,10 @@ cancelOrder(){
                 <View style={styles.jrow}>
                     <Text style={styles.label}>Ordered On:</Text><Text>{this.state.orderObj.date}</Text>
                 </View>
-               {/* {delivered?<View style={styles.jrow}>
-                    <Text style={styles.label}>Delivered On:</Text><Text>12-33-1999</Text>
+               {delivered?<View style={styles.jrow}>
+                    <Text style={styles.label}>Delivered On:</Text><Text>{deliveredOn}</Text>
                 </View>:null
-               } */}
+               }
                 <View style={styles.jrow} >
                     <Text style={styles.label}>Delivery Status:</Text>
                     

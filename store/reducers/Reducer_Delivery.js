@@ -11,16 +11,15 @@ export default function (state = Delivery, action) {
                 console.log("modifying...",action.index,action.status);
                 let updatedOrders=[];
                 orders=orders.map((orderobj,index)=>{
-                    let newOrder=orderobj;
+                    let newOrder={...orderobj};
                     if(index==action.index){
-                        // return {
-                        //     ...orderobj,order:{...orderobj.order,status:action.status}
-                        // }
+
                      newOrder={...newOrder,order:{...newOrder.order,status:action.status}}
                     }
                     updatedOrders.push(newOrder);
                 });
-                return {...state,orders:updatedOrders}
+                let newState = Object.assign({},{...state,...{orders:updatedOrders}});
+                return newState;
                 default:
                     return state;
     }

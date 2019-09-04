@@ -109,6 +109,8 @@ class OrderHistory extends Component {
                      <Header backbutton title="My Orders" backHandler={this.props.navigation.goBack} />
                   <View>
                   <View >
+                   {
+                    orders.length>0?
                    <ScrollView>
                       <FlatList 
                           style={{marginBottom:40}}
@@ -123,7 +125,9 @@ class OrderHistory extends Component {
                           /> 
                           )}
                       /> 
-                    </ScrollView>  
+                    </ScrollView> 
+                    :<EmptyItems message="No Orders Are Made Yet!"/>
+                    }
                   </View> 
                   </View>
                 </View>

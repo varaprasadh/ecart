@@ -11,7 +11,7 @@ class Product extends Component {
    constructor(props){
        super(props)
        this.state={
-           quantity:1,
+           quantity:props.productdata.quantity,
        }
 
    }
@@ -20,7 +20,9 @@ class Product extends Component {
            this.setState({
            quantity:this.state.quantity+1
        },
-       () => this.props.onValueChange(this.props.productdata.id, this.state.quantity));
+       () =>{
+            this.props.onValueChange(this.props.productdata.id, this.state.quantity);
+       });
        }
    }
    decrease(){
@@ -35,6 +37,7 @@ class Product extends Component {
             }
         });
    }
+ 
 
     render() {
         return (  

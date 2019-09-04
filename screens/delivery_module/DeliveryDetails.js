@@ -112,17 +112,17 @@ export class DeliveryDetails extends Component {
         let order = this.state.order
         let delivered = /delivered/i.test(order.status);
         let pending = /pending/i.test(order.status);
-        let cancelled = /cancelled/i.test(order.status)
+        let cancelled = /cancelled/i.test(order.status);
+        let deliveredOn = order.updated_at.split('T')[0];
         return (
             this.state.loading?<Loader/>:
             
            <Wrapper>
              <Header title="delivery details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
              <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
+              <View style={{flex:1}}>
               <ScrollView style={{flex:1}}>
-              
-             
-              <View style={[styles.container,{flex:1}]}>
+              <View style={[styles.container,{paddingBottom:100}]}>
                 <View style={{flexDirection:"row",paddingVertical:20,...styles.main}}>
                   <View style={{flex:1}}>
                         <View style={styles.frow}>
@@ -137,6 +137,12 @@ export class DeliveryDetails extends Component {
                             <Text style={styles.label}>Mobile Number:</Text>
                             <Text style={styles.text}>{mobile}</Text>
                         </View>
+                        {
+                        delivered &&
+                        <View style={styles.frow}>
+                            <Text style={styles.label}>Delivered On</Text>
+                            <Text style={styles.text}>{deliveredOn}</Text>
+                        </View>}
                     </View>
                     <View>
                         <View style={styles.amount}>
@@ -188,7 +194,7 @@ export class DeliveryDetails extends Component {
                                 style={[{color:"white",fontWeight:"bold"}]}>CONFIRM DELIVERY</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.controls,{marginBottom:10}]}>
+                    <View style={[styles.controls,{marginVertical:10}]}>
                         <Text style={styles.label}>if Order is not Deliverable.</Text>
                         <TouchableOpacity
                             style={[styles.customBtn,{backgroundColor:"#e74c3c"}]}
@@ -202,6 +208,7 @@ export class DeliveryDetails extends Component {
                 }
               </View>
              </ScrollView>
+            </View>
             </ImageBackground>
            </Wrapper>
         )
@@ -219,9 +226,7 @@ const styles=StyleSheet.create({
     },
     
     container:{
-        paddingHorizontal: 10,
-        flex: 1,
-        paddingBottom:10
+        paddingVertical:20
     },
     itemtable:{
     backgroundColor: "#fff",

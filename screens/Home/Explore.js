@@ -56,6 +56,12 @@ class Explore extends Component {
                   page:this.state.page+1,
                   loading:false
               });
+            if (data.products.length == 0) {
+                console.log("hiding button")
+                this.setState({
+                    hideLoadMoreButton: true
+                })
+            }
              this.props.loadMore(data.products);
           }
       }).catch(err=>console.log(err)); 
@@ -77,6 +83,12 @@ class Explore extends Component {
                   page:this.state.page+1
               });
             //   this.props.toggleLoading();
+              if(data.products.length==0){
+                  console.log("hiding button")
+                  this.setState({
+                      hideLoadMoreButton:true
+                  })
+              }
               this.props.loadProducts(data.products);
           } 
           this.setState({
@@ -171,7 +183,10 @@ class Explore extends Component {
                                 products={this.props.products}
                                 onProductSelect={this.onProductSelect.bind(this)}
                             />
-                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                            {
+                                !this.state.hideLoadMoreButton &&
+                                <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                            }
                         </ScrollView>
                 </ImageBackground>
                 {/* </View> */}

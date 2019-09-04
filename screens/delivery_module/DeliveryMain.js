@@ -9,6 +9,8 @@ import { showMessage } from 'react-native-flash-message';
 import EmptyItems from "../major_components/EmptyItems";
 import RetryButton from "../major_components/RetryButton";
 
+import {isEqual} from 'lodash'
+import _ from 'lodash';
 
 
 class DeliveryMain extends Component {
@@ -37,40 +39,54 @@ loadData(){
       this.setState({
           loading: true && !this.state.refreshing
       });
-      fetch(`${this.props.baseUrl}/orders`, {
-          method: "GET",
-          headers: {
-              "AUTH_TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).then(data => {
-          if (data.success) {
-              myOrders = data.my_orders;
-              myOrders = myOrders.map(orderAr => {
-                  return orderAr[0];
-              });
-              console.log(myOrders);
-              this.props.setOrders(myOrders);
-              this.setState({
-                  orders:myOrders,
-                  error: false,
-                  refreshing:false,
-                  loading:false
-              })
-          } else {
-              this.setState({
-                  error: true,
-                  refreshing:false
-              });
-          }
-          this.setState({
-              loading: false
-          });
-      }).catch(err => {
-          this.setState({
-              loading: false,
-              error: true
-          })
-      })
+    //   fetch(`${this.props.baseUrl}/orders`, {
+    //       method: "GET",
+    //       headers: {
+    //           "AUTH_TOKEN": this.props.AUTH_TOKEN
+    //       }
+    //   }).then(res => res.json()).then(data => {
+    //       if (data.success) {
+    //           myOrders = data.my_orders;
+    //           myOrders = myOrders.map(orderAr => {
+    //               return orderAr[0];
+    //           });
+    //           console.log(myOrders);
+    //           this.props.setOrders(myOrders);
+    //           this.setState({
+    //               orders:myOrders,
+    //               error: false,
+    //               refreshing:false,
+    //               loading:false
+    //           })
+    //       } else {
+    //           this.setState({
+    //               error: true,
+    //               refreshing:false
+    //           });
+    //       }
+    //       this.setState({
+    //           loading: false
+    //       });
+    //   }).catch(err => {
+    //       this.setState({
+    //           loading: false,
+    //           error: true
+    //       })
+    //   })
+    data=response;
+     myOrders = data.my_orders;
+        myOrders = myOrders.map(orderAr => {
+            return orderAr[0];
+        });
+        console.log(myOrders);
+        this.props.setOrders(myOrders);
+        this.setState({
+            orders:myOrders,
+            error: false,
+            refreshing:false,
+            loading:false
+        });
+
 }
   logout(){
         this.setState({loading:true});
@@ -111,8 +127,13 @@ loadData(){
      this.loadData();
  }
 
+// shouldComponentUpdate(nextProps, nextState){
+//         return (
+//             !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
+//         );
+// }
+
   render() {
-      let orders=this.props.orders; 
     return (
      this.state.loading?<Loader/>: this.state.error?
      <EmptyItems message="something went wrong">
@@ -140,9 +161,9 @@ loadData(){
                    </View>
               </View>
               <View style={{flex:1}}>
-                  <FlatList data={orders} 
+                  <FlatList data={this.props.orders} 
                    keyExtractor={(item,i)=>i+''} 
-                   extraData={this.props}
+                   extraData={this.props} 
                    refreshing={this.state.refreshing}
                    onRefresh={this.refresh.bind(this)}
                    renderItem={({item,index})=>
@@ -297,3 +318,573 @@ mapDispatch=dispatch=>{
     }
 }
 export default connect(mapState,mapDispatch)(DeliveryMain);
+
+const response = {
+    "success": true,
+    "my_orders": [
+        [{ 
+            "date": "2019-09-04",
+            "order": {
+                "id": 115,
+                "user_id": 5,
+                "total_price": 30,
+                "status": "Pending",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-04T15:43:19.942Z",
+                "updated_at": "2019-09-04T15:44:19.300Z",
+                "billing_address_id": 41
+            },
+            "billing_address": {
+                "id": 41,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-30T19:48:57.121Z",
+                "updated_at": "2019-08-30T19:48:57.121Z"
+            },
+            "products": [{
+                    "product_id": 3,
+                    "product_name": "Egyptian Hookah",
+                    "price": 2.5,
+                    "product_description": "Shesha Medium",
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 1,
+                    "product_name": "Shampoo",
+                    "price": 25,
+                    "product_description": "Best Selling Product",
+                    "ordered_quantity": 1
+                }
+            ]
+        }],
+        [{
+            "date": "2019-09-04",
+            "order": {
+                "id": 114,
+                "user_id": 5,
+                "total_price": 25,
+                "status": "Delivered",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-04T15:32:40.687Z",
+                "updated_at": "2019-09-04T16:04:07.044Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 1,
+                "product_name": "Shampoo",
+                "price": 25,
+                "product_description": "Best Selling Product",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-04",
+            "order": {
+                "id": 113,
+                "user_id": 5,
+                "total_price": 1,
+                "status": "Delivered",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-04T15:25:14.926Z",
+                "updated_at": "2019-09-04T15:28:38.815Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 8,
+                "product_name": "Square Wooden burner",
+                "price": 1,
+                "product_description": null,
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 112,
+                "user_id": 5,
+                "total_price": 2.5,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T18:36:55.793Z",
+                "updated_at": "2019-09-03T18:37:08.755Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                    "product_id": 3,
+                    "product_name": "Egyptian Hookah",
+                    "price": 2.5,
+                    "product_description": "Shesha Medium",
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 7,
+                    "product_name": "Shesha Hookah",
+                    "price": 0,
+                    "product_description": null,
+                    "ordered_quantity": 1
+                }
+            ]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 111,
+                "user_id": 5,
+                "total_price": 2.5,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T18:34:57.517Z",
+                "updated_at": "2019-09-03T18:35:10.758Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 3,
+                "product_name": "Egyptian Hookah",
+                "price": 2.5,
+                "product_description": "Shesha Medium",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 110,
+                "user_id": 5,
+                "total_price": 25,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T17:52:17.365Z",
+                "updated_at": "2019-09-03T18:24:10.626Z",
+                "billing_address_id": 41
+            },
+            "billing_address": {
+                "id": 41,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-30T19:48:57.121Z",
+                "updated_at": "2019-08-30T19:48:57.121Z"
+            },
+            "products": [{
+                "product_id": 1,
+                "product_name": "Shampoo",
+                "price": 25,
+                "product_description": "Best Selling Product",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 109,
+                "user_id": 5,
+                "total_price": 2.5,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T17:51:46.772Z",
+                "updated_at": "2019-09-03T18:27:03.755Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 3,
+                "product_name": "Egyptian Hookah",
+                "price": 2.5,
+                "product_description": "Shesha Medium",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 108,
+                "user_id": 5,
+                "total_price": 26,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T17:46:45.753Z",
+                "updated_at": "2019-09-03T18:15:56.260Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                    "product_id": 8,
+                    "product_name": "Square Wooden burner",
+                    "price": 1,
+                    "product_description": null,
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 1,
+                    "product_name": "Shampoo",
+                    "price": 25,
+                    "product_description": "Best Selling Product",
+                    "ordered_quantity": 1
+                }
+            ]
+        }],
+        [{
+            "date": "2019-09-03",
+            "order": {
+                "id": 107,
+                "user_id": 5,
+                "total_price": 2.5,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T17:26:07.045Z",
+                "updated_at": "2019-09-03T17:26:49.889Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 3,
+                "product_name": "Egyptian Hookah",
+                "price": 2.5,
+                "product_description": "Shesha Medium",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-09-01",
+            "order": {
+                "id": 102,
+                "user_id": 5,
+                "total_price": 45,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-09-03T16:21:08.671Z",
+                "updated_at": "2019-09-03T16:38:11.738Z",
+                "billing_address_id": 42
+            },
+            "billing_address": {
+                "id": 42,
+                "user_id": 5,
+                "area": "sffafaf",
+                "block": "fafafaf",
+                "street": "afafafaf",
+                "lane": "fafaafafa",
+                "city": null,
+                "first_name": "john",
+                "last_name": "doe",
+                "phone_number": "8106492369",
+                "email": null,
+                "country": "Kuwait",
+                "created_at": "2019-08-30T20:20:08.970Z",
+                "updated_at": "2019-08-30T20:20:08.970Z"
+            },
+            "products": [{
+                "product_id": 16,
+                "product_name": "fssfss",
+                "price": 45,
+                "product_description": "fdgfg",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-08-29",
+            "order": {
+                "id": 80,
+                "user_id": 5,
+                "total_price": 50,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-08-30T19:48:57.200Z",
+                "updated_at": "2019-08-31T21:16:52.968Z",
+                "billing_address_id": 41
+            },
+            "billing_address": {
+                "id": 41,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-30T19:48:57.121Z",
+                "updated_at": "2019-08-30T19:48:57.121Z"
+            },
+            "products": [{
+                "product_id": 1,
+                "product_name": "Shampoo",
+                "price": 25,
+                "product_description": "Best Selling Product",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-08-27",
+            "order": {
+                "id": 74,
+                "user_id": 5,
+                "total_price": 50,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-08-27T18:35:17.499Z",
+                "updated_at": "2019-09-03T16:53:31.035Z",
+                "billing_address_id": 28
+            },
+            "billing_address": {
+                "id": 28,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-27T18:35:17.492Z",
+                "updated_at": "2019-08-27T18:35:17.492Z"
+            },
+            "products": [{
+                "product_id": 1,
+                "product_name": "Shampoo",
+                "price": 25,
+                "product_description": "Best Selling Product",
+                "ordered_quantity": 3
+            }]
+        }],
+        [{
+            "date": "2019-08-25",
+            "order": {
+                "id": 71,
+                "user_id": 5,
+                "total_price": 50,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-08-27T16:44:50.973Z",
+                "updated_at": "2019-09-03T16:57:40.477Z",
+                "billing_address_id": 25
+            },
+            "billing_address": {
+                "id": 25,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-27T16:44:50.951Z",
+                "updated_at": "2019-08-27T16:44:50.951Z"
+            },
+            "products": [{
+                "product_id": 11,
+                "product_name": "Tennis Ball",
+                "price": 300,
+                "product_description": "Tennis Ball",
+                "ordered_quantity": 1
+            }]
+        }],
+        [{
+            "date": "2019-08-25",
+            "order": {
+                "id": 66,
+                "user_id": 5,
+                "total_price": 50,
+                "status": "Cancelled",
+                "offer_applied": "NA",
+                "accepted_payment_method": "CASH",
+                "created_at": "2019-08-25T21:43:26.672Z",
+                "updated_at": "2019-09-03T17:00:15.701Z",
+                "billing_address_id": 20
+            },
+            "billing_address": {
+                "id": 20,
+                "user_id": 5,
+                "area": "fsfsfs",
+                "block": "gsgsfss",
+                "street": "fsfsfs",
+                "lane": "sgsggs",
+                "city": null,
+                "first_name": "zdgse",
+                "last_name": "sgsgsg",
+                "phone_number": "8106492369",
+                "email": "sgsg.sgs@sgs.com",
+                "country": "Kuwait",
+                "created_at": "2019-08-25T21:43:26.667Z",
+                "updated_at": "2019-08-25T21:43:26.667Z"
+            },
+            "products": [{
+                    "product_id": 6,
+                    "product_name": "Teddy Bear",
+                    "price": 1,
+                    "product_description": null,
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 10,
+                    "product_name": "Shoe",
+                    "price": 450,
+                    "product_description": "Running Shoes",
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 1,
+                    "product_name": "Shampoo",
+                    "price": 25,
+                    "product_description": "Best Selling Product",
+                    "ordered_quantity": 1
+                },
+                {
+                    "product_id": 2,
+                    "product_name": "Shampoo",
+                    "price": 25,
+                    "product_description": "Sample ",
+                    "ordered_quantity": 1
+                }
+            ]
+        }]
+    ]
+}

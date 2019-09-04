@@ -67,7 +67,7 @@ class MyClass extends Component {
                if (data.success == true) {
                    //set config
                    //store auth_key in local
-               
+                  console.log("registration done")
                    showMessage({
                          type:"success",
                          message:"Success",
@@ -76,12 +76,14 @@ class MyClass extends Component {
                    });
                    this.props.navagation.navigate('LoginStack');
                }else{
+                   console.log("something wrong happend");
                    showMessage({
                        type:"danger",
                        message:"Failed",
                        description:"invalid OTP,try again",
                        autoHide:true
                    });
+
 
                }
                this.setState({
@@ -90,6 +92,7 @@ class MyClass extends Component {
  
               
            }).catch(err =>{
+               console.log("catcch")
                thi.setState({
                    loading:false
                })

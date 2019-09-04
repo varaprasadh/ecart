@@ -32,6 +32,7 @@ class CheckAddressSelect extends Component {
         }
         this.setSelected=this.setSelected.bind(this);
         this.loadData=this.loadData.bind(this);
+        this.selectDefault=this.selectDefault.bind(this);
     }
    loadData(){ 
         this.setState({
@@ -45,9 +46,19 @@ class CheckAddressSelect extends Component {
             }
         }).then(res => res.json()).then(data => {
             if (data.success == true) {
-                this.setState({
-                    prevAddress: data.billing_address
-                });
+                if(data.billing_address.length==1){
+                    let obj=data.billing_address[0];
+
+                   this.setState({
+                       prevAddress:[{...obj,seleted:true}],
+                       selectedAddress:{...obj,seleted:true}
+                   });
+                }else{
+                   this.setState({
+                      prevAddress: data.billing_address
+                    });
+                }
+                
             }
             this.setState({
                 loading: false,
@@ -87,6 +98,15 @@ class CheckAddressSelect extends Component {
      })
     
    }
+   selectDefault(){
+    //    let prevAddress=this.state.prevAddress;
+    //    if(prevAddress.length==1){
+    //        let obj=prevAddress[0];
+    //        this.setState({
+    //            prevAddress:[{...obj,seleted:true}]
+    //        })
+    //    }
+   }
   onCheckout(){
       let {selectedAddress} =this.state;
        let {email,area,street,lane,block,phone_number,first_name,last_name,id}=selectedAddress;
@@ -121,8 +141,7 @@ class CheckAddressSelect extends Component {
       <View style={{flex:1}}>
         <Text style={[styles.text,styles.styltext]}>CHOOSE DELIVERY ADDRESS</Text>
        <View style={{flex:1,padding:10}}>
-        { 
-           this.state.prevAddress.length?<ScrollView style={{flex:1}}>
+         {  this.state.prevAddress.length?<ScrollView style={{flex:1}}>
                 
                 {this.state.prevAddress.map((address,id)=>{
                   return(
