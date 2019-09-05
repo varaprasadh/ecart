@@ -83,8 +83,6 @@ class MyClass extends Component {
                        description:"invalid OTP,try again",
                        autoHide:true
                    });
-
-
                }
                this.setState({
                    loading: false
