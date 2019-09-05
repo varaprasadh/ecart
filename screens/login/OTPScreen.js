@@ -67,14 +67,14 @@ class MyClass extends Component {
                if (data.success == true) {
                    //set config
                    //store auth_key in local
-                  console.log("registration done")
+                  console.log("registration done");
                    showMessage({
                          type:"success",
                          message:"Success",
-                         description:"Account Created Successfully.",
+                         description:"Account Created Successfully.please login to continue",
                          autoHide:true
                    });
-                   this.props.navagation.navigate('LoginStack');
+                   this.props.navagation.navigate('Login');
                }else{
                    console.log("something wrong happend");
                    showMessage({

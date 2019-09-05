@@ -10,6 +10,7 @@ import BackgroundCarousel from "../major_components/BackgroundCarousel";
 
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
+import { showMessage } from 'react-native-flash-message';
 
 class ProductMain extends Component {
   constructor(props) {
@@ -130,6 +131,12 @@ increaseQTY(){
      this.setState({
        product:{...this.state.product,quantity: this.state.product.quantity + 1}
      })
+   }else{
+     showMessage({
+       type:"warning",
+       message:"Info",
+       description:"Quantity that you are tryig to set might not be available"
+     })
    }
 }
 decreaseQTY(){
@@ -188,7 +195,7 @@ decreaseQTY(){
           </ScrollView> 
         </View>
          <View style={styles.actions}>
-            <View style={styles.qt_controls}>
+            {instock>0 && <View style={styles.qt_controls}>
               <Text style={{padding:10,color:"#27ae60",fontWeight:"bold"}}>Choose Quantity</Text>
               <View style={styles.qt_controls_btns}>
                   <TouchableOpacity style={styles.qt_btn}
@@ -205,7 +212,7 @@ decreaseQTY(){
                     <Ionicons name="ios-add" size={25} />
                   </TouchableOpacity>
               </View>
-            </View>
+            </View>}
             <View style={{flexDirection:"row"}}>
               <TouchableOpacity style={[{flex:1},{...!instock?{display:"none"}:{}}]} onPress={this.addToCart.bind(this)} disabled={this.props.product.isInCart}>
                  <Text style={[styles.btn,styles.action_cart]}>
@@ -250,15 +257,19 @@ const styles=StyleSheet.create({
   },
   qt_controls_btns:{
     flexDirection:"row",
-    backgroundColor: "#bdc3c7"
+    // backgroundColor: "#bdc3c7",
+    borderWidth:2,
+    borderColor: "#27ae60"
   },
   qt_btn: {
     flex: 2,
     alignItems: "center",
     justifyContent: 'center',
     padding:10,
-    borderWidth:2,
-    borderColor:"#27ae60"
+    borderLeftWidth:2,
+    borderRightWidth:2,
+    borderColor: "#27ae60",
+    backgroundColor: "#ecf0f1"
   },
   qtValue: {
     flex: 1,

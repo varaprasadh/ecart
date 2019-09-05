@@ -18,7 +18,7 @@ class OrderItemDetail extends Component {
         products:orderObj.products,
         items:[],
         index:this.props.navigation.getParam('index'),
-
+        status:orderObj.order.status
       }
   }
 
@@ -64,7 +64,6 @@ cancelOrder(){
    })
 }
   render() {
-    //   delivered = this.state.orderObj.delivery_date != null;
        let order = this.state.orderObj.order
        let delivered = /delivered/i.test(order.status);
        let pending = /pending/i.test(order.status);
@@ -94,9 +93,9 @@ cancelOrder(){
                     <Text style={styles.label}>Delivery Status:</Text>
                     
                     <Text style={[styles.status,{fontWeight:"bold",color:"#fff",paddingHorizontal:20,paddingVertical:10,marginTop:10},
-                         delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
+                         this.state.cancelled?{backgroundColor:"#e74c3c"}:delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
                         ]}>
-                     {delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
+                     {this.state.cancelled?"Cancelled":delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                 </View>
             </View>
             <View style={{backgroundColor:"#fff",paddingHorizontal:10}}>
@@ -104,7 +103,7 @@ cancelOrder(){
                 <OrderItemsTable items={this.state.products}/>
             </View> 
         </View> 
-       {!delivered && !cancelled && 
+       {!delivered && !cancelled && !this.state.cancelled &&
        <View> 
             <TouchableOpacity
             disabled={this.state.cancelled}

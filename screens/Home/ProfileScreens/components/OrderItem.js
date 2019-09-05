@@ -12,7 +12,7 @@ export default class OrderItem extends Component{
         }
     }
     render(){
-           let order = this.state.orderobj.order;  
+           let order = this.props.data.order;  
            let delivered = /delivered/i.test(order.status);
            let pending = /pending/i.test(order.status);
            let cancelled = /cancelled/i.test(order.status)

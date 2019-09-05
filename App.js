@@ -29,7 +29,7 @@ const rootStack=createStackNavigator({
   OrderHistory:OrderHistory,
   ExploreProduct:ProductMain,
   SearchResult: SearchResult,
-  Checkout:CheckoutStack,
+  Checkout:CheckoutStack, 
   EditProfile:EditProfile,
   ChangePassword: ChangePassword,
   OrderItemDetail:OrderItemDetail,
@@ -62,7 +62,7 @@ class Initialiser extends Component{
           }
         } catch (err) {
           console.log(err)
-        }
+        } 
       }
 
   render(){
@@ -78,7 +78,7 @@ const root = createSwitchNavigator({
    Main:rootStack,
    Delivery: DeliveryStack
 },{    
-  initialRouteName: "Delivery",
+  initialRouteName: "Main",
   headerMode:"none",
 })
  
