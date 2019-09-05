@@ -111,6 +111,16 @@ loadData(){
                     autoHide:true
                 });
             }
+        }).catch(err=>{
+            this.setState({
+                loading:false,
+            });
+            showMessage({
+                type:"danger",
+                message:"Failed",
+                description:"something went wrong, try again later!",
+                autoHide:true
+            })
         })
   }
   refresh(){
@@ -193,32 +203,7 @@ class Item extends Component{
             order
         }
     } 
-    componentDidMount(){
-       console.log("lets test this buddy");   
-          let {data}=this.props;
-          let billing_address = data.billing_address||{};
-          let {order} = data;
-            this.setState({
-                name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
-                orderId: order.id,
-                mobile: billing_address.phone_number || '',
-                Amount: order.total_price,
-                order
-            }); 
-    } 
-   componentDidUpdate(){
-      console.log("updated");
-    //   let {data}=this.props;
-    //   let billing_address = data.billing_address||{};
-    //   let {order} = data;
-    //    this.setState({
-    //         name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
-    //         orderId: order.id,
-    //         mobile: billing_address.phone_number || '',
-    //         Amount: order.total_price,
-    //         order
-    //     });
-   }
+ 
     onSelect(){
         this.props.onSelect(this.props.data,this.props.index);
     }
