@@ -9,7 +9,6 @@ import { showMessage } from 'react-native-flash-message';
 import EmptyItems from "../major_components/EmptyItems";
 import RetryButton from "../major_components/RetryButton";
 
-import {isEqual} from 'lodash'
 import _ from 'lodash';
 
 
@@ -18,7 +17,7 @@ class DeliveryMain extends Component {
     super(props);
     this.state = {
         loading:false,
-        orders:[],
+        orders:[], 
         refreshing:false
     };
     this.loadData=this.loadData.bind(this);
@@ -163,7 +162,7 @@ loadData(){
               <View style={{flex:1}}>
                   <FlatList data={this.props.orders} 
                    keyExtractor={(item,i)=>i+''} 
-                   extraData={this.props} 
+                   extraData={this.props.orders} 
                    refreshing={this.state.refreshing}
                    onRefresh={this.refresh.bind(this)}
                    renderItem={({item,index})=>
@@ -185,20 +184,35 @@ class Item extends Component{
         let {data}=this.props;
         let billing_address = data.billing_address||{};
         let {order} = data;
-       
-        this.state={
-            name: billing_address.first_name||''+' '+billing_address.last_name||'',
-            orderId:order.id,
-            mobile: billing_address.phone_number||'',
+        this.state = {
+            name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
+            orderId: order.id,
+            mobile: billing_address.phone_number || '',
             Amount: order.total_price,
             order
         }
     } 
-
+    componentDidMount(){
+       console.log("lets test this buddy");    
+    }
+   componentDidUpdate(){
+    //   console.log("updated");
+      let {data}=this.props;
+      let billing_address = data.billing_address||{};
+      let {order} = data;
+      this.state = {
+            name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
+            orderId: order.id,
+            mobile: billing_address.phone_number || '',
+            Amount: order.total_price,
+            order
+        }
+   }
     onSelect(){
         this.props.onSelect(this.props.data,this.props.index);
     }
     render(){
+        console.log("rednerisdsff..")
         let order=this.state.order
         let delivered=/delivered/i.test(order.status);
         let pending=/pending/i.test(order.status);

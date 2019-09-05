@@ -78,7 +78,7 @@ const root = createSwitchNavigator({
    Main:rootStack,
    Delivery: DeliveryStack
 },{    
-  initialRouteName: "Main",
+  initialRouteName: "Delivery",
   headerMode:"none",
 })
  
