@@ -39,53 +39,53 @@ loadData(){
       this.setState({
           loading: true && !this.state.refreshing
       });
-      fetch(`${this.props.baseUrl}/orders`, {
-          method: "GET",
-          headers: {
-              "AUTH_TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).then(data => {
-          if (data.success) {
-              myOrders = data.my_orders;
-              myOrders = myOrders.map(orderAr => {
-                  return orderAr[0];
-              });
-              console.log(myOrders);
-              this.props.setOrders(myOrders);
-              this.setState({
-                  orders:myOrders,
-                  error: false,
-                  refreshing:false,
-                  loading:false
-              })
-          } else {
-              this.setState({
-                  error: true,
-                  refreshing:false
-              });
-          }
-          this.setState({
-              loading: false
-          });
-      }).catch(err => {
-          this.setState({
-              loading: false,
-              error: true
-          })
-      })
-    // data=response;
-    //  myOrders = data.my_orders;
-    //     myOrders = myOrders.map(orderAr => {
-    //         return orderAr[0];
-    //     });
-    //     console.log(myOrders);
-    //     this.props.setOrders(myOrders);
-    //     this.setState({
-    //         orders:myOrders,
-    //         error: false,
-    //         refreshing:false,
-    //         loading:false
-    //     });
+    //   fetch(`${this.props.baseUrl}/orders`, {
+    //       method: "GET",
+    //       headers: {
+    //           "AUTH_TOKEN": this.props.AUTH_TOKEN
+    //       }
+    //   }).then(res => res.json()).then(data => {
+    //       if (data.success) {
+    //           myOrders = data.my_orders;
+    //           myOrders = myOrders.map(orderAr => {
+    //               return orderAr[0];
+    //           });
+    //           console.log(myOrders);
+    //           this.props.setOrders(myOrders);
+    //           this.setState({
+    //               orders:myOrders,
+    //               error: false,
+    //               refreshing:false,
+    //               loading:false
+    //           })
+    //       } else {
+    //           this.setState({
+    //               error: true,
+    //               refreshing:false
+    //           });
+    //       }
+    //       this.setState({
+    //           loading: false
+    //       });
+    //   }).catch(err => {
+    //       this.setState({
+    //           loading: false,
+    //           error: true
+    //       })
+    //   })
+    data=response;
+     myOrders = data.my_orders;
+        myOrders = myOrders.map(orderAr => {
+            return orderAr[0];
+        });
+        console.log(myOrders);
+        this.props.setOrders(myOrders);
+        this.setState({
+            orders:myOrders,
+            error: false,
+            refreshing:false,
+            loading:false
+        });
 
 }
   logout(){
@@ -194,61 +194,38 @@ class Item extends Component{
         }
     } 
     componentDidMount(){
-       console.log("lets test this buddy");    
-    }
-//    componentDidUpdate(){
-//       console.log("updated");
-//       let {data}=this.props;
-//       let billing_address = data.billing_address||{};
-//       let {order} = data;
-//       this.state = {
-//             name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
-//             orderId: order.id,
-//             mobile: billing_address.phone_number || '',
-//             Amount: order.total_price,
-//             order
-//         }
-//    }
+       console.log("lets test this buddy");   
+          let {data}=this.props;
+          let billing_address = data.billing_address||{};
+          let {order} = data;
+            this.setState({
+                name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
+                orderId: order.id,
+                mobile: billing_address.phone_number || '',
+                Amount: order.total_price,
+                order
+            }); 
+    } 
+   componentDidUpdate(){
+      console.log("updated");
+    //   let {data}=this.props;
+    //   let billing_address = data.billing_address||{};
+    //   let {order} = data;
+    //    this.setState({
+    //         name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
+    //         orderId: order.id,
+    //         mobile: billing_address.phone_number || '',
+    //         Amount: order.total_price,
+    //         order
+    //     });
+   }
     onSelect(){
         this.props.onSelect(this.props.data,this.props.index);
     }
     render() {
-            fetch(`${this.props.baseUrl}/orders`, {
-                method: "GET",
-                headers: {
-                    "AUTH_TOKEN": this.props.AUTH_TOKEN
-                }
-            }).then(res => res.json()).then(data => {
-                if (data.success) {
-                    myOrders = data.my_orders;
-                    myOrders = myOrders.map(orderAr => {
-                        return orderAr[0];
-                    });
-                    console.log(myOrders);
-                    this.props.setOrders(myOrders);
-                    this.setState({
-                        orders: myOrders,
-                        error: false,
-                        refreshing: false,
-                        loading: false
-                    })
-                } else {
-                    this.setState({
-                        error: true,
-                        refreshing: false
-                    });
-                }
-                this.setState({
-                    loading: false
-                });
-            }).catch(err => {
-                this.setState({
-                    loading: false,
-                    error: true
-                })
-            })
+        
         console.log("rednerisdsff..")
-        let order=this.state.order
+        let order=this.props.data.order;
         let delivered=/delivered/i.test(order.status);
         let pending=/pending/i.test(order.status);
         let cancelled=/cancelled/i.test(order.status)
@@ -422,7 +399,7 @@ const response = {
                 "id": 114,
                 "user_id": 5,
                 "total_price": 25,
-                "status": "Delivered",
+                "status": "Pending",
                 "offer_applied": "NA",
                 "accepted_payment_method": "CASH",
                 "created_at": "2019-09-04T15:32:40.687Z",

@@ -69,41 +69,51 @@ export class DeliveryDetails extends Component {
             this.setState({
                 loading: true
             });
-            fetch(`${this.props.baseUrl}/deliver_order`, {
-                method: "POST",
-                headers: {
-                    "AUTH_TOKEN": this.props.AUTH_TOKEN,
-                    "content-Type":"application/json"
-                 }, 
-                body: JSON.stringify(obj)
-            }).then(res => res.json()).then(data => {
-                console.log(data);
-                if (data.success == true) {
+            // fetch(`${this.props.baseUrl}/deliver_order`, {
+            //     method: "POST",
+            //     headers: {
+            //         "AUTH_TOKEN": this.props.AUTH_TOKEN,
+            //         "content-Type":"application/json"
+            //      }, 
+            //     body: JSON.stringify(obj)
+            // }).then(res => res.json()).then(data => {
+            //     console.log(data);
+            //     if (data.success == true) {
                 
-                    showMessage({
-                        type: "success",
-                        message: "success",
-                        description: `order ${status} successfully`,
-                        autoHide: true
-                    });
-                    this.props.modifyStatus(this.state.index,status);
-                    this.setState({
-                        order:{...this.state.order,status}
-                    });
-                    // this.props.navigation.goBack();
-                }else{
-                     showMessage({
-                        type:"danger",
-                        message: "failed",
-                        description: `order ${status} failed,try again later`,
-                        autoHide: true
-                    });
-                }
-                this.setState({
-                    loading:false
-                })
-            }).catch(err=>console.log(err));
-        
+            //         showMessage({
+            //             type: "success",
+            //             message: "success",
+            //             description: `order ${status} successfully`,
+            //             autoHide: true
+            //         });
+            //         this.props.modifyStatus(this.state.index,status);
+            //         this.setState({
+            //             order:{...this.state.order,status}
+            //         });
+            //     }else{
+            //          showMessage({
+            //             type:"danger",
+            //             message: "failed",
+            //             description: `order ${status} failed,try again later`,
+            //             autoHide: true
+            //         });
+            //     }
+            //     this.setState({
+            //         loading:false
+            //     })
+            // }).catch(err=>{
+            //     this.setState({
+            //         loading:false
+            //     });
+            // });
+          this.setState({
+              loading:false 
+          })
+          this.props.modifyStatus(this.state.index, status);
+            this.setState({
+                order:{...this.state.order,status}
+            });
+
     }
     render() {
         let first_name=this.state.billing_address.first_name||'';
