@@ -33,59 +33,59 @@ class DeliveryMain extends Component {
  retry(){
    this.loadData();
  }
- 
+
  
 loadData(){
       this.setState({
           loading: true && !this.state.refreshing
       });
-    //   fetch(`${this.props.baseUrl}/orders`, {
-    //       method: "GET",
-    //       headers: {
-    //           "AUTH_TOKEN": this.props.AUTH_TOKEN
-    //       }
-    //   }).then(res => res.json()).then(data => {
-    //       if (data.success) {
-    //           myOrders = data.my_orders;
-    //           myOrders = myOrders.map(orderAr => {
-    //               return orderAr[0];
-    //           });
-    //           console.log(myOrders);
-    //           this.props.setOrders(myOrders);
-    //           this.setState({
-    //               orders:myOrders,
-    //               error: false,
-    //               refreshing:false,
-    //               loading:false
-    //           })
-    //       } else {
-    //           this.setState({
-    //               error: true,
-    //               refreshing:false
-    //           });
-    //       }
-    //       this.setState({
-    //           loading: false
-    //       });
-    //   }).catch(err => {
-    //       this.setState({
-    //           loading: false,
-    //           error: true
-    //       })
-    //   })
-    data=response;
-     myOrders = data.my_orders;
-        myOrders = myOrders.map(orderAr => {
-            return orderAr[0];
-        });
-        console.log(myOrders);
-        this.props.setOrders(myOrders);
-        this.setState({
-            orders:myOrders,
-            error: false,
-            refreshing:false,
-            loading:false
-        });
+      fetch(`${this.props.baseUrl}/orders`, {
+          method: "GET",
+          headers: {
+              "AUTH_TOKEN": this.props.AUTH_TOKEN
+          }
+      }).then(res => res.json()).then(data => {
+          if (data.success) {
+              myOrders = data.my_orders;
+              myOrders = myOrders.map(orderAr => {
+                  return orderAr[0];
+              });
+              console.log(myOrders);
+              this.props.setOrders(myOrders);
+              this.setState({
+                  orders:myOrders,
+                  error: false,
+                  refreshing:false,
+                  loading:false
+              })
+          } else {
+              this.setState({
+                  error: true,
+                  refreshing:false
+              });
+          }
+          this.setState({
+              loading: false
+          });
+      }).catch(err => {
+          this.setState({
+              loading: false,
+              error: true
+          })
+      })
+    // data=response;
+    //  myOrders = data.my_orders;
+    //     myOrders = myOrders.map(orderAr => {
+    //         return orderAr[0];
+    //     });
+    //     console.log(myOrders);
+    //     this.props.setOrders(myOrders);
+    //     this.setState({
+    //         orders:myOrders,
+    //         error: false,
+    //         refreshing:false,
+    //         loading:false
+    //     });
 
 }
   logout(){
@@ -196,23 +196,57 @@ class Item extends Component{
     componentDidMount(){
        console.log("lets test this buddy");    
     }
-   componentDidUpdate(){
-    //   console.log("updated");
-      let {data}=this.props;
-      let billing_address = data.billing_address||{};
-      let {order} = data;
-      this.state = {
-            name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
-            orderId: order.id,
-            mobile: billing_address.phone_number || '',
-            Amount: order.total_price,
-            order
-        }
-   }
+//    componentDidUpdate(){
+//       console.log("updated");
+//       let {data}=this.props;
+//       let billing_address = data.billing_address||{};
+//       let {order} = data;
+//       this.state = {
+//             name: billing_address.first_name || '' + ' ' + billing_address.last_name || '',
+//             orderId: order.id,
+//             mobile: billing_address.phone_number || '',
+//             Amount: order.total_price,
+//             order
+//         }
+//    }
     onSelect(){
         this.props.onSelect(this.props.data,this.props.index);
     }
-    render(){
+    render() {
+            fetch(`${this.props.baseUrl}/orders`, {
+                method: "GET",
+                headers: {
+                    "AUTH_TOKEN": this.props.AUTH_TOKEN
+                }
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    myOrders = data.my_orders;
+                    myOrders = myOrders.map(orderAr => {
+                        return orderAr[0];
+                    });
+                    console.log(myOrders);
+                    this.props.setOrders(myOrders);
+                    this.setState({
+                        orders: myOrders,
+                        error: false,
+                        refreshing: false,
+                        loading: false
+                    })
+                } else {
+                    this.setState({
+                        error: true,
+                        refreshing: false
+                    });
+                }
+                this.setState({
+                    loading: false
+                });
+            }).catch(err => {
+                this.setState({
+                    loading: false,
+                    error: true
+                })
+            })
         console.log("rednerisdsff..")
         let order=this.state.order
         let delivered=/delivered/i.test(order.status);
