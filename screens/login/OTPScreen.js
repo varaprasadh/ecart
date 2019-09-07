@@ -71,10 +71,26 @@ class MyClass extends Component {
                    showMessage({
                          type:"success",
                          message:"Success",
-                         description:"Account Created Successfully.please login to continue",
+                         description:"Account Created Successfully!",
                          autoHide:true
                    });
-                   this.props.navagation.navigate('Login');
+                //    this.props.navagation.navigate('Login');
+                    let AUTH_TOKEN = data.auth_token;
+                    let role = data.role;
+                    this.props.setAuthToken(AUTH_TOKEN);
+                    AsyncStorage.setItem('AUTH_TOKEN', AUTH_TOKEN);
+                    AsyncStorage.setItem('ROLE', role);
+                    if (/customer/i.test(role)) {
+                        this.props.navigation.navigate('Main');
+                    } else {
+                        showMessage({
+                            type: "warning",
+                            message: "Access Denied",
+                            description: "only customers can access",
+                            autoHide: true
+                        });
+                    }
+
                }else{
                    console.log("something wrong happend");
                    showMessage({

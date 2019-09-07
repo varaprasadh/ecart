@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {showMessage} from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
 import CheckoutStatus from "./CheckoutStatus";
+import { AuthSession } from 'expo';
 
 
 export class CheckSummery extends Component {
@@ -43,7 +44,8 @@ export class CheckSummery extends Component {
      this.props.cartItems.map(item=>{
          items.push({
              product_id:item.id,
-             quantity:item.quantity
+             quantity:item.quantity,
+             price:item.price
          });
      })   
     let obj={
@@ -81,33 +83,94 @@ export class CheckSummery extends Component {
       "payment_mode": "Cash"
   }
   */
+ /*
+ addToCart() {
+     obj = {
+         product_id: this.state.product.id,
+         price: this.state.product.price,
+         quantity: this.state.product.quantity
+     };
+     fetch(`${this.props.baseUrl}/add_item_to_cart`, {
+         method: "POST",
+         body: JSON.stringify(obj),
+         headers: {
+             "content-Type": "application/json",
+             "AUTH_TOKEN": this.props.AUTH_TOKEN
+         }
+     }).then(res => res.json()).then(data => {
+         // console.log("added to cart",data);
+         if (data.success == true) {
+             this.props.changeCartStatus(this.state.product.id, true);
+             this.props.addToCart(this.state.product);
+             this.props.changeCurrentStatus(this.state.product.id, {
+                 isInCart: true
+             });
+         }
+     });
+ }
+
+  */
+ 
+ updatePromises=items.map(item=>{
+      return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
+          method: "POST",
+          body: JSON.stringify(item),
+          headers: {
+              "content-Type": "application/json",
+              "AUTH_TOKEN": this.props.AUTH_TOKEN
+          }
+      });
+ });
+ Promise.all([...updatePromises]).then(successlogs=>{
+
+      fetch(`${this.props.baseUrl}/cart_checkout`, {
+          method: "POST",
+          body: JSON.stringify(obj),
+          headers: {
+              'content-type': "application/json",
+              "AUTH_TOKEN": this.props.AUTH_TOKEN
+          }
+      }).then(res => res.json()).then(data => {
+          console.log(data)
+          if (data.success == true) {
+              this.setState({
+                  loading: false,
+                  checkout_done: true,
+                  triedCheckout: true
+              });
+              this.props.clearCart();
+          } else {
+              this.setState({
+                  triedCheckout: true,
+                  checkout_done: false,
+                  loading: false
+              })
+          }
+      }).catch(err => {
+           this.setState({
+               triedCheckout: true,
+               checkout_done: false,
+               loading: false
+           });
+      })
+ 
+
+ }).catch(errors=>{
+     console.log(errors);
+     this.setState({
+         loading:false
+     });
+     showMessage({
+         type:"danger",
+         message:"Failed",
+         description:"somethig wennt wrong try again!",
+         autoHide:true
+     });
+ })
+
    this.setState({
        loading:true
    })
-   fetch(`${this.props.baseUrl}/cart_checkout`,{
-       method:"POST",
-       body:JSON.stringify(obj),
-       headers:{
-           'content-type':"application/json",
-            "AUTH_TOKEN": this.props.AUTH_TOKEN
-       }
-   }).then(res=>res.json()).then(data=>{
-       console.log(data)
-        if(data.success==true){
-            this.setState({
-                loading:false,
-                checkout_done:true,
-                triedCheckout:true
-            });
-            this.props.clearCart();
-        }else{
-           this.setState({
-               triedCheckout:true,
-               checkout_done:false,
-               loading:false
-           })
-        }
-    }).catch(err=>console.error(err)) 
 
     }
 

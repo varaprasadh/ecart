@@ -78,7 +78,7 @@ const root = createSwitchNavigator({
    Main:rootStack,
    Delivery: DeliveryStack
 },{    
-  initialRouteName: "Main",
+  initialRouteName: "Initialiser",
   headerMode:"none",
 })
  
@@ -88,8 +88,6 @@ baseUrl=GlobalState.Config.base_url;
 AUTH_TOKEN=GlobalState.Config.AUTH_TOKEN;
 
 const RootNavigation = createAppContainer(root);
-
-
 
 export default class App extends Component{
   
