@@ -48,6 +48,8 @@ export class CheckSummery extends Component {
              price:item.price
          });
      })   
+     delivery_cost=total_cart_cost<500?1:0;
+     total_cart_cost+=delivery_cost
     let obj={
         billing_address:{
             billing_address_id:id||null,
@@ -57,7 +59,7 @@ export class CheckSummery extends Component {
             phone_number:mobile,
             area,street,block,lane
         },
-
+        delivery_cost,
         items,
         total_cart_cost,
         payment_mode:this.state.payType
@@ -83,33 +85,7 @@ export class CheckSummery extends Component {
       "payment_mode": "Cash"
   }
   */
- /*
- addToCart() {
-     obj = {
-         product_id: this.state.product.id,
-         price: this.state.product.price,
-         quantity: this.state.product.quantity
-     };
-     fetch(`${this.props.baseUrl}/add_item_to_cart`, {
-         method: "POST",
-         body: JSON.stringify(obj),
-         headers: {
-             "content-Type": "application/json",
-             "AUTH_TOKEN": this.props.AUTH_TOKEN
-         }
-     }).then(res => res.json()).then(data => {
-         // console.log("added to cart",data);
-         if (data.success == true) {
-             this.props.changeCartStatus(this.state.product.id, true);
-             this.props.addToCart(this.state.product);
-             this.props.changeCurrentStatus(this.state.product.id, {
-                 isInCart: true
-             });
-         }
-     });
- }
 
-  */
  
  updatePromises=items.map(item=>{
       return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
