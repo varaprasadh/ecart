@@ -175,6 +175,7 @@ class Explore extends Component {
                             <SearchBar onSearch={this.onSearch.bind(this)}/>
                         </View>
                    </View>     
+                       {this.props.products.length?
                         <ScrollView>
                             <Text style={styles.label}>Latest Products</Text>
                             <Products
@@ -187,7 +188,9 @@ class Explore extends Component {
                                 !this.state.hideLoadMoreButton &&
                                 <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
                             }
-                        </ScrollView>
+                        </ScrollView>:
+                        <EmptyItems message="No products are available!"/>
+                       }
                 </ImageBackground>
                 {/* </View> */}
               </Wrapper>

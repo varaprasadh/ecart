@@ -60,7 +60,9 @@ class OrderHistory extends Component {
                      refreshing: false
                  });
              }
-
+             this.setState({
+                 loading:false
+             });
 
          }).catch(err => {
              this.setState({

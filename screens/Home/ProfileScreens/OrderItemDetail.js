@@ -203,15 +203,13 @@ export class OrderItemsTable extends Component{
                 }
             
                {
-                  
-                   totalPrice< 500 &&
                     <View style={styles.row}>  
                         <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>shipping charge</Text></View>
                         <View style={styles.col}>
                             <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
-                            {totalPrice<500?Number(1).toFixed(3):null} KD
+                            {totalPrice<500?Number(1).toFixed(3):Number(0).toFixed(3)} KD
                             </Text>
                         </View>
                     </View> 

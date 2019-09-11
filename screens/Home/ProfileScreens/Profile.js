@@ -62,6 +62,10 @@ class Profile extends Component {
                 loading: false
             })
         }
+    }).catch(err=>{
+        this.setState({
+            loading:false
+        })
     })
 }
     render() {

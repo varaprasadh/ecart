@@ -65,6 +65,7 @@ class MyClass extends Component {
                     description:"something went wrong,try again",
                     autoHide:true
                 });
+                this.props.navigation.goBack();
             }
             this.setState({
                 loading:false
@@ -81,7 +82,6 @@ class MyClass extends Component {
        
     }
  
-
     render() { 
         return (
               this.state.loading?<Loader/>:

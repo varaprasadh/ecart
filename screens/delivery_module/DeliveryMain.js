@@ -50,7 +50,7 @@ loadData(){
               myOrders = myOrders.map(orderAr => {
                   return orderAr[0];
               });
-            //   console.log(myOrders);
+
               this.props.setOrders(myOrders);
               this.setState({
                   orders:myOrders,

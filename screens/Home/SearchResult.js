@@ -14,7 +14,8 @@ class SearchResult extends Component {
     super(props);
     this.state = {
         query:props.navigation.getParam('query'),
-        loading:false
+        loading:false,
+        products:[]
     };
   }
   componentWillMount(){
@@ -50,19 +51,22 @@ class SearchResult extends Component {
             this.setState({
               products:products,
             });
-
        }
        this.setState({
          loading:false
-       })
-    }).catch(err=>console.log(err));
-
+       });
+    }).catch(err=>{
+      this.setState({
+        loading:false 
+      });
+    }); 
   }
 
   onProductSelect(product){
             this.props.navigation.push('ExploreProduct',{id:product.id});
   }
   render() {
+    console.log("load finieshed,",this.state);
     return ( 
       this.state.loading?<Loader/>:
       <Wrapper>

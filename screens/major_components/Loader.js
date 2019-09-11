@@ -13,7 +13,7 @@ class Loader extends Component {
       <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
       <View style={styles.container}>
         <View style={{alignItems:"center"}}>
-           <Image source={require("../../assets/icons/icon144.png")}/> 
+           <Image source={require("../../assets/icons/icon192.png")}/> 
            <Text style={styles.text}>Loading...</Text>
         </View>
       </View>

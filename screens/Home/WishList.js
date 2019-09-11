@@ -26,10 +26,11 @@ class WishList extends Component {
                 let products=data.products;
                 this.props.toggleLoading();
                 this.props.loadWishlist(products);
-            }else{
-                //todo to refresh
-
             }
+            this.setState({
+                loading:false 
+            });
+             this.props.toggleLoading();
         }).catch(err=>console.error(err));
     }
    openProductPage(id){
