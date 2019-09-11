@@ -84,7 +84,6 @@ addToCart(){
       "AUTH_TOKEN": this.props.AUTH_TOKEN
    }
   }).then(res=>res.json()).then(data=>{
-    // console.log("added to cart",data);
     if(data.success==true){
       this.props.changeCartStatus(this.state.product.id, true);
       this.props.addToCart(this.state.product);
@@ -115,7 +114,6 @@ addToWishlist(){
     },
     body:JSON.stringify(obj)
   }).then(res=>res.json()).then(data=>{
-    // console.log("adding to wishlist",data)
     if(data.success){
         this.props.changeWishlistStatus(this.state.product.id, true);
         this.props.addToWishlist(this.state.product);
@@ -314,9 +312,7 @@ const styles=StyleSheet.create({
     width:"100%",
     flex:1,
     alignSelf:"stretch",
-    // backgroundColor:"red",
-    // borderColor: "#27ae60",
-    // borderWidth: 2,
+
   },
   action_cart:{
     backgroundColor:"#fff",

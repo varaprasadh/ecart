@@ -65,8 +65,7 @@ class MyClass extends Component {
                }
            }).then(res => res.json()).then(data => {
                if (data.success == true) {
-                   //set config
-                   //store auth_key in local
+                  
                   console.log("registration done");
                    showMessage({
                          type:"success",
@@ -74,7 +73,6 @@ class MyClass extends Component {
                          description:"Account Created Successfully!",
                          autoHide:true
                    });
-                //    this.props.navagation.navigate('Login');
                     let AUTH_TOKEN = data.auth_token;
                     let role = data.role;
                     this.props.setAuthToken(AUTH_TOKEN);
@@ -92,7 +90,6 @@ class MyClass extends Component {
                     }
 
                }else{
-                   console.log("something wrong happend");
                    showMessage({
                        type:"danger",
                        message:"Failed",
@@ -106,7 +103,6 @@ class MyClass extends Component {
  
               
            }).catch(err =>{
-               console.log("catcch")
                thi.setState({
                    loading:false
                })
@@ -122,8 +118,7 @@ class MyClass extends Component {
               body:JSON.stringify(obj)
           }).then(res=>res.json()).then(data=>{
               if(data.success==true){
-                 // save auth token
-                 //navigate to main 
+                
                      let AUTH_TOKEN = data.auth_token;
                      let role=data.role;
                      this.props.setAuthToken(AUTH_TOKEN);
@@ -151,16 +146,6 @@ class MyClass extends Component {
               this.setState({
                   loading:false
               });
-              /*
-                   {
-                       message: "Verified successfully",
-                       role: user.role,
-                       success: true,
-                       profile: user,
-                       auth_token: generate_auth_token(user)
-                   }
-                   
-                   */
           })
       }
       

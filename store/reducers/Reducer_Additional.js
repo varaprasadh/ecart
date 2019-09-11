@@ -1,4 +1,3 @@
-//change default shipping address
 
 const global={
     currentProduct:null,

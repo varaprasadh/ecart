@@ -1,12 +1,7 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet ,Image} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-
-
-//back arrow is controllable
-//title can be set
 
 class Header extends Component {
     constructor(props){
@@ -31,7 +26,6 @@ class Header extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
@@ -46,5 +40,4 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
 export default Header;

@@ -29,7 +29,6 @@ class Cart extends Component {
            if(data.success==true){ 
                //add that to cart state,
                data.products.forEach(product => {
-                   console.log("debug each cart product")
                    parsedProduct={
                        ...product,...{
                            id: product.product_id,
@@ -39,7 +38,6 @@ class Cart extends Component {
                            img: product.image_url?{uri: product.image_url}:require("./product_images/noimage.jpg")
                        }
                    };
-                console.log(parsedProduct);
                 this.props.addToCart(parsedProduct);
                })
            }
@@ -58,7 +56,6 @@ class Cart extends Component {
         },
         body:JSON.stringify(obj)
     }).then(res=>res.json()).then(data=>{
-        console.log(data);
         if(data.success==true){
             this.props.removeFromCart(id);
             this.props.changeCurrent(id,{isInCart:false})
@@ -70,7 +67,6 @@ class Cart extends Component {
    }
     render() {
         cartProducts=[];
-        console.log("rerender of cart")
         totalPrice=0;
         this.props.cartItems.forEach(item=>{
             totalPrice+=item.price*(item.quantity?item.quantity:1)

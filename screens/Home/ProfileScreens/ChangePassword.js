@@ -46,7 +46,6 @@ class ChangePassword extends Component {
        },
        body:JSON.stringify(obj)
      }).then(res=>res.json()).then(data=>{
-       console.log(data)
         if(data.success){
           showMessage({
             message:"Success!",

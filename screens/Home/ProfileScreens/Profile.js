@@ -1,15 +1,11 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,TouchableWithoutFeedback,AsyncStorage} from 'react-native';
-import Header from "../../major_components/Header";
 import Wrapper from '../Wrapper';
 
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
-// write a function to logout
-
 
 class Profile extends Component {
    constructor(props){
@@ -124,18 +120,16 @@ class Profile extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
  
      profileDataContainer:{
-        // flexDirection:"row",
         alignItems:"center",
         borderBottomWidth:2,
         borderBottomColor:"#7f8c8d",
         padding:10
      },
      actions:{
-        // backgroundColor: "#fff"
+      
      },
     pro_Icon:{
         width:150,
@@ -148,7 +142,6 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderColor: "#27ae60",
         marginTop:5
-        // backgroundColor:"#fff"
     },
     jrow:{
         flexDirection:"row",

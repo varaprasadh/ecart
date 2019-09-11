@@ -1,4 +1,3 @@
-//import liraries
 import React, { Component } from 'react';
 import {
     View,
@@ -163,7 +162,6 @@ class Explore extends Component {
                 <RetryButton onRetry={this.handler.bind(this)}/>
             </EmptyItems>:
              <Wrapper noBackground>
-                {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
                    <View style={{flexDirection:"row",alignItems:"center",paddingLeft:10}}>
                         <TouchableWithoutFeedback
@@ -192,7 +190,6 @@ class Explore extends Component {
                         <EmptyItems message="No products are available!"/>
                        }
                 </ImageBackground>
-                {/* </View> */}
               </Wrapper>
         ); 
     }

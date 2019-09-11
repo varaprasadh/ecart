@@ -1,4 +1,3 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,FlatList,ScrollView } from 'react-native';
 import Header from "../../major_components/Header";
@@ -30,8 +29,6 @@ class OrderHistory extends Component {
     }
     componentWillMount(){
     
-     console.log(" will mount callling");
-     
      this.loadData();
      
     }
@@ -45,14 +42,12 @@ class OrderHistory extends Component {
                  "AUTH_TOKEN": this.props.AUTH_TOKEN
              }
          }).then(res => res.json()).then(data => {
-             console.log(data);
              if (data.success == true) {
                  myOrders = data.my_orders;
                  myOrders = myOrders.map((orderArray, index) => {
                      console.log("orderindexz", index);
                      return orderArray[0];
                  });
-                 console.log("debug", myOrders)
                  this.props.setOrders(myOrders);
                  this.setState({
                      loading: false,
@@ -92,9 +87,7 @@ class OrderHistory extends Component {
        });
 
     }
-   componentDidMount(){
-       console.log("mounting...");
-   }
+ 
    retry(){
           this.loadData();
    }
