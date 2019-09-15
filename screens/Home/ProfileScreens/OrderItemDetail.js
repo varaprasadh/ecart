@@ -33,7 +33,7 @@ cancelOrder(){
        method:"POST",
        headers:{
            "content-Type":"application/json",
-           "AUTH_TOKEN":this.props.AUTH_TOKEN
+           "AUTH-TOKEN":this.props.AUTH_TOKEN
        },
        body:JSON.stringify(obj)
    }).then(res=>res.json()).then(data=>{ 
@@ -209,7 +209,7 @@ export class OrderItemsTable extends Component{
                         <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>shipping charge</Text></View>
                         <View style={styles.col}>
                             <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
-                            {totalPrice<500?Number(1).toFixed(3):Number(0).toFixed(3)} KD
+                            {totalPrice<500?Number(1).toFixed(3)+"KD":"Free"} 
                             </Text>
                         </View>
                     </View> 
@@ -221,7 +221,7 @@ export class OrderItemsTable extends Component{
                     <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>Total</Text></View>
                     <View style={styles.col}>
                         <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
-                            {totalPrice>500?totalPrice.toFixed(3):Number(totalPrice+1).toFixed(3)} KD
+                            {totalPrice>=500?totalPrice.toFixed(3):Number(totalPrice+1).toFixed(3)} KD
                         </Text>
                     </View>
                 </View> 

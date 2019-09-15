@@ -85,35 +85,37 @@ class SignUpScreen extends Component {
         this.setState({
             loading:true
         });
-        fetch(`${this.props.baseUrl}/register`,{
+        
+        fetch(`http://18.219.157.9/register`, {
             method:"POST",
             body:JSON.stringify(obj),
             headers:{
-                "content-type":"application/json"
-            }
+                "content-type":"application/json" 
+            }  
         }).then(res=>res.json()).then(data=>{
-            console.log(data);
+            console.log("debug dATA",data);
             if(data.success==true){
                 this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"signup"});
             }else{
                 showMessage({
                     type:"danger",
                     message:"OOPS",
-                    description:"something went wrong,try again!",
+                    description:data.message.capitalize(),
                     autoHide:true
                 });
-            }
+            } 
             this.setState({
                 loading:false
-            })
+            });
         }).catch(err=>{
+            console.log("debug",err);
             showMessage({
                 type:"danger",
                 message:"Error",
-                description:"something went wrong,try again later",
+                description:"something went wrong,try again",
                 autoHide:true
             });
-            this.props.navigation.goBack();         
+            // this.props.navigation.goBack();         
         });
    }
 
@@ -124,7 +126,7 @@ class SignUpScreen extends Component {
       <Wrapper>
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
           <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
-            <Header backbutton title="Signup"/>
+            <Header backbutton title="Signup" backHandler={this.props.navigation.goBack}/>
                 <View style={styles.container}>
                   <View style={{flex:1}}>
                     <View className="wrapper" style={styles.wrapper}>
@@ -141,6 +143,7 @@ class SignUpScreen extends Component {
                                         returnKeyType="next"
                                         placeholder="Enter First Name"
                                         placeholderTextColor = "#bdc3c7"
+                                        value={this.state.firstname}
                                         onSubmitEditing={()=>this.lastname._root.focus()}
                                         onChangeText={text=>this.setState({firstname:text})}
                                         /> 
@@ -153,6 +156,7 @@ class SignUpScreen extends Component {
                                         returnKeyType="next"
                                         placeholder="Enter Last Name"
                                         placeholderTextColor = "#bdc3c7"
+                                        value={this.state.lastname}
                                         onSubmitEditing={()=> this.mobile._root.focus()}
                                         onChangeText={text=>this.setState({lastname:text})}
                                         />
@@ -177,6 +181,7 @@ class SignUpScreen extends Component {
                                             maxLength={8}
                                             placeholder="Enter Mobile Number"
                                             placeholderTextColor = "#bdc3c7"
+                                            value={this.state.mobile}
                                             onSubmitEditing={()=>this.email._root.focus()} 
                                             onChangeText={text=>this.setState({mobile:text})}
                                             />
@@ -190,6 +195,7 @@ class SignUpScreen extends Component {
                                         textContentType="emailAddress" 
                                         keyboardType="email-address"
                                         placeholder="Enter Email"
+                                        value={this.state.email}
                                         style={[styles.inputline,styles.input]}
                                         onSubmitEditing={()=>this.area._root.focus()}
                                         onChangeText={text=> this.setState({email:text})}
@@ -205,6 +211,7 @@ class SignUpScreen extends Component {
                                         placeholderTextColor = "#bdc3c7"
                                         placeholder="Enter area"
                                         onSubmitEditing={()=>this.block._root.focus()}
+                                        value={this.state.area}
                                         onChangeText={text=>this.setState({area:text})}
                                         />
                                         <Input ref={block=>this.block=block} 
@@ -213,6 +220,7 @@ class SignUpScreen extends Component {
                                         placeholderTextColor = "#bdc3c7"
                                         placeholder="Enter block"
                                         onSubmitEditing={()=>this.street._root.focus()}
+                                        value={this.state.block}
                                         onChangeText={text=>this.setState({block:text})}
                                         />
                                         <Input ref={street=>this.street=street} 
@@ -220,6 +228,7 @@ class SignUpScreen extends Component {
                                         returnKeyType="next"
                                         placeholderTextColor = "#bdc3c7"
                                         placeholder="Enter street"
+                                        value={this.state.street}
                                         onSubmitEditing={()=> this.lane._root.focus()}
                                         onChangeText={text=>this.setState({street:text})}
                                         />
@@ -228,6 +237,7 @@ class SignUpScreen extends Component {
                                         returnKeyType="next"
                                         placeholderTextColor = "#bdc3c7"
                                         placeholder="Enter lane"
+                                        value={this.state.lane}
                                         onSubmitEditing={()=>this.password._root.focus()}
                                         onChangeText={text=>this.setState({lane:text})}
                                         />
@@ -241,6 +251,7 @@ class SignUpScreen extends Component {
                                          placeholder="Enter password"
                                          placeholderTextColor = "#bdc3c7"
                                          secureTextEntry={true}
+                                         value={this.state.password}
                                          onSubmitEditing={()=>this.c_password._root.focus()}
                                          onChangeText={text=> this.setState({password:text})}
                                          />
@@ -255,6 +266,7 @@ class SignUpScreen extends Component {
                                          placeholderTextColor = "#bdc3c7"
                                          onChangeText={text=>this.setState({password_confirmation:text})}
                                          secureTextEntry={true}
+                                         value={this.state.password_confirmation}
                                          onChangeText={text=> {
                                            this.setState({ password_confirmation :text});
                                          }}/>  

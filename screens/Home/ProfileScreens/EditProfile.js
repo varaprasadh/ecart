@@ -38,17 +38,18 @@ class EditProfile extends Component {
     this.setState({
       loading:true
     });
-    fetch(`${this.props.baseUrl}/profile_edit  `,{
+   
+    fetch(`http://18.219.157.9/profile_edit  `, {
       method:"POST",
       headers:{
         "content-Type":"application/json",
-        "AUTH_TOKEN":this.props.AUTH_TOKEN
+        "AUTH-TOKEN":this.props.AUTH_TOKEN
       },
       body:JSON.stringify(obj)
     }).then(res=>res.json()).then(data=>{
       if(data.success){
        showMessage({
-         type:"success",
+         type:"success", 
          message: "success",
          description: "profile updated successfully!",
          autoHide:true 

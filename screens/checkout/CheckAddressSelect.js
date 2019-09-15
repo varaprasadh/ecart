@@ -42,7 +42,7 @@ class CheckAddressSelect extends Component {
             method: "GET",
             headers: {
                 "content-Type": "application/json",
-                "AUTH_TOKEN": this.props.AUTH_TOKEN
+                "AUTH-TOKEN": this.props.AUTH_TOKEN
             }
         }).then(res => res.json()).then(data => {
             if (data.success == true) {
@@ -221,7 +221,9 @@ const styles = StyleSheet.create({
    },
    key:{
     paddingHorizontal:20,
-    flex:1   
+    flex:1,
+    color: "#7f8c8d",
+    textTransform:"capitalize"
 },
    value:{
      flex:3

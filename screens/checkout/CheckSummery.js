@@ -64,28 +64,6 @@ export class CheckSummery extends Component {
         total_cart_cost,
         payment_mode:this.state.payType
     }
-  /*
-  {
-      "billing_address": {
-          "billing_address_id": 25,
-          "first_name": "zdgse",
-          "last_name": "sgsgsg",
-          "email": "sgsg.sgs@sgs.com",
-          "phone_number": "8106492369",
-          "area": "fsfsfs",
-          "street": "fsfsfs",
-          "block": "gsgsfss",
-          "lane": "sgsggs"
-      },
-      "items": [{
-          "product_id": 2,
-          "quantity": 2
-      }],
-      "total_cart_cost": 50,
-      "payment_mode": "Cash"
-  }
-  */
-
  
  updatePromises=items.map(item=>{
       return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
@@ -93,10 +71,10 @@ export class CheckSummery extends Component {
           body: JSON.stringify(item),
           headers: {
               "content-Type": "application/json",
-              "AUTH_TOKEN": this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
       });
- });
+ }); 
  Promise.all([...updatePromises]).then(successlogs=>{
 
       fetch(`${this.props.baseUrl}/cart_checkout`, {
@@ -104,7 +82,7 @@ export class CheckSummery extends Component {
           body: JSON.stringify(obj),
           headers: {
               'content-type': "application/json",
-              "AUTH_TOKEN": this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
       }).then(res => res.json()).then(data => {
           console.log(data)

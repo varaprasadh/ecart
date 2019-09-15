@@ -16,7 +16,7 @@ class RetryButton extends Component {
         <Text style={styles.retry}>Retry</Text>
     </TouchableOpacity> 
     );
-  }
+  } 
 }
 const styles=StyleSheet.create({
     retry: {

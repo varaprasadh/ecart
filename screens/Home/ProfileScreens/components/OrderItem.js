@@ -34,7 +34,7 @@ export default class OrderItem extends Component{
                             <Text style={styles.label}>Amount:</Text>  
                             <Text style={styles.price}>{Number(this.state.orderinfo.total_price).toFixed(3)} KD</Text>  
                         </View>
-                    </View>
+                    </View> 
                        <View style={{alignItems:"center",flex:3}}>
                             {delivered?
                             <Ionicons name="ios-done-all" color="#27ae60" size={30}/>

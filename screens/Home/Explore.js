@@ -47,7 +47,7 @@ class Explore extends Component {
     fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
           method:"GET",
           headers:{ 
-              AUTH_TOKEN: this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
@@ -74,7 +74,7 @@ class Explore extends Component {
       fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
           method:"GET",
           headers:{ 
-              AUTH_TOKEN: this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
@@ -123,7 +123,7 @@ class Explore extends Component {
         fetch(`${this.props.baseUrl}/category_with_sub_category`, {
             method: "GET",
             headers: {
-                "AUTH_TOKEN": this.props.AUTH_TOKEN
+                "AUTH-TOKEN": this.props.AUTH_TOKEN
             }
         }).then(res => res.json()).then(data => {
             if (data.success == true) {

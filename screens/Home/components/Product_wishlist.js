@@ -3,17 +3,46 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 
-
+import {connect} from 'react-redux';
 
 class Product extends Component {
    constructor(props){
        super(props);
+       this.state={
+           product:props.productdata
+       }
        this.remove=this.remove.bind(this);
+       
    }
  
    remove(){
        this.props.onRemove(this.props.productdata.id);
    }
+
+   addToCart() {
+       obj = {
+           product_id: this.state.product.id,
+           price: this.state.product.price,
+           quantity:1
+       };
+       fetch(`${this.props.baseUrl}/add_item_to_cart`, {
+           method: "POST",
+           body: JSON.stringify(obj),
+           headers: {
+               "content-Type": "application/json",
+               "AUTH-TOKEN": this.props.AUTH_TOKEN
+           }
+       }).then(res => res.json()).then(data => {
+           if (data.success == true) {
+               this.props.changeCartStatus(this.state.product.id, true);
+               this.props.addToCart(this.state.product);
+               this.props.changeCurrentStatus(this.state.product.id, {
+                   isInCart: true
+               });
+           }
+       });
+   }
+
     render() {
         quantity=this.props.productdata.quantity||0;
         instock=quantity>0
@@ -38,11 +67,13 @@ class Product extends Component {
                         </Text>
                     </View>
                     <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
-                       <Text 
-                            style={[styles.remove_btn_stock,
-                                (()=>instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
-                            {instock?" IN STOCK":"OUT OF STOCK"}
-                        </Text>
+                       <TouchableOpacity disabled={!instock} onPress={this.addToCart.bind(this)}> 
+                           <Text 
+                                style={[styles.remove_btn_stock,
+                                    (()=>instock?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
+                                {instock?"ADD TO CART":"OUT OF STOCK"}
+                            </Text>
+                       </TouchableOpacity>
                         <TouchableOpacity onPress={()=>this.remove()}>
                             <Text style={styles.remove_btn}>Remove</Text>
                         </TouchableOpacity>
@@ -96,5 +127,20 @@ const styles = StyleSheet.create({
         marginRight:5
     }
 });
+mapState=state=>{
+    return {
+     baseUrl: state.Config.base_url,
+     AUTH_TOKEN: state.Config.AUTH_TOKEN
+    }
+}
+mapDispatch=dispatch=>{
+    return {
+        addToCart:(product)=>{dispatch({type:"ADD_TO_CART",product})},
+        changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
+        changeCurrentStatus:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})},
 
-export default Product;
+    }
+}
+
+
+export default connect(mapState,mapDispatch)(Product);

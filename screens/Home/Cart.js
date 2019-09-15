@@ -22,7 +22,7 @@ class Cart extends Component {
            method:"GET",
            headers:{
                "content-Type":"application/json",
-               "AUTH_TOKEN":this.props.AUTH_TOKEN
+               "AUTH-TOKEN":this.props.AUTH_TOKEN
            }  
        }).then(res=>res.json()).then(data=>{
            this.props.toggleLoading(); 
@@ -52,7 +52,7 @@ class Cart extends Component {
         method:"POST",
         headers:{
             "content-Type":"application/json",
-            "AUTH_TOKEN":this.props.AUTH_TOKEN
+            "AUTH-TOKEN":this.props.AUTH_TOKEN
         },
         body:JSON.stringify(obj)
     }).then(res=>res.json()).then(data=>{

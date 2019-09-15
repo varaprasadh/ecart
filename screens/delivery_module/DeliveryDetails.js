@@ -72,7 +72,7 @@ export class DeliveryDetails extends Component {
             fetch(`${this.props.baseUrl}/deliver_order`, {
                 method: "POST",
                 headers: {
-                    "AUTH_TOKEN": this.props.AUTH_TOKEN,
+                    "AUTH-TOKEN": this.props.AUTH_TOKEN,
                     "content-Type":"application/json"
                  }, 
                 body: JSON.stringify(obj)

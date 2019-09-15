@@ -48,7 +48,7 @@ class MyClass extends Component {
             loading:true
         });
         
-        fetch(`${this.props.baseUrl}/generate_otp`,{
+        fetch(`http://18.219.157.9/generate_otp`, {
             method:"POST",
             headers:{
                 "content-Type":"application/json"
@@ -61,15 +61,15 @@ class MyClass extends Component {
             else{
                 showMessage({
                     type:"warning",
-                    message:"Error",
-                    description:"something went wrong,try again",
+                    message:"Failed",
+                    description:data.message,
                     autoHide:true
                 });
                 this.props.navigation.goBack();
-            }
+            } 
             this.setState({
-                loading:false
-            })
+                loading:false 
+            }) 
         }).catch(err=>{
             showMessage({
                 type:"danger",

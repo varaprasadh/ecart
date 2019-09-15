@@ -7,20 +7,27 @@ import {Ionicons} from "@expo/vector-icons";
 import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
 
+import axios from 'axios';
+
 class Profile extends Component {
    constructor(props){
        super(props);
        this.state={
 
        }
-   } 
-   componentWillMount() {
-       fetch(`${this.props.baseUrl}/profile`, {
-           method: "GET",
-           headers: {
-               "AUTH_TOKEN": this.props.AUTH_TOKEN
-           }
-       }).then(res => res.json()).then(data => {
+   }  
+   componentWillMount() { 
+       console.log("here....",`${this.props.baseUrl}/profile`);
+       console.log("http://18.219.157.9/profile");
+
+       fetch(`http://18.219.157.9/profile`, {
+              "method": "GET",
+              "headers": {
+                  "AUTH-TOKEN": this.props.AUTHTOKEN,
+                  "cache-control": "no-cache",
+              }
+          }).then(res=>res.json()).then(data => {
+           console.log(data);
            if (data.success == true) {
                profile = data.profile;
                let obj = {
@@ -31,38 +38,51 @@ class Profile extends Component {
                    address: profile.user_address
                }
                this.props.setProfile(obj);
-           }
+            }
+
        }).catch(err => console.log(err));
    }
      
    logout(){
-    this.setState({
-        loading:true
-    });
-    fetch(`${this.props.baseUrl}/logout`,{
-        method:"GET",
-        headers:{
-            "AUTH_TOKEN":this.props.AUTH_TOKEN
-        }
-    }).then(res=>res.json()).then(data=>{
-        if(data.success==true){
-            AsyncStorage.clear().then(()=>{
-                this.props.clearAuthToken();
-                this.props.navigation.navigate('LoginStack');
-            }).catch(err=>{
-                console.log(err);
-            });
-        }  
-        else{
-            this.setState({
-                loading: false
-            })
-        }
-    }).catch(err=>{
-        this.setState({
-            loading:false
-        })
-    })
+      this.setState({
+          loading:true 
+      });
+      AsyncStorage.clear().then(() => {
+          this.props.clearAuthToken();
+          console.log("not wokisdfsfs");
+         setTimeout(()=>{
+              this.props.navigation.navigate('LoginStack');
+         },2000);
+      }).catch(err => {
+          console.log(err);
+      }); 
+    // this.setState({ 
+    //     loading:true
+    // });
+    // fetch(`${this.props.baseUrl}/logout`,{
+    //     method:"GET",
+    //     headers:{
+    //         "AUTH-TOKEN":this.props.AUTH_TOKEN
+    //     }
+    // }).then(res=>{
+    //     console.log("debug",res);
+    //     console.log("deee>>>>bug",JSON.stringify(res, null, 4));
+    //     return res.json()}).then(data=>{
+    //     console.log(data);
+    //     if(data.success==true){
+          
+    //     }  
+    //     else{
+    //         this.setState({
+    //             loading: false
+    //         })
+    //     }
+    // }).catch(err=>{
+    //     console.log("logout",err);
+    //     this.setState({
+    //         loading:false
+    //     })
+    // })
 }
     render() {
         return (
@@ -79,7 +99,7 @@ class Profile extends Component {
                             </View>
                             <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-call" size={25} />
-                               <Text style={styles.mobile}>{this.props.mobile}</Text>
+                               <Text style={styles.mobile}>{"+965 "+this.props.mobile}</Text>
                             </View>
                             <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-mail" size={25} />
@@ -194,7 +214,7 @@ mapState=state=>{
         mobile:profile.mobile,
         email:profile.email,
         baseUrl: state.Config.base_url,
-        AUTH_TOKEN: state.Config.AUTH_TOKEN
+        AUTHTOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{

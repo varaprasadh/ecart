@@ -42,7 +42,7 @@ loadData(){
       fetch(`${this.props.baseUrl}/orders`, {
           method: "GET",
           headers: {
-              "AUTH_TOKEN": this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
       }).then(res => res.json()).then(data => {
           if (data.success) {
@@ -79,7 +79,7 @@ loadData(){
         fetch(`${this.props.baseUrl}/logout`,{
             method:"GET",
             headers:{
-                "AUTH_TOKEN":this.props.AUTH_TOKEN
+                "AUTH-TOKEN":this.props.AUTH_TOKEN
             }
         }).then(res=>res.json()).then(data=>{
             if(data.success==true){

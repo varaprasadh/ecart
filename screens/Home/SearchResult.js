@@ -25,7 +25,7 @@ class SearchResult extends Component {
     fetch(`${this.props.baseUrl}/products?q=${this.state.query}`, {
       method: "GET",
       headers: {
-        "AUTH_TOKEN": this.props.AUTH_TOKEN,
+        "AUTH-TOKEN": this.props.AUTH_TOKEN,
         "Content-Type":"application/json"
       }
     }).then(res => res.json()).then(data => {
