@@ -55,6 +55,15 @@ export default function (state =wishlist, action) {
       loading: false
     }
     return newState;
+    case "CHANGE_CART_STATUS_WISHLIST":
+      items=[...state.items];
+      items=items.map(item=>{
+        if(item.id==action.id){
+          item={...item,...action.obj}
+        }
+        return item;
+      })   
+       return {...state,items};
     default:
       return state;
   }

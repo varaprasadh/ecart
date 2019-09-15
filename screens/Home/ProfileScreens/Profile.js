@@ -52,37 +52,11 @@ class Profile extends Component {
           console.log("not wokisdfsfs");
          setTimeout(()=>{
               this.props.navigation.navigate('LoginStack');
-         },2000);
+         },1500);
       }).catch(err => {
           console.log(err);
       }); 
-    // this.setState({ 
-    //     loading:true
-    // });
-    // fetch(`${this.props.baseUrl}/logout`,{
-    //     method:"GET",
-    //     headers:{
-    //         "AUTH-TOKEN":this.props.AUTH_TOKEN
-    //     }
-    // }).then(res=>{
-    //     console.log("debug",res);
-    //     console.log("deee>>>>bug",JSON.stringify(res, null, 4));
-    //     return res.json()}).then(data=>{
-    //     console.log(data);
-    //     if(data.success==true){
-          
-    //     }  
-    //     else{
-    //         this.setState({
-    //             loading: false
-    //         })
-    //     }
-    // }).catch(err=>{
-    //     console.log("logout",err);
-    //     this.setState({
-    //         loading:false
-    //     })
-    // })
+  
 }
     render() {
         return (
@@ -134,12 +108,18 @@ class Profile extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                         </View>
+                        <View style={{alignItems:"center",flex:1,justifyContent:"flex-end",padding:10}}>
+                            <Image  source={require("./images/icon_cropped.png")}/>
+                            <View>
+                                <Text style={{color:"#fff",fontWeight:"bold"}}>Call Us: +965 6682 5185</Text>
+                            </View>
+                        </View>
                     </View>
             </Wrapper>   
         );
     }
 }
-
+ 
 const styles = StyleSheet.create({
  
      profileDataContainer:{
@@ -206,7 +186,6 @@ const styles = StyleSheet.create({
 });
 
 mapState=state=>{
-    console.log(state);
     let {Addition}=state;
     let {profile}=Addition; 
     return {
@@ -222,6 +201,6 @@ mapDispatch=dispatch=>{
          setProfile:(obj)=>{dispatch({type: "SET_PROFILE",profile: obj})},
          clearAuthToken:()=>{dispatch({type:"CLEAR_AUTH_TOKEN"})}
     }
-}
+} 
 
 export default connect(mapState,mapDispatch)(Profile);

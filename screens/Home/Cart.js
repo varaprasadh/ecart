@@ -59,6 +59,7 @@ class Cart extends Component {
         if(data.success==true){
             this.props.removeFromCart(id);
             this.props.changeCurrent(id,{isInCart:false})
+            this.props.changeCartStatus_wishlist(id,{isInCart:false});
         }
     }).catch(err=>console.log(err));
  }
@@ -158,7 +159,10 @@ mapDispatch=dispatch=>{
         toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
         changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
         changeCartStatus_Result:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_CART_STATUS",id,value})},
-        changeCurrent:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
+        changeCurrent:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})},
+        changeCartStatus_wishlist:(id,obj)=>{
+            dispatch({type:"CHANGE_CART_STATUS_WISHLIST",id,obj});
+        }
     }
 }
 export default connect(mapStateToProps,mapDispatch)(Cart);
