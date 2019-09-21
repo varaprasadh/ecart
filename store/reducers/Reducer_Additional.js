@@ -1,12 +1,11 @@
-//change default shipping address
 
 const global={
     currentProduct:null,
     profile:{
-        firstName:"",
+        firstName:"loading...",
         lastName:"",
-        mobile:"",
-        email:"",
+        mobile:"loading...",
+        email:"loading...",
         address:{
             area:"",
             block:"",

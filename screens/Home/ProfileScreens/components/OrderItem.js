@@ -12,7 +12,7 @@ export default class OrderItem extends Component{
         }
     }
     render(){
-           let order = this.state.orderobj.order;  
+           let order = this.props.data.order;  
            let delivered = /delivered/i.test(order.status);
            let pending = /pending/i.test(order.status);
            let cancelled = /cancelled/i.test(order.status)
@@ -34,7 +34,7 @@ export default class OrderItem extends Component{
                             <Text style={styles.label}>Amount:</Text>  
                             <Text style={styles.price}>{Number(this.state.orderinfo.total_price).toFixed(3)} KD</Text>  
                         </View>
-                    </View>
+                    </View> 
                        <View style={{alignItems:"center",flex:3}}>
                             {delivered?
                             <Ionicons name="ios-done-all" color="#27ae60" size={30}/>

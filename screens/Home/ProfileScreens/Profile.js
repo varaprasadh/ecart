@@ -1,15 +1,13 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,TouchableWithoutFeedback,AsyncStorage} from 'react-native';
-import Header from "../../major_components/Header";
 import Wrapper from '../Wrapper';
 
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
-// write a function to logout
 
+import axios from 'axios';
 
 class Profile extends Component {
    constructor(props){
@@ -17,14 +15,19 @@ class Profile extends Component {
        this.state={
 
        }
-   } 
-   componentWillMount() {
-       fetch(`${this.props.baseUrl}/profile`, {
-           method: "GET",
-           headers: {
-               "AUTH_TOKEN": this.props.AUTH_TOKEN
-           }
-       }).then(res => res.json()).then(data => {
+   }  
+   componentWillMount() { 
+       console.log("here....",`${this.props.baseUrl}/profile`);
+       console.log("http://18.219.157.9/profile");
+
+       fetch(`http://18.219.157.9/profile`, {
+              "method": "GET",
+              "headers": {
+                  "AUTH-TOKEN": this.props.AUTHTOKEN,
+                  "cache-control": "no-cache",
+              }
+          }).then(res=>res.json()).then(data => {
+           console.log(data);
            if (data.success == true) {
                profile = data.profile;
                let obj = {
@@ -35,34 +38,24 @@ class Profile extends Component {
                    address: profile.user_address
                }
                this.props.setProfile(obj);
-           }
+            }
+
        }).catch(err => console.log(err));
    }
      
    logout(){
-    this.setState({
-        loading:true
-    });
-    fetch(`${this.props.baseUrl}/logout`,{
-        method:"GET",
-        headers:{
-            "AUTH_TOKEN":this.props.AUTH_TOKEN
-        }
-    }).then(res=>res.json()).then(data=>{
-        if(data.success==true){
-            AsyncStorage.clear().then(()=>{
-                this.props.clearAuthToken();
-                this.props.navigation.navigate('LoginStack');
-            }).catch(err=>{
-                console.log(err);
-            });
-        }  
-        else{
-            this.setState({
-                loading: false
-            })
-        }
-    })
+      this.setState({
+          loading:true 
+      });
+      AsyncStorage.clear().then(() => {
+          this.props.clearAuthToken();
+         setTimeout(()=>{
+              this.props.navigation.navigate('LoginStack');
+         },1500);
+      }).catch(err => {
+          console.log(err);
+      }); 
+  
 }
     render() {
         return (
@@ -79,7 +72,7 @@ class Profile extends Component {
                             </View>
                             <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-call" size={25} />
-                               <Text style={styles.mobile}>{this.props.mobile}</Text>
+                               <Text style={styles.mobile}>{"+965 "+this.props.mobile}</Text>
                             </View>
                             <View style={[styles.jrow]}>
                                <Ionicons color="#ecf0f1" name="ios-mail" size={25} />
@@ -114,24 +107,28 @@ class Profile extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                         </View>
+                        <View style={{alignItems:"center",flex:1,justifyContent:"flex-end",padding:10}}>
+                            <Image  source={require("./images/icon_cropped.png")}/>
+                            <View>
+                                <Text style={{color:"#fff",fontWeight:"bold"}}>Call Us: +965 6682 5185</Text>
+                            </View>
+                        </View>
                     </View>
             </Wrapper>   
         );
     }
 }
-
-// define your styles
+ 
 const styles = StyleSheet.create({
  
      profileDataContainer:{
-        // flexDirection:"row",
         alignItems:"center",
         borderBottomWidth:2,
         borderBottomColor:"#7f8c8d",
         padding:10
      },
      actions:{
-        // backgroundColor: "#fff"
+      
      },
     pro_Icon:{
         width:150,
@@ -144,7 +141,6 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderColor: "#27ae60",
         marginTop:5
-        // backgroundColor:"#fff"
     },
     jrow:{
         flexDirection:"row",
@@ -189,7 +185,6 @@ const styles = StyleSheet.create({
 });
 
 mapState=state=>{
-    console.log(state);
     let {Addition}=state;
     let {profile}=Addition; 
     return {
@@ -197,7 +192,7 @@ mapState=state=>{
         mobile:profile.mobile,
         email:profile.email,
         baseUrl: state.Config.base_url,
-        AUTH_TOKEN: state.Config.AUTH_TOKEN
+        AUTHTOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{
@@ -205,6 +200,6 @@ mapDispatch=dispatch=>{
          setProfile:(obj)=>{dispatch({type: "SET_PROFILE",profile: obj})},
          clearAuthToken:()=>{dispatch({type:"CLEAR_AUTH_TOKEN"})}
     }
-}
+} 
 
 export default connect(mapState,mapDispatch)(Profile);

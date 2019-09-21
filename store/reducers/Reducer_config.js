@@ -1,11 +1,12 @@
 
 const config={ 
-    base_url: "https://c350b741.ngrok.io",
-    // AUTH_TOKEN: "",
-    //  AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiNSJ9.",
-    AUTH_TOKEN: "eyJhbGciOiJub25lIn0.eyJkYXRhIjoiMjEifQ.",
+    // base_url: "https://598019a9.ngrok.io",
+    base_url: "http://18.219.157.9",
+
+    AUTH_TOKEN: "",
 }                   
-        //     
+
+
 export default function (state = config, action) {
     switch (action.type) {
         case "CLEAR_AUTH_TOKEN":
@@ -16,5 +17,5 @@ export default function (state = config, action) {
             return state; 
     }
 } 
-   
-            
+     
+              

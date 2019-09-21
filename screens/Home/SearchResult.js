@@ -14,7 +14,8 @@ class SearchResult extends Component {
     super(props);
     this.state = {
         query:props.navigation.getParam('query'),
-        loading:false
+        loading:false,
+        products:[]
     };
   }
   componentWillMount(){
@@ -24,7 +25,7 @@ class SearchResult extends Component {
     fetch(`${this.props.baseUrl}/products?q=${this.state.query}`, {
       method: "GET",
       headers: {
-        "AUTH_TOKEN": this.props.AUTH_TOKEN,
+        "AUTH-TOKEN": this.props.AUTH_TOKEN,
         "Content-Type":"application/json"
       }
     }).then(res => res.json()).then(data => {
@@ -50,19 +51,22 @@ class SearchResult extends Component {
             this.setState({
               products:products,
             });
-
        }
        this.setState({
          loading:false
-       })
-    }).catch(err=>console.log(err));
-
+       });
+    }).catch(err=>{
+      this.setState({
+        loading:false 
+      });
+    }); 
   }
 
   onProductSelect(product){
             this.props.navigation.push('ExploreProduct',{id:product.id});
   }
   render() {
+    console.log("load finieshed,",this.state);
     return ( 
       this.state.loading?<Loader/>:
       <Wrapper>

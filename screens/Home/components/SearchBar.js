@@ -6,7 +6,7 @@ class SearchBar extends Component {
     super(props);
     this.state={
       searchText:''
-    }
+    } 
   }
 
   onChangeText(text){
@@ -20,6 +20,8 @@ class SearchBar extends Component {
           <View style={styles.container}>
             <TextInput style={styles.searchbar} 
               placeholder="search here"
+              returnKeyType="search"
+              onSubmitEditing={()=>this.props.onSearch(this.state.searchText)}
               onChangeText={this.onChangeText.bind(this)}/>
              <TouchableOpacity 
               onPress={()=>this.props.onSearch(this.state.searchText)}

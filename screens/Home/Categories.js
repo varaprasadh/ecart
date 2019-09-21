@@ -3,6 +3,7 @@ import { View, Text,TouchableWithoutFeedback,StyleSheet,ScrollView} from 'react-
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
+import EmptyItems from '../major_components/EmptyItems';
 
 
 class Categories extends Component {
@@ -15,25 +16,26 @@ class Categories extends Component {
   render() {
 
     return (
-      <ScrollView style={{flex:1}}>
-      <View style={styles.container}>
-      <Text style={{fontWeight:"bold",fontSize:18,color:"#fff"}}>Categories</Text>
-        {
-          this.props.categories.map((cat,i)=>{
-            return(
-              <TouchableWithoutFeedback  key={i}>
-               <View> 
-                  <Category 
-                     onItemClick={this.onItemClick.bind(this)}
-                     name={cat.name} 
-                     subcategories={cat.subcategories}/>
-               </View>
-              </TouchableWithoutFeedback>
-            )
-          })
-        }
-      </View>
-      </ScrollView>
+     this.props.categories.length?
+       <ScrollView style={{flex:1}}>
+        <View style={styles.container}>
+        <Text style={{fontWeight:"bold",fontSize:18,color:"#fff"}}>Categories</Text>
+          {
+            this.props.categories.map((cat,i)=>{
+              return(
+                <TouchableWithoutFeedback  key={i}>
+                <View> 
+                    <Category 
+                      onItemClick={this.onItemClick.bind(this)}
+                      name={cat.name} 
+                      subcategories={cat.subcategories}/>
+                </View>
+                </TouchableWithoutFeedback>
+              )
+            })
+          }
+        </View>
+      </ScrollView>:<EmptyItems message="No categories available!"/>
     );
   }
 }

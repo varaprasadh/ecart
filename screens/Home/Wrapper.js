@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View,StatusBar,StyleSheet,ImageBackground } from 'react-native'
+import { View,StatusBar,StyleSheet,ImageBackground,Platform,SafeAreaView } from 'react-native'
 
 export class Wrapper extends Component {
     constructor(props){
@@ -9,9 +9,15 @@ export class Wrapper extends Component {
     render() { 
         return (
             <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
-            <View style={[{flex:1,paddingTop:StatusBar.currentHeight},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
-               {this.props.children}
-            </View>
+            {
+            Platform.OS == "ios" ?
+                <SafeAreaView style={[{flex:1},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
+                   {this.props.children}
+                </SafeAreaView>:
+                <View style={[{flex:1,paddingTop:StatusBar.currentHeight},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
+                   {this.props.children}
+                </View>
+            }
             </ImageBackground>
         )
     }

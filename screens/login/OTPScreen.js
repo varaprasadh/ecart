@@ -65,26 +65,37 @@ class MyClass extends Component {
                }
            }).then(res => res.json()).then(data => {
                if (data.success == true) {
-                   //set config
-                   //store auth_key in local
-                  console.log("registration done")
+                  
+                  console.log("registration done");
                    showMessage({
                          type:"success",
                          message:"Success",
-                         description:"Account Created Successfully.",
+                         description:"Account Created Successfully!",
                          autoHide:true
                    });
-                   this.props.navagation.navigate('LoginStack');
+                    let AUTH_TOKEN = data.auth_token;
+                    let role = data.role;
+                    this.props.setAuthToken(AUTH_TOKEN);
+                    AsyncStorage.setItem('AUTH_TOKEN', AUTH_TOKEN);
+                    AsyncStorage.setItem('ROLE', role);
+                    if (/customer/i.test(role)) {
+                        this.props.navigation.navigate('Main');
+                    } else {
+                        showMessage({
+                            type: "warning",
+                            message: "Access Denied",
+                            description: "only customers can access",
+                            autoHide: true
+                        });
+                    }
+
                }else{
-                   console.log("something wrong happend");
                    showMessage({
                        type:"danger",
                        message:"Failed",
                        description:"invalid OTP,try again",
                        autoHide:true
                    });
-
-
                }
                this.setState({
                    loading: false
@@ -92,7 +103,6 @@ class MyClass extends Component {
  
               
            }).catch(err =>{
-               console.log("catcch")
                thi.setState({
                    loading:false
                })
@@ -108,8 +118,7 @@ class MyClass extends Component {
               body:JSON.stringify(obj)
           }).then(res=>res.json()).then(data=>{
               if(data.success==true){
-                 // save auth token
-                 //navigate to main 
+                
                      let AUTH_TOKEN = data.auth_token;
                      let role=data.role;
                      this.props.setAuthToken(AUTH_TOKEN);
@@ -137,16 +146,6 @@ class MyClass extends Component {
               this.setState({
                   loading:false
               });
-              /*
-                   {
-                       message: "Verified successfully",
-                       role: user.role,
-                       success: true,
-                       profile: user,
-                       auth_token: generate_auth_token(user)
-                   }
-                   
-                   */
           })
       }
       

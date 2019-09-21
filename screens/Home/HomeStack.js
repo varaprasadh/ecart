@@ -1,16 +1,12 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { createBottomTabNavigator } from 'react-navigation';
 import {createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import WishList from "./WishList"; 
 import Profile from "./ProfileScreens/Profile"; 
 import Cart from "./Cart";
-// import Explore from "./Explore";
 import ExploreStack from "./ExploreStack"
 import {Ionicons} from '@expo/vector-icons'
 
-// create a component
 
 const HomeStack =createMaterialBottomTabNavigator({
     Explore:{

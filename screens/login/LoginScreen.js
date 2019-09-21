@@ -43,16 +43,18 @@ class LoginScreen extends Component {
               } else if (/DeliveryAgent/i.test(data.role)){
                 this.props.navigation.navigate('Delivery');
               }else{
-                
                 showMessage({
                   type:"danger",
                   message:"Access Denied",
                   description:"you can't go inside the app",
                   autoHide:true
                 });
+                this.setState({
+                  loading: false,
+                  error: false,
+                });
               }
-
-            })
+            });
           }else {
               
               showMessage({
@@ -61,13 +63,13 @@ class LoginScreen extends Component {
                 description:"credintials might be wrong",
                 autoHide:true
               });
+               this.setState({
+                 loading: false,
+                 error: false,
+               });
           }
           
-          this.setState({
-            loading: false,
-            error: false,
-
-          });
+         
         }).catch(err=>{
           showMessage({
             type:"danger",
@@ -106,16 +108,18 @@ class LoginScreen extends Component {
                                    onSubmitEditing={()=>this.passwordInput.focus()}
                                    onChangeText={text=>this.setState({Email_Mobile:text})}
                                    keyboardType="email-address"
+                                   value={this.state.Email_Mobile}
                                    returnKeyType="next" style={[styles.inputline,styles.input]}/>
                             </View>
                             <View className="input-row" style={styles.inputRow} >
                                 <Text style={styles.formLable}>Password</Text>
                                 <TextInput
                                     onChangeText={text=>this.setState({password:text})} 
+                                    value={this.state.password}
                                     returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input,{marginBottom:10}]} />
                                 {/* <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
                                   <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
-                                </TouchableOpacity> */}
+                                </TouchableOpacity> */} 
                             </View> 
                             <TouchableOpacity style={styles.customBtn} onPress={this.signIn.bind(this)}>
                                <Text style={{color:"white",fontWeight:"bold"}}>Sign In</Text>

@@ -62,7 +62,7 @@ export class DeliveryDetails extends Component {
     processOrder(status){
          console.log(status);
 
-            let obj = {
+            let obj = { 
                 status: status,
                 order_id: this.state.order.id
             }
@@ -72,7 +72,7 @@ export class DeliveryDetails extends Component {
             fetch(`${this.props.baseUrl}/deliver_order`, {
                 method: "POST",
                 headers: {
-                    "AUTH_TOKEN": this.props.AUTH_TOKEN,
+                    "AUTH-TOKEN": this.props.AUTH_TOKEN,
                     "content-Type":"application/json"
                  }, 
                 body: JSON.stringify(obj)
@@ -90,7 +90,6 @@ export class DeliveryDetails extends Component {
                     this.setState({
                         order:{...this.state.order,status}
                     });
-                    // this.props.navigation.goBack();
                 }else{
                      showMessage({
                         type:"danger",
@@ -102,8 +101,19 @@ export class DeliveryDetails extends Component {
                 this.setState({
                     loading:false
                 })
-            }).catch(err=>console.log(err));
-        
+            }).catch(err=>{
+                this.setState({
+                    loading:false
+                });
+            });
+        //   this.setState({
+        //       loading:false 
+        //   })
+        //   this.props.modifyStatus(this.state.index, status);
+        //     this.setState({
+        //         order:{...this.state.order,status}
+        //     });
+
     }
     render() {
         let first_name=this.state.billing_address.first_name||'';

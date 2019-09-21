@@ -1,4 +1,3 @@
-//import liraries
 import React, { Component } from 'react';
 import {
     View,
@@ -48,7 +47,7 @@ class Explore extends Component {
     fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
           method:"GET",
           headers:{ 
-              AUTH_TOKEN: this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
@@ -75,7 +74,7 @@ class Explore extends Component {
       fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
           method:"GET",
           headers:{ 
-              AUTH_TOKEN: this.props.AUTH_TOKEN
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
@@ -124,7 +123,7 @@ class Explore extends Component {
         fetch(`${this.props.baseUrl}/category_with_sub_category`, {
             method: "GET",
             headers: {
-                "AUTH_TOKEN": this.props.AUTH_TOKEN
+                "AUTH-TOKEN": this.props.AUTH_TOKEN
             }
         }).then(res => res.json()).then(data => {
             if (data.success == true) {
@@ -163,7 +162,6 @@ class Explore extends Component {
                 <RetryButton onRetry={this.handler.bind(this)}/>
             </EmptyItems>:
              <Wrapper noBackground>
-                {/* <View style={{backgroundColor:"#fff",padding:10}}> */}
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
                    <View style={{flexDirection:"row",alignItems:"center",paddingLeft:10}}>
                         <TouchableWithoutFeedback
@@ -175,6 +173,7 @@ class Explore extends Component {
                             <SearchBar onSearch={this.onSearch.bind(this)}/>
                         </View>
                    </View>     
+                       {this.props.products.length?
                         <ScrollView>
                             <Text style={styles.label}>Latest Products</Text>
                             <Products
@@ -187,9 +186,10 @@ class Explore extends Component {
                                 !this.state.hideLoadMoreButton &&
                                 <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
                             }
-                        </ScrollView>
+                        </ScrollView>:
+                        <EmptyItems message="No products are available!"/>
+                       }
                 </ImageBackground>
-                {/* </View> */}
               </Wrapper>
         ); 
     }

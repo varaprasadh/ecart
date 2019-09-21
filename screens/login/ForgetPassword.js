@@ -1,7 +1,6 @@
-//import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as Input} from 'react-native';
-// create a component
+
 class ForgetPassword extends Component {
     constructor(props){
         super(props);

@@ -22,14 +22,13 @@ class Cart extends Component {
            method:"GET",
            headers:{
                "content-Type":"application/json",
-               "AUTH_TOKEN":this.props.AUTH_TOKEN
+               "AUTH-TOKEN":this.props.AUTH_TOKEN
            }  
        }).then(res=>res.json()).then(data=>{
            this.props.toggleLoading(); 
            if(data.success==true){ 
                //add that to cart state,
                data.products.forEach(product => {
-                   console.log("debug each cart product")
                    parsedProduct={
                        ...product,...{
                            id: product.product_id,
@@ -39,7 +38,6 @@ class Cart extends Component {
                            img: product.image_url?{uri: product.image_url}:require("./product_images/noimage.jpg")
                        }
                    };
-                console.log(parsedProduct);
                 this.props.addToCart(parsedProduct);
                })
            }
@@ -54,14 +52,14 @@ class Cart extends Component {
         method:"POST",
         headers:{
             "content-Type":"application/json",
-            "AUTH_TOKEN":this.props.AUTH_TOKEN
+            "AUTH-TOKEN":this.props.AUTH_TOKEN
         },
         body:JSON.stringify(obj)
     }).then(res=>res.json()).then(data=>{
-        console.log(data);
         if(data.success==true){
             this.props.removeFromCart(id);
             this.props.changeCurrent(id,{isInCart:false})
+            this.props.changeCartStatus_wishlist(id,{isInCart:false});
         }
     }).catch(err=>console.log(err));
  }
@@ -70,7 +68,6 @@ class Cart extends Component {
    }
     render() {
         cartProducts=[];
-        console.log("rerender of cart")
         totalPrice=0;
         this.props.cartItems.forEach(item=>{
             totalPrice+=item.price*(item.quantity?item.quantity:1)
@@ -162,7 +159,10 @@ mapDispatch=dispatch=>{
         toggleLoading:()=>{dispatch({type:"TOGGLE_LOADING"})},
         changeCartStatus:(id,value)=>{dispatch({type:"MODIFY_ITEM_CART_STATUS",id,value})},
         changeCartStatus_Result:(id,value)=>{dispatch({type:"MODIFY_SEARCH_ITEM_CART_STATUS",id,value})},
-        changeCurrent:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})}
+        changeCurrent:(id,obj)=>{dispatch({type:"CHANGE_CURRENT_ITEM_STATUS",id,obj})},
+        changeCartStatus_wishlist:(id,obj)=>{
+            dispatch({type:"CHANGE_CART_STATUS_WISHLIST",id,obj});
+        }
     }
 }
 export default connect(mapStateToProps,mapDispatch)(Cart);

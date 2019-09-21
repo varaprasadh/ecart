@@ -6,6 +6,9 @@ import Header from '../../major_components/Header';
 import {connect} from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../../major_components/Loader';
+import ExpectedDelivery from '../../major_components/ExpectedDelivery';
+import { ScrollView } from 'react-native-gesture-handler';
+import BillingAddress from '../../major_components/BillingAddress';
 
 class OrderItemDetail extends Component {
   constructor(props) {
@@ -18,7 +21,8 @@ class OrderItemDetail extends Component {
         products:orderObj.products,
         items:[],
         index:this.props.navigation.getParam('index'),
-
+        status:orderObj.order.status,
+        billingAdress: orderObj.billing_address
       }
   }
 
@@ -28,12 +32,12 @@ cancelOrder(){
    }
    this.setState({
        loading:true
-   })
+   });
    fetch(`${this.props.baseUrl}/cancel_order`,{
        method:"POST",
-       headers:{
+       headers:{ 
            "content-Type":"application/json",
-           "AUTH_TOKEN":this.props.AUTH_TOKEN
+           "AUTH-TOKEN":this.props.AUTH_TOKEN
        },
        body:JSON.stringify(obj)
    }).then(res=>res.json()).then(data=>{ 
@@ -47,8 +51,7 @@ cancelOrder(){
            this.setState({
                cancelled:true
            });
-        //    this.props.navigation.goBack();
-        //update button status
+       
        this.props.modifyStatus(this.state.index,'Cancelled');
        }else{
           showMessage({
@@ -64,7 +67,6 @@ cancelOrder(){
    })
 }
   render() {
-    //   delivered = this.state.orderObj.delivery_date != null;
        let order = this.state.orderObj.order
        let delivered = /delivered/i.test(order.status);
        let pending = /pending/i.test(order.status);
@@ -78,6 +80,7 @@ cancelOrder(){
           <Header title="Order Information" backbutton backHandler={this.props.navigation.goBack}/>
         </View>
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../../images/backgroundimage.jpg")}>
+        <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
         <View style={{padding:10}}> 
             <View style={{backgroundColor:"#fff",padding:10}}>
                 <View style={styles.jrow}>
@@ -94,27 +97,37 @@ cancelOrder(){
                     <Text style={styles.label}>Delivery Status:</Text>
                     
                     <Text style={[styles.status,{fontWeight:"bold",color:"#fff",paddingHorizontal:20,paddingVertical:10,marginTop:10},
-                         delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
+                         this.state.cancelled?{backgroundColor:"#e74c3c"}:delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
                         ]}>
-                     {delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
+                     {this.state.cancelled?"Cancelled":delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                 </View>
             </View>
             <View style={{backgroundColor:"#fff",paddingHorizontal:10}}>
                 <Text style={[styles.label,{color:"#c0392b"}]}>Order Contents:</Text>
-                <OrderItemsTable items={this.state.products}/>
+                <OrderItemsTable  items={this.state.products}/>
             </View> 
+            <BillingAddress address={this.state.billingAdress}/>
+            {!delivered && !cancelled && !this.state.cancelled && 
+            <View>
+                <ExpectedDelivery orderDate={this.state.orderObj.date}/>
+            </View>
+            }
         </View> 
-       {!delivered && !cancelled && 
-       <View> 
-            <TouchableOpacity
-            disabled={this.state.cancelled}
-             onPress={this.cancelOrder.bind(this)}
-            >
-                <Text style={styles.btn}>{this.state.cancelled?"CANCELLED":"CANCEL ORDER"}</Text>
-            </TouchableOpacity>
-        </View>
-       }
+        
+       
+         </ScrollView>
+        
         </ImageBackground>
+        {!delivered && !cancelled && !this.state.cancelled &&
+            <View style={styles.btn_abs}> 
+                <TouchableOpacity
+                    disabled={this.state.cancelled}
+                    onPress={this.cancelOrder.bind(this)}
+                >
+                    <Text style={styles.btn}>{this.state.cancelled?"CANCELLED":"CANCEL ORDER"}</Text>
+                </TouchableOpacity>
+            </View>
+        }
       </Wrapper>
     );
   } 
@@ -168,6 +181,16 @@ const styles = StyleSheet.create({
         backgroundColor: "#e74c3c",
         color:"#fff",
         fontWeight:"bold",
+        paddingHorizontal:30,
+        borderRadius:10
+    },
+    btn_abs:{
+        position:"absolute",
+        bottom:0,
+        left:0,
+        right:0,
+        height:50,
+        alignItems:"center"
     }
   });
 
@@ -201,13 +224,30 @@ export class OrderItemsTable extends Component{
                     </View>
                 )   
                 })
-            
                 }
+            
+               {
+                    <View style={styles.row}>  
+                        <View style={styles.col}><Text style={[styles.colData]}></Text></View>
+                        <View style={styles.col}><Text style={[styles.colData]}></Text></View>
+                        <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>shipping charge</Text></View>
+                        <View style={styles.col}>
+                            <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
+                            {totalPrice<500?Number(1).toFixed(3)+"KD":"Free"} 
+                            </Text>
+                        </View>
+                    </View> 
+               }
+
                 <View style={styles.row}>  
                     <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData]}></Text></View>
                     <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>Total</Text></View>
-                    <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>{totalPrice.toFixed(3)} KD</Text></View>
+                    <View style={styles.col}>
+                        <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
+                            {totalPrice>=500?totalPrice.toFixed(3):Number(totalPrice+1).toFixed(3)} KD
+                        </Text>
+                    </View>
                 </View> 
 
                 <View>

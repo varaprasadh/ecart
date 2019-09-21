@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View,StyleSheet,TouchableOpacity,ImageBackground} from 'react-native'
+import { Text, View,StyleSheet,TouchableOpacity,ImageBackground,ScrollView} from 'react-native'
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail"
@@ -9,6 +9,9 @@ import {connect} from "react-redux";
 import {showMessage} from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
 import CheckoutStatus from "./CheckoutStatus";
+import { AuthSession } from 'expo';
+import ExpectedDelivery from '../major_components/ExpectedDelivery';
+import BillingAddress from '../major_components/BillingAddress';
 
 
 export class CheckSummery extends Component {
@@ -24,7 +27,6 @@ export class CheckSummery extends Component {
             checkout_done:false,
             triedCheckout:false
         }
-        console.log("this is the data", this.props.cartItems);
     }
 
     onContinue() {
@@ -43,9 +45,12 @@ export class CheckSummery extends Component {
      this.props.cartItems.map(item=>{
          items.push({
              product_id:item.id,
-             quantity:item.quantity
+             quantity:item.quantity,
+             price:item.price
          });
      })   
+     delivery_cost=total_cart_cost<500?1:0;
+     total_cart_cost+=delivery_cost
     let obj={
         billing_address:{
             billing_address_id:id||null,
@@ -55,87 +60,99 @@ export class CheckSummery extends Component {
             phone_number:mobile,
             area,street,block,lane
         },
-
+        delivery_cost,
         items,
         total_cart_cost,
         payment_mode:this.state.payType
     }
-  /*
-  {
-      "billing_address": {
-          "billing_address_id": 25,
-          "first_name": "zdgse",
-          "last_name": "sgsgsg",
-          "email": "sgsg.sgs@sgs.com",
-          "phone_number": "8106492369",
-          "area": "fsfsfs",
-          "street": "fsfsfs",
-          "block": "gsgsfss",
-          "lane": "sgsggs"
-      },
-      "items": [{
-          "product_id": 2,
-          "quantity": 2
-      }],
-      "total_cart_cost": 50,
-      "payment_mode": "Cash"
-  }
-  */
+ 
+ updatePromises=items.map(item=>{
+      return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
+          method: "POST",
+          body: JSON.stringify(item),
+          headers: {
+              "content-Type": "application/json",
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
+          }
+      });
+ }); 
+ Promise.all([...updatePromises]).then(successlogs=>{
+
+      fetch(`${this.props.baseUrl}/cart_checkout`, {
+          method: "POST",
+          body: JSON.stringify(obj),
+          headers: {
+              'content-type': "application/json",
+              "AUTH-TOKEN": this.props.AUTH_TOKEN
+          }
+      }).then(res => res.json()).then(data => {
+          if (data.success == true) {
+              this.setState({
+                  loading: false,
+                  checkout_done: true,
+                  triedCheckout: true
+              });
+              this.props.clearCart();
+          } else {
+              this.setState({
+                  triedCheckout: true,
+                  checkout_done: false,
+                  loading: false
+              })
+          }
+      }).catch(err => {
+           this.setState({
+               triedCheckout: true,
+               checkout_done: false,
+               loading: false
+           });
+      })
+ 
+ }).catch(errors=>{
+     this.setState({
+         loading:false
+     });
+     showMessage({
+         type:"danger",
+         message:"Failed",
+         description:"somethig wennt wrong try again!",
+         autoHide:true
+     });
+ })
+
    this.setState({
        loading:true
    })
-   fetch(`${this.props.baseUrl}/cart_checkout`,{
-       method:"POST",
-       body:JSON.stringify(obj),
-       headers:{
-           'content-type':"application/json",
-            "AUTH_TOKEN": this.props.AUTH_TOKEN
-       }
-   }).then(res=>res.json()).then(data=>{
-       console.log(data)
-        if(data.success==true){
-            this.setState({
-                loading:false,
-                checkout_done:true,
-                triedCheckout:true
-            });
-            this.props.clearCart();
-        }else{
-           this.setState({
-               triedCheckout:true,
-               checkout_done:false,
-               loading:false
-           })
-        }
-    }).catch(err=>console.error(err)) 
 
     }
 
     render() {
        let {firstname,lastname,mobile,area,street,block,lane}=this.state.address
+       
        billingAddress= `${firstname} ${lastname},${mobile},${area},${street},${block},${lane}`
-      
+       parsedAddress={...this.state.address,first_name:firstname,last_name:lastname,phone_number:mobile}
         return (
             this.state.loading?<Loader/>:
             this.state.triedCheckout != true ?
             <Wrapper>
                <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
                 <Header title="Summary" backbutton backHandler={this.props.navigation.goBack}/>
+                
                 <View style={{flex:1,padding:10}}>
-                 <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
-                     <View style={styles.row}>
-                         <Text style={styles.label}>Payment Type :</Text>
-                         <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
-                     </View>
-
-                     <View style={[]}>
-                         <Text style={[styles.label]}>Billing Address:</Text>
-                         <Text style={[styles.text]}>{billingAddress}</Text>
-                     </View>
-                 </View>
-                 <View style={{backgroundColor:"#fff"}}>
-                     <OrderItemsTable items={this.props.cartItems}/>
-                 </View>
+                 <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
+                    <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
+                        <View style={styles.row}>
+                            <Text style={styles.label}>Payment Type :</Text>
+                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <BillingAddress address={parsedAddress}/>
+                    </View>
+                    <View style={{backgroundColor:"#fff"}}>
+                        <OrderItemsTable items={this.props.cartItems}/>
+                    </View>
+                 </ScrollView>
                  <View style={styles.checkouttab}>
                        <TouchableOpacity 
                             style={[styles.btn,{backgroundColor:"#fff",borderWidth:1,borderColor:"#2ecc71"}]} 
@@ -155,7 +172,10 @@ export class CheckSummery extends Component {
             </Wrapper>:
             <CheckoutStatus onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}>
                {this.state.checkout_done&& 
-                     <OrderItemsTable items={this.props.cartItems}/>
+                    <View>
+                        <OrderItemsTable items={this.props.cartItems}/>
+                        <ExpectedDelivery />
+                    </View>
                }
             </CheckoutStatus>
         )
