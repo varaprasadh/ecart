@@ -6,6 +6,9 @@ import Header from '../../major_components/Header';
 import {connect} from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../../major_components/Loader';
+import ExpectedDelivery from '../../major_components/ExpectedDelivery';
+import { ScrollView } from 'react-native-gesture-handler';
+import BillingAddress from '../../major_components/BillingAddress';
 
 class OrderItemDetail extends Component {
   constructor(props) {
@@ -18,7 +21,8 @@ class OrderItemDetail extends Component {
         products:orderObj.products,
         items:[],
         index:this.props.navigation.getParam('index'),
-        status:orderObj.order.status
+        status:orderObj.order.status,
+        billingAdress: orderObj.billing_address
       }
   }
 
@@ -28,10 +32,10 @@ cancelOrder(){
    }
    this.setState({
        loading:true
-   })
+   });
    fetch(`${this.props.baseUrl}/cancel_order`,{
        method:"POST",
-       headers:{
+       headers:{ 
            "content-Type":"application/json",
            "AUTH-TOKEN":this.props.AUTH_TOKEN
        },
@@ -47,8 +51,7 @@ cancelOrder(){
            this.setState({
                cancelled:true
            });
-        //    this.props.navigation.goBack();
-        //update button status
+       
        this.props.modifyStatus(this.state.index,'Cancelled');
        }else{
           showMessage({
@@ -77,6 +80,7 @@ cancelOrder(){
           <Header title="Order Information" backbutton backHandler={this.props.navigation.goBack}/>
         </View>
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../../images/backgroundimage.jpg")}>
+        <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
         <View style={{padding:10}}> 
             <View style={{backgroundColor:"#fff",padding:10}}>
                 <View style={styles.jrow}>
@@ -102,18 +106,28 @@ cancelOrder(){
                 <Text style={[styles.label,{color:"#c0392b"}]}>Order Contents:</Text>
                 <OrderItemsTable  items={this.state.products}/>
             </View> 
+            <BillingAddress address={this.state.billingAdress}/>
+            {!delivered && !cancelled && !this.state.cancelled && 
+            <View>
+                <ExpectedDelivery orderDate={this.state.orderObj.date}/>
+            </View>
+            }
         </View> 
-       {!delivered && !cancelled && !this.state.cancelled &&
-       <View> 
-            <TouchableOpacity
-            disabled={this.state.cancelled}
-             onPress={this.cancelOrder.bind(this)}
-            >
-                <Text style={styles.btn}>{this.state.cancelled?"CANCELLED":"CANCEL ORDER"}</Text>
-            </TouchableOpacity>
-        </View>
-       }
+        
+       
+         </ScrollView>
+        
         </ImageBackground>
+        {!delivered && !cancelled && !this.state.cancelled &&
+            <View style={styles.btn_abs}> 
+                <TouchableOpacity
+                    disabled={this.state.cancelled}
+                    onPress={this.cancelOrder.bind(this)}
+                >
+                    <Text style={styles.btn}>{this.state.cancelled?"CANCELLED":"CANCEL ORDER"}</Text>
+                </TouchableOpacity>
+            </View>
+        }
       </Wrapper>
     );
   } 
@@ -167,6 +181,16 @@ const styles = StyleSheet.create({
         backgroundColor: "#e74c3c",
         color:"#fff",
         fontWeight:"bold",
+        paddingHorizontal:30,
+        borderRadius:10
+    },
+    btn_abs:{
+        position:"absolute",
+        bottom:0,
+        left:0,
+        right:0,
+        height:50,
+        alignItems:"center"
     }
   });
 

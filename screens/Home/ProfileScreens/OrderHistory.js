@@ -20,8 +20,6 @@ class OrderHistory extends Component {
         this.loadData=this.loadData.bind(this);
     }
     onClick(index){
-        console.log(index);
-        console.log(this.props.orders[index]);
          this.props.navigation.push('OrderItemDetail',{order:this.props.orders[index],index,
             onStatusChange: this.onStatusChange
         },
@@ -45,7 +43,6 @@ class OrderHistory extends Component {
              if (data.success == true) {
                  myOrders = data.my_orders;
                  myOrders = myOrders.map((orderArray, index) => {
-                     console.log("orderindexz", index);
                      return orderArray[0];
                  });
                  this.props.setOrders(myOrders);

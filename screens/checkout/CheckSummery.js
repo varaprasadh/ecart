@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View,StyleSheet,TouchableOpacity,ImageBackground} from 'react-native'
+import { Text, View,StyleSheet,TouchableOpacity,ImageBackground,ScrollView} from 'react-native'
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import {OrderItemsTable} from "../Home/ProfileScreens/OrderItemDetail"
@@ -10,6 +10,8 @@ import {showMessage} from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
 import CheckoutStatus from "./CheckoutStatus";
 import { AuthSession } from 'expo';
+import ExpectedDelivery from '../major_components/ExpectedDelivery';
+import BillingAddress from '../major_components/BillingAddress';
 
 
 export class CheckSummery extends Component {
@@ -25,7 +27,6 @@ export class CheckSummery extends Component {
             checkout_done:false,
             triedCheckout:false
         }
-        console.log("this is the data", this.props.cartItems);
     }
 
     onContinue() {
@@ -85,7 +86,6 @@ export class CheckSummery extends Component {
               "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
       }).then(res => res.json()).then(data => {
-          console.log(data)
           if (data.success == true) {
               this.setState({
                   loading: false,
@@ -108,9 +108,7 @@ export class CheckSummery extends Component {
            });
       })
  
-
  }).catch(errors=>{
-     console.log(errors);
      this.setState({
          loading:false
      });
@@ -130,29 +128,31 @@ export class CheckSummery extends Component {
 
     render() {
        let {firstname,lastname,mobile,area,street,block,lane}=this.state.address
+       
        billingAddress= `${firstname} ${lastname},${mobile},${area},${street},${block},${lane}`
-      
+       parsedAddress={...this.state.address,first_name:firstname,last_name:lastname,phone_number:mobile}
         return (
             this.state.loading?<Loader/>:
             this.state.triedCheckout != true ?
             <Wrapper>
                <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
                 <Header title="Summary" backbutton backHandler={this.props.navigation.goBack}/>
+                
                 <View style={{flex:1,padding:10}}>
-                 <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
-                     <View style={styles.row}>
-                         <Text style={styles.label}>Payment Type :</Text>
-                         <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
-                     </View>
-
-                     <View style={[]}>
-                         <Text style={[styles.label]}>Billing Address:</Text>
-                         <Text style={[styles.text]}>{billingAddress}</Text>
-                     </View>
-                 </View>
-                 <View style={{backgroundColor:"#fff"}}>
-                     <OrderItemsTable items={this.props.cartItems}/>
-                 </View>
+                 <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
+                    <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
+                        <View style={styles.row}>
+                            <Text style={styles.label}>Payment Type :</Text>
+                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <BillingAddress address={parsedAddress}/>
+                    </View>
+                    <View style={{backgroundColor:"#fff"}}>
+                        <OrderItemsTable items={this.props.cartItems}/>
+                    </View>
+                 </ScrollView>
                  <View style={styles.checkouttab}>
                        <TouchableOpacity 
                             style={[styles.btn,{backgroundColor:"#fff",borderWidth:1,borderColor:"#2ecc71"}]} 
@@ -172,7 +172,10 @@ export class CheckSummery extends Component {
             </Wrapper>:
             <CheckoutStatus onContinue={this.onContinue.bind(this)} status={this.state.checkout_done}>
                {this.state.checkout_done&& 
-                     <OrderItemsTable items={this.props.cartItems}/>
+                    <View>
+                        <OrderItemsTable items={this.props.cartItems}/>
+                        <ExpectedDelivery />
+                    </View>
                }
             </CheckoutStatus>
         )

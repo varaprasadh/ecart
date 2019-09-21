@@ -35,14 +35,14 @@ class Product extends Component {
        }).then(res => res.json()).then(data => {
            if (data.success == true) {
                this.props.changeCartStatus(this.state.product.id, true);
-               this.props.addToCart(this.state.product);
+               this.props.addToCart({...this.state.product,...{quantity:1}});
                this.props.changeCurrentStatus(this.state.product.id, {
                    isInCart: true
                });
               this.props.changeCartStatus_wishlist(this.state.product.id,{isInCart:true});
            }
-       });
-   }
+       }); 
+   } 
  
    
     render() {
@@ -50,13 +50,13 @@ class Product extends Component {
         
         quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
-        instock = this.props.productdata.quantity > 0 && this.props.productdata.is_active;
+        instock = this.props.productdata.quantity > 0; //&& this.props.productdata.is_active
         console.log("wishlist rerendeting.....")
         return (
       <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
           <View style={{height:150}}>
             <View style={styles.container}>
-                <View className="p-image" style={[styles.img,{flex:2,maxWidth:200}]}>
+                <View className="p-image" style={[styles.img,{flex:2,maxWidth:150,minWidth:150}]}>
                         <Image source={this.props.productdata.img} 
                         style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />

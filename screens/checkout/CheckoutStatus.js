@@ -48,7 +48,7 @@ const styles=StyleSheet.create({
     img:{
         height:100,
         width:100,
-        marginBottom:10
+        marginBottom:10,
     },
     failed:{
       fontSize:20,

@@ -49,7 +49,6 @@ class Profile extends Component {
       });
       AsyncStorage.clear().then(() => {
           this.props.clearAuthToken();
-          console.log("not wokisdfsfs");
          setTimeout(()=>{
               this.props.navigation.navigate('LoginStack');
          },1500);
