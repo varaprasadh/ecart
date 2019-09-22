@@ -103,6 +103,16 @@ buy(){
   this.props.navigation.navigate('Cart');
 }    
 addToWishlist(){
+  if(!this.state.product.is_active){
+    showMessage({
+      message:"Failed",
+      description:"this products can't be added to wishlist",
+      type:"danger",
+      autoHide:true
+    });
+    return;
+  }
+  
   obj = {
     product_id:this.state.product.id
   }
