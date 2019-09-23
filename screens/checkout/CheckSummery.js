@@ -49,7 +49,7 @@ export class CheckSummery extends Component {
              price:item.price
          });
      })   
-     delivery_cost=total_cart_cost<500?1:0;
+     delivery_cost=total_cart_cost<5?1:0;
      total_cart_cost+=delivery_cost
     let obj={
         billing_address:{
@@ -86,6 +86,7 @@ export class CheckSummery extends Component {
               "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
       }).then(res => res.json()).then(data => {
+          console.log("debug data");
           if (data.success == true) {
               this.setState({
                   loading: false,
@@ -101,6 +102,7 @@ export class CheckSummery extends Component {
               })
           }
       }).catch(err => {
+          console.log(err);
            this.setState({
                triedCheckout: true,
                checkout_done: false,
@@ -109,6 +111,7 @@ export class CheckSummery extends Component {
       })
  
  }).catch(errors=>{
+     console.log(errors);
      this.setState({
          loading:false
      });
@@ -143,7 +146,7 @@ export class CheckSummery extends Component {
                     <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Payment Type :</Text>
-                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivey"}</Text>
+                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivery"}</Text>
                         </View>
                     </View>
                     <View>

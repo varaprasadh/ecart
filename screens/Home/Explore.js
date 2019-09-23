@@ -174,19 +174,22 @@ class Explore extends Component {
                         </View>
                    </View>     
                        {this.props.products.length?
-                        <ScrollView>
-                            <Text style={styles.label}>Latest Products</Text>
-                            <Products
-                                refreshing={this.state.refreshing}
-                                onRefresh={this.onRefresh}
-                                products={this.props.products}
-                                onProductSelect={this.onProductSelect.bind(this)}
-                            />
-                            {
-                                !this.state.hideLoadMoreButton &&
-                                <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
-                            }
-                        </ScrollView>:
+                        <View style={{flex:1}}>
+                            <ScrollView style={{flex:1}}>
+                                <Text style={styles.label}>Latest Products</Text>
+                                
+                                    <Products
+                                        refreshing={this.state.refreshing}
+                                        onRefresh={this.onRefresh}
+                                        products={this.props.products}
+                                        onProductSelect={this.onProductSelect.bind(this)}
+                                    />
+                                {
+                                    !this.state.hideLoadMoreButton &&
+                                      <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                                }
+                            </ScrollView>
+                         </View>:
                         <EmptyItems message="No products are available!"/>
                        }
                 </ImageBackground>
@@ -205,6 +208,14 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         color:"#fff"
     },
+    bottom:{
+        position:"absolute",
+        bottom:0,
+        right:0,
+        left:0,
+        display:"flex",
+        alignItems:"center"
+    }
 });
 
 mapStateToProps=state=>{

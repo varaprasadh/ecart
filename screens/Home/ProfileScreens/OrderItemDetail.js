@@ -233,7 +233,7 @@ export class OrderItemsTable extends Component{
                         <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>shipping charge</Text></View>
                         <View style={styles.col}>
                             <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
-                            {totalPrice<500?Number(1).toFixed(3)+"KD":"Free"} 
+                            {totalPrice<5?Number(1).toFixed(3)+"KD":"Free"} 
                             </Text>
                         </View>
                     </View> 
@@ -245,7 +245,7 @@ export class OrderItemsTable extends Component{
                     <View style={styles.col}><Text style={[styles.colData,{fontWeight:"bold"}]}>Total</Text></View>
                     <View style={styles.col}>
                         <Text style={[styles.colData,{color:"#27ae60",fontWeight:"bold",textTransform:"uppercase"}]}>
-                            {totalPrice>=500?totalPrice.toFixed(3):Number(totalPrice+1).toFixed(3)} KD
+                            {totalPrice>=5?totalPrice.toFixed(3):Number(totalPrice+1).toFixed(3)} KD
                         </Text>
                     </View>
                 </View> 
