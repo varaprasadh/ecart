@@ -41,7 +41,7 @@ class Product extends Component {
                });
               this.props.changeCartStatus_wishlist(this.state.product.id,{isInCart:true});
            }
-       }); 
+       });  
    } 
  
    
@@ -50,13 +50,13 @@ class Product extends Component {
         
         quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
-        instock = this.props.productdata.quantity > 0; //&& this.props.productdata.is_active
-        console.log("wishlist rerendeting.....")
+        instock = this.props.productdata.quantity > 0 && this.props.productdata.isActive
+        
         return (
       <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
           <View style={{height:150}}>
             <View style={styles.container}>
-                <View className="p-image" style={[styles.img,{flex:2,maxWidth:150,minWidth:150}]}>
+                <View className="p-image" style={[styles.img,{flex:2,maxWidth:150}]}>
                         <Image source={this.props.productdata.img} 
                         style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#e74c3c",
         paddingVertical:5,
         paddingHorizontal:20,
-        borderRadius:1
+        borderRadius:5
     },
     remove_btn_stock:{
         color:"#fff",
