@@ -42,28 +42,26 @@ class Product extends Component {
               this.props.changeCartStatus_wishlist(this.state.product.id,{isInCart:true});
            }
        });  
-   } 
+   }  
  
-   
+    
     render() {
-        console.log(this.props.productdata);
-        
+    //    console.log("wishlist",this.props.productdata); 
         quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
         instock = this.props.productdata.quantity > 0 && this.props.productdata.isActive
-        
-        return (
+        return ( 
       <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
           <View style={{height:150}}>
             <View style={styles.container}>
-                <View className="p-image" style={[styles.img,{flex:2,maxWidth:150}]}>
+                <View style={[styles.img,{flex:2,minWidth:125,maxWidth:125}]}>
                         <Image source={this.props.productdata.img} 
                         style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />
                 </View>
                 <View style={{flex:3}} style={styles.productInfo}>
                     <View>
-                    <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
+                         <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
                             {this.props.productdata.title}
                         </Text>
                     </View> 
@@ -72,24 +70,26 @@ class Product extends Component {
                         {Number(this.props.productdata.price).toFixed(3)} KD
                         </Text> 
                     </View>
-                    <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:20}}>
-                       <TouchableOpacity disabled={!instock|| isInCart} onPress={this.addToCart.bind(this)}> 
-                           <Text 
-                                style={[styles.remove_btn_stock,
-                                    (()=>(instock||isInCart)?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
-                                {isInCart?"IN CART":instock?"ADD TO CART":"OUT OF STOCK"}
-                            </Text>
-                       </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.remove()}>
-                            <Text style={styles.remove_btn}>Remove</Text>
+                    
+                      <View style={{flexDirection:"row",alignItems:"center",marginTop:20}}>
+                        <TouchableOpacity style={{flex:1,justifyContent:"center",alignItems:"center"}} disabled={!instock|| isInCart} onPress={this.addToCart.bind(this)}> 
+                            <Text 
+                                    style={[styles.remove_btn_stock,
+                                        (()=>(instock||isInCart)?{backgroundColor:"#27ae60"}:{backgroundColor:"#f1c40f",paddingHorizontal:5})()]}>
+                                    {isInCart?"IN CART":instock?"ADD TO CART":"OUT OF STOCK"}
+                                </Text>
                         </TouchableOpacity>
-                    </View>
+                            <TouchableOpacity style={{flex:1,justifyContent:"center",alignItems:"center"}} onPress={()=>this.remove()}>
+                                <Text style={styles.remove_btn}>Remove</Text>
+                            </TouchableOpacity>
+                     </View>
+
                 </View>
             </View>
           </View>
           </TouchableWithoutFeedback>
         );
-    } // StatusBar.currentHeight
+    } 
 
 }
 
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
         marginTop:5  
     },
     productInfo:{
-        paddingLeft: 20,
-        paddingRight:20
+       paddingHorizontal:10,
+       flex:1
     },
     price:{
         color:"green"
@@ -121,16 +121,19 @@ const styles = StyleSheet.create({
         fontSize:18,
         backgroundColor: "#e74c3c",
         paddingVertical:5,
-        paddingHorizontal:20,
-        borderRadius:5
+        paddingHorizontal:10,
+        borderRadius:5,
+        alignSelf: "stretch",
+        textAlign: "center"
     },
     remove_btn_stock:{
         color:"#fff",
         fontSize:18,
         paddingVertical:5,
-        paddingHorizontal:20,
+        paddingHorizontal:10,
         borderRadius:5,
-        marginRight:5
+        alignSelf:"stretch",
+        textAlign:"center"
     }
 });
 mapState=state=>{

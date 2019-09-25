@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 5798,
+  "expoServerNgrokUrl": "https://w8-sh4.varaprasadh.ecart.exp.direct",
+  "packagerNgrokUrl": "https://packager.w8-sh4.varaprasadh.ecart.exp.direct",
+  "ngrokPid": 5853,
   "webpackServerPort": null
 }

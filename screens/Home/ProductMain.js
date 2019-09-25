@@ -91,7 +91,9 @@ addToCart(){
         isInCart: true
       });
     }
-  });
+  }).catch(err=>{
+    console.log("ebug here",err);
+  })
 }
 
 buy(){
@@ -103,16 +105,7 @@ buy(){
   this.props.navigation.navigate('Cart');
 }    
 addToWishlist(){
-  // if(!this.state.product.is_active){
-  //   showMessage({
-  //     message:"Can't be added to wishlist",
-  //     description:"this product may not be available at this moment",
-  //     type:"danger",
-  //     autoHide:true
-  //   });
-  //   return;
-  // }
-  
+
   obj = {
     product_id:this.state.product.id
   }
@@ -156,7 +149,7 @@ decreaseQTY(){
 }
  
   render() {
-   
+    // console.log("main product",this.state.product);
     return (
       this.state.loading?<Loader/>: 
       <Wrapper noBackground>
