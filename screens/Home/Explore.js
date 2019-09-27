@@ -82,7 +82,7 @@ class Explore extends Component {
                   page:this.state.page+1
               });
             //   this.props.toggleLoading();
-              if(data.products.length==0){
+              if(data.products.length<=4){
                   console.log("hiding button")
                   this.setState({
                       hideLoadMoreButton:true

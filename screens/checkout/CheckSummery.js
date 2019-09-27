@@ -143,7 +143,7 @@ export class CheckSummery extends Component {
                 
                 <View style={{flex:1,padding:10}}>
                  <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
-                    <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff"}}>
+                    <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff",margin:10,borderRadius:10}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Payment Type :</Text>
                             <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"cash on delivery"}</Text>
@@ -152,7 +152,7 @@ export class CheckSummery extends Component {
                     <View>
                         <BillingAddress address={parsedAddress}/>
                     </View>
-                    <View style={{backgroundColor:"#fff"}}>
+                    <View style={{backgroundColor:"#fff",borderRadius:10}}>
                         <OrderItemsTable items={this.props.cartItems}/>
                     </View>
                  </ScrollView>

@@ -82,7 +82,7 @@ cancelOrder(){
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../../images/backgroundimage.jpg")}>
         <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
         <View style={{padding:10}}> 
-            <View style={{backgroundColor:"#fff",padding:10}}>
+            <View style={{backgroundColor:"#fff",padding:10,borderRadius:10}}>
                 <View style={styles.jrow}>
                     <Text style={styles.label}>Order ID:</Text><Text>{this.state.orderInfo.id}</Text>
                 </View>
@@ -102,7 +102,7 @@ cancelOrder(){
                      {this.state.cancelled?"Cancelled":delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                 </View>
             </View>
-            <View style={{backgroundColor:"#fff",paddingHorizontal:10}}>
+            <View style={{backgroundColor:"#fff",paddingHorizontal:10,marginTop:10,borderRadius:10}}>
                 <Text style={[styles.label,{color:"#c0392b"}]}>Order Contents:</Text>
                 <OrderItemsTable  items={this.state.products}/>
             </View> 
