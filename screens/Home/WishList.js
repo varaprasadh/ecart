@@ -75,7 +75,7 @@ class WishList extends Component {
         this.props.wishlistItems.forEach((item,i)=>{
             Items.push(
                 <Product key={i} onClick={this.openProductPage.bind(this)} productdata={item} onRemove={this.removeItem.bind(this)} />
-            ); 
+            );   
         })  
         return (
          this.props.loading?<Loader/>:

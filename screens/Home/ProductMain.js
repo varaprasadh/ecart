@@ -120,7 +120,7 @@ addToWishlist(){
     if(data.success){
         this.props.changeWishlistStatus(this.state.product.id, true);
         console.log("debug1",this.state.product);
-        this.props.addToWishlist(this.state.product);
+        this.props.addToWishlist({...this.state.product,...{quantity:this.state.product.availableQuantity}});
         this.props.changeCurrentStatus(this.state.product.id, {
           isinWishlist: true
         });
