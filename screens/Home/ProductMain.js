@@ -91,7 +91,9 @@ addToCart(){
         isInCart: true
       });
     }
-  });
+  }).catch(err=>{
+    console.log("ebug here",err);
+  })
 }
 
 buy(){
@@ -103,16 +105,7 @@ buy(){
   this.props.navigation.navigate('Cart');
 }    
 addToWishlist(){
-  if(!this.state.product.is_active){
-    showMessage({
-      message:"Failed",
-      description:"this products can't be added to wishlist",
-      type:"danger",
-      autoHide:true
-    });
-    return;
-  }
-  
+
   obj = {
     product_id:this.state.product.id
   }
@@ -126,6 +119,7 @@ addToWishlist(){
   }).then(res=>res.json()).then(data=>{
     if(data.success){
         this.props.changeWishlistStatus(this.state.product.id, true);
+        console.log("debug1",this.state.product);
         this.props.addToWishlist(this.state.product);
         this.props.changeCurrentStatus(this.state.product.id, {
           isinWishlist: true
@@ -156,12 +150,12 @@ decreaseQTY(){
 }
  
   render() {
-   
+    // console.log("main product",this.state.product);
     return (
       this.state.loading?<Loader/>: 
       <Wrapper noBackground>
       {
-         instock = this.state.product.quantity > 0 && this.state.product.is_active
+         instock = this.state.product.availableQuantity > 0 && this.state.product.is_active
       }
         <View style={[styles.container,{marginBottom:40}]}>
           <TouchableWithoutFeedback  onPress={()=>this.props.navigation.goBack()}>

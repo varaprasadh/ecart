@@ -118,7 +118,7 @@ class CheckAddress extends Component {
                             </View> 
                         </View>
                         <View style={styles.inputstyle} >
-                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Area:</Text>
+                            <Text style={[{color:"#fff",fontWeight:"bold"}]}>Dno & Area:</Text>
                             <TextInput placeholder="Enter Area"
                             style={styles.input} 
                             value={this.state.area}

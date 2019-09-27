@@ -34,6 +34,7 @@ class Explore extends Component {
         }
        this.loadCats=this.loadCats.bind(this);
        this.onRefresh=this.onRefresh.bind(this);
+       this.loadInitialProducts = this.loadInitialProducts.bind(this);
     }
 
    onProductSelect(product){
@@ -68,6 +69,8 @@ class Explore extends Component {
   }
   
   loadInitialProducts(){
+      console.log(this.state.page);
+
        this.setState({
           Mloading:true
       });
@@ -82,7 +85,7 @@ class Explore extends Component {
                   page:this.state.page+1
               });
             //   this.props.toggleLoading();
-              if(data.products.length==0){
+              if(data.products.length<=4){
                   console.log("hiding button")
                   this.setState({
                       hideLoadMoreButton:true
@@ -109,9 +112,10 @@ class Explore extends Component {
       this.setState({
           page:1,
           refreshing:true
+      },()=>{
+          this.loadInitialProducts();
       });
-      this.loadInitialProducts();
-
+      
   }
 
   componentWillMount(){ 
@@ -174,19 +178,25 @@ class Explore extends Component {
                         </View>
                    </View>     
                        {this.props.products.length?
-                        <ScrollView>
-                            <Text style={styles.label}>Latest Products</Text>
-                            <Products
-                                refreshing={this.state.refreshing}
-                                onRefresh={this.onRefresh}
-                                products={this.props.products}
-                                onProductSelect={this.onProductSelect.bind(this)}
-                            />
-                            {
-                                !this.state.hideLoadMoreButton &&
-                                <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
-                            }
-                        </ScrollView>:
+                        <View style={{flex:1}}>
+                            <ScrollView style={{flex:1}}
+                             refreshControl={
+                             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
+                            >
+                                <Text style={styles.label}>Latest Products</Text>
+                                
+                                    <Products
+                                        refreshing={this.state.refreshing}
+                                        onRefresh={this.onRefresh}
+                                        products={this.props.products}
+                                        onProductSelect={this.onProductSelect.bind(this)}
+                                    />
+                                {
+                                    !this.state.hideLoadMoreButton &&
+                                      <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                                }
+                            </ScrollView>
+                         </View>:
                         <EmptyItems message="No products are available!"/>
                        }
                 </ImageBackground>
@@ -205,6 +215,14 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         color:"#fff"
     },
+    bottom:{
+        position:"absolute",
+        bottom:0,
+        right:0,
+        left:0,
+        display:"flex",
+        alignItems:"center"
+    }
 });
 
 mapStateToProps=state=>{

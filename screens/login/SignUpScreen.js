@@ -209,7 +209,7 @@ class SignUpScreen extends Component {
                                         style={[styles.inputline,styles.input]}
                                         returnKeyType="next"
                                         placeholderTextColor = "#bdc3c7"
-                                        placeholder="Enter area"
+                                        placeholder="Enter Dno & area"
                                         onSubmitEditing={()=>this.block._root.focus()}
                                         value={this.state.area}
                                         onChangeText={text=>this.setState({area:text})}

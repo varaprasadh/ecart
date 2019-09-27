@@ -23,7 +23,7 @@ class BillingAddress extends Component {
                 <Text style={styles.value}>{`+965 ${address.phone_number}`}</Text>
             </View>
             <View style={[{flexDirection:"row"},styles.frow]}>
-                <Text style={styles.key}>area :</Text>
+                <Text style={styles.key}>Dno & area :</Text>
                 <Text style={styles.value}>{`${address.area}`}</Text>
             </View>
             <View style={[{flexDirection:"row"},styles.frow]}>

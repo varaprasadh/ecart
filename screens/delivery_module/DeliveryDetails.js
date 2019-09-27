@@ -170,7 +170,7 @@ export class DeliveryDetails extends Component {
                     <Text style={styles.title}>Address:</Text>
                     <View>
                        <View style={[styles.frow,styles.adrstyles]}>
-                           <Text style={styles.label}>Area :</Text>
+                           <Text style={styles.label}>Dno & Area :</Text>
                            <Text style={styles.adrtext}>{this.state.billing_address.area||""}</Text>
                        </View>
                        <View style={[styles.frow,styles.adrstyles]}>

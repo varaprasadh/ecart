@@ -11,8 +11,10 @@ export class Wrapper extends Component {
             <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
             {
             Platform.OS == "ios" ?
-                <SafeAreaView style={[{flex:1},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
-                   {this.props.children}
+                <SafeAreaView style={[{flex:1}]}>
+                   <View style={[{flex:1,paddingTop:10},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
+                      {this.props.children}
+                   </View>
                 </SafeAreaView>:
                 <View style={[{flex:1,paddingTop:StatusBar.currentHeight},{...!this.props.noBackground?{backgroundColor: "#F2AA4CFF"}:{}}]}>
                    {this.props.children}
@@ -22,10 +24,5 @@ export class Wrapper extends Component {
         )
     }
 }
-const styles=StyleSheet.create({
-    container:{
-        
-    }
-})
 
 export default Wrapper

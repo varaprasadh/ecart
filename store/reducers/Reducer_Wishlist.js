@@ -23,7 +23,8 @@ export default function (state =wishlist, action) {
                img: p.images[0] ? {
                  uri: p.images[0]
                } : require('../product_images/noimage.jpg'),
-               quantity: p.quantity
+               quantity: p.quantity,
+               isActive:p.is_active
              } 
              return parsedProduct;
            });
