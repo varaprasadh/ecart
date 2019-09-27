@@ -24,10 +24,5 @@ export class Wrapper extends Component {
         )
     }
 }
-const styles=StyleSheet.create({
-    container:{
-        
-    }
-})
 
 export default Wrapper
