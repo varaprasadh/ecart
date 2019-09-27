@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     },
     remove_btn:{
         color:"#fff",
-        fontSize:18,
         backgroundColor: "#e74c3c",
         paddingVertical:5,
         paddingHorizontal:10,
@@ -128,7 +127,6 @@ const styles = StyleSheet.create({
     },
     remove_btn_stock:{
         color:"#fff",
-        fontSize:18,
         paddingVertical:5,
         paddingHorizontal:10,
         borderRadius:5,
