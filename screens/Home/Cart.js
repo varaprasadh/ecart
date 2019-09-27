@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions,RefreshControl } from 'react-native';
 import Product from "./components/product"
 
 import {connect} from "react-redux";
@@ -15,10 +15,12 @@ class Cart extends Component {
        super(props);
        this.state={
            cartItems:props.cartItems,
+           refresh:false
        } 
+       this.loadCart = this.loadCart.bind(this);
    }
-    componentWillMount(){
-       fetch(`${this.props.baseUrl}/cart`,{
+  loadCart(){
+      fetch(`${this.props.baseUrl}/cart`,{
            method:"GET",
            headers:{
                "content-Type":"application/json",
@@ -41,11 +43,17 @@ class Cart extends Component {
                 this.props.addToCart(parsedProduct);
                })
            }
+           this.setState({
+               refresh:false,
+           })
        }).catch(err=>err);
+  }
 
+    componentWillMount(){
+       this.loadCart();
     } 
  removeFromCart(id){ 
-    obj = { 
+    obj = {   
         product_id:id 
     };
     fetch(`${this.props.baseUrl}/remove_item_from_cart`,{
@@ -65,6 +73,13 @@ class Cart extends Component {
  }
    openProductPage(id){
        this.props.navigation.navigate("ExploreProduct",{id});
+   }
+   onRefresh(){
+       this.setState({
+           refresh:true
+       });
+       this.loadCart();
+
    }
     render() {
         cartProducts=[];
@@ -89,7 +104,10 @@ class Cart extends Component {
             <View style={styles.container}>
                 <View> 
                     <ScrollView 
-                    style={{paddingBottom:20}}>
+                    style={{paddingBottom:20}}
+                    refreshControl={
+                             <RefreshControl refreshing={this.state.refresh} onRefresh={this.onRefresh.bind(this)}/>}
+                    >
                     {(()=>cartProducts)()}
                     </ScrollView>
                 </View>

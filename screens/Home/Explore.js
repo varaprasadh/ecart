@@ -34,6 +34,7 @@ class Explore extends Component {
         }
        this.loadCats=this.loadCats.bind(this);
        this.onRefresh=this.onRefresh.bind(this);
+       this.loadInitialProducts = this.loadInitialProducts.bind(this);
     }
 
    onProductSelect(product){
@@ -68,6 +69,8 @@ class Explore extends Component {
   }
   
   loadInitialProducts(){
+      console.log(this.state.page);
+
        this.setState({
           Mloading:true
       });
@@ -109,9 +112,10 @@ class Explore extends Component {
       this.setState({
           page:1,
           refreshing:true
+      },()=>{
+          this.loadInitialProducts();
       });
-      this.loadInitialProducts();
-
+      
   }
 
   componentWillMount(){ 
@@ -175,7 +179,10 @@ class Explore extends Component {
                    </View>     
                        {this.props.products.length?
                         <View style={{flex:1}}>
-                            <ScrollView style={{flex:1}}>
+                            <ScrollView style={{flex:1}}
+                             refreshControl={
+                             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
+                            >
                                 <Text style={styles.label}>Latest Products</Text>
                                 
                                     <Products

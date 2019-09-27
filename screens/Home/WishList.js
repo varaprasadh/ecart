@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text, StyleSheet,ScrollView,TouchableOpacity,Dimensions,RefreshControl } from 'react-native';
 import Product from "./components/Product_wishlist";
 import Wrapper from './Wrapper';
 
@@ -12,26 +12,35 @@ import EmptyItems from '../major_components/EmptyItems';
 
 
 class WishList extends Component {
-    
-
+    constructor(props){
+        super(props);
+        this.state={
+            refresh:false
+        }
+        this.loadWishlist = this.loadWishlist.bind(this);
+    }
+  loadWishlist(){
+       fetch(`${this.props.baseUrl}/wish_list`, {
+           method: "GET",
+           headers: {
+               "content-Type": "application/json",
+               "AUTH-TOKEN": this.props.AUTH_TOKEN
+           }
+       }).then(res => res.json()).then(data => {
+           if (data.success == true) {
+               let products = data.products;
+               this.props.toggleLoading();
+               this.props.loadWishlist(products);
+           }
+           this.setState({
+               loading: false,
+               refresh:false
+           });
+           this.props.toggleLoading();
+       }).catch(err => console.error(err));
+  }
     componentWillMount(){
-        fetch(`${this.props.baseUrl}/wish_list`,{
-            method:"GET",
-            headers:{
-                "content-Type":"application/json",
-                "AUTH-TOKEN":this.props.AUTH_TOKEN
-            }
-        }).then(res=>res.json()).then(data=>{
-            if(data.success==true){
-                let products=data.products;
-                this.props.toggleLoading();
-                this.props.loadWishlist(products);
-            }
-            this.setState({
-                loading:false 
-            });
-             this.props.toggleLoading();
-        }).catch(err=>console.error(err));
+       this.loadWishlist();
     }
    openProductPage(id){
        this.props.navigation.navigate('ExploreProduct',{id})
@@ -54,6 +63,13 @@ class WishList extends Component {
             }
         }).catch(err=>console.log(err));       
     }
+    onRefresh(){
+        this.setState({
+            refresh:true
+        });
+        this.loadWishlist();
+
+    }
     render() {
         Items=[];
         this.props.wishlistItems.forEach((item,i)=>{
@@ -66,7 +82,10 @@ class WishList extends Component {
             Items.length>0?
             <Wrapper noBackground>
                     <View style={{flex:1}}>
-                        <ScrollView style={{flex:1,paddingBottom:35}}>
+                        <ScrollView style={{flex:1,paddingBottom:35}}
+                          refreshControl={
+                             <RefreshControl refreshing={this.state.refresh} onRefresh={this.onRefresh.bind(this)}/>}
+                        >
                             {(()=>Items)()}
                         </ScrollView> 
                     </View>
