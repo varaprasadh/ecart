@@ -42,14 +42,14 @@ class Product extends Component {
               this.props.changeCartStatus_wishlist(this.state.product.id,{isInCart:true});
            }
        });  
-   }  
+   }   
  
     
     render() {
-    //    console.log("wishlist",this.props.productdata); 
+       console.log("wishlist",this.props.productdata); 
         quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
-        instock = this.props.productdata.quantity > 0 && this.props.productdata.isActive
+        instock = this.props.productdata.quantity > 0 && (this.props.productdata.isActive || this.props.productdata.is_active)
         return ( 
       <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
           <View style={{height:150}}>
@@ -58,7 +58,7 @@ class Product extends Component {
                         <Image source={this.props.productdata.img} 
                         style={{flex:1,width:null,height:null,borderRadius:10,}}
                         />
-                </View>
+                </View> 
                 <View style={{flex:3}} style={styles.productInfo}>
                     <View>
                          <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
