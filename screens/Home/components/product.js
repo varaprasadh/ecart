@@ -40,6 +40,7 @@ class Product extends Component {
  
 
     render() {
+        currency = Number(this.props.productdata.price).toFixed(3)<1?"fils":"KD"
         return (  
             <TouchableWithoutFeedback
              onPress={()=>this.props.onClick(this.props.productdata.id)}
@@ -58,7 +59,7 @@ class Product extends Component {
              </View>
              <View>
                <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                {Number(this.props.productdata.price).toFixed(3)} KD
+                {Number(this.props.productdata.price).toFixed(3)} {currency}
                 </Text>
              </View>
              <View style={styles.ctrlwrapper}>

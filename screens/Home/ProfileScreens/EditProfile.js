@@ -22,12 +22,11 @@ class EditProfile extends Component {
 
 
   isStateValid(){
-    let {first_name,last_name,mobile}=this.state;
+    let {first_name='',last_name='',mobile}=this.state;
     if(first_name.trim()!='' && last_name.trim()!==''){
       return true;
     }
     return false;
-
   }
   saveProfile(){
     let obj={

@@ -150,7 +150,13 @@ decreaseQTY(){
 }
  
   render() {
-    // console.log("main product",this.state.product);
+    // console.log("main product", Number(this.state.product.price || 0) < 1);
+    currency='';
+    if(!this.state.loading){
+      console.log(this.state.product.price,"deudgd");
+     currency=Number(this.state.product.price)<1?"fils":"KD";
+    }
+
     return (
       this.state.loading?<Loader/>: 
       <Wrapper noBackground>
@@ -185,7 +191,7 @@ decreaseQTY(){
                <Text style={styles.pCat}>{this.state.product.category}</Text>
                <View style={[styles.pPrice,{flexDirection:"row",alignItems:"center"}]}>
                  {/* <Text style={{fontWeight:"bold",color:"#27ae60",fontSize:20}}></Text> */}
-                 <Text style={styles.styledPrice}>{Number(this.state.product.price).toFixed(3)} KD</Text>
+                 <Text style={styles.styledPrice}>{Number(this.state.product.price).toFixed(3)} {currency}</Text>
                </View>
                <View style={styles.description}>
                   <Text style={[styles.pCat,{color:"#e74c3c",fontSize:20}]}>Description</Text>
