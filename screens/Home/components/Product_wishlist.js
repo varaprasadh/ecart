@@ -43,11 +43,12 @@ class Product extends Component {
            }
        });  
    }   
- 
+  
     
     render() {
-       console.log("wishlist",this.props.productdata); 
-        quantity=this.props.productdata.quantity||0;
+    //    console.log("wishlist",this.props.productdata); 
+    currency = Number(this.props.productdata.price)<1?"fils":"KD"
+    quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
         instock = this.props.productdata.quantity > 0 && (this.props.productdata.isActive || this.props.productdata.is_active)
         return ( 
@@ -67,7 +68,7 @@ class Product extends Component {
                     </View> 
                     <View> 
                     <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                        {Number(this.props.productdata.price).toFixed(3)} KD
+                        {Number(this.props.productdata.price).toFixed(3)} {currency}
                         </Text> 
                     </View>
                     

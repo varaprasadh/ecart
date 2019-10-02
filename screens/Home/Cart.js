@@ -95,7 +95,8 @@ class Cart extends Component {
                     onValueChange={this.props.setQuantity.bind(this)}
                      />
             )
-        })
+        });
+        currency=totalPrice<1?"fils":"KD";
         return( 
          this.props.loading?
          <Loader/>
@@ -115,7 +116,7 @@ class Cart extends Component {
                     <View style={styles.checkouttab}>
                         <View>
                             <Text>Total</Text>
-                            <Text style={{fontWeight:"bold",fontSize:18,color:"green"}}>{Number(totalPrice).toFixed(3)} KD</Text>
+                            <Text style={{fontWeight:"bold",fontSize:18,color:"green"}}>{Number(totalPrice).toFixed(3)} {currency}</Text>
                         </View>
                         <TouchableOpacity 
                                 style={styles.btn}
