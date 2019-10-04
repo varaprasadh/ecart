@@ -7,7 +7,8 @@ class ForgetPassword extends Component {
         super(props);
         this.state={
             submit_disabled:true,
-            mobile:''
+            password:'',
+            confirm_password:''
         }
     }
     
@@ -16,40 +17,42 @@ class ForgetPassword extends Component {
             message:"TODO",
             description:"it's not implimented yet",
             type:"warning"
-        });
-        this.props.navigation.push('ResetPassword');
+        })
    } 
     render() {
-        submit_disabled = !/^\d{8}$/.test(this.state.mobile);
+        submit_disabled =!( this.state.password!='' && this.state.password===this.state.confirm_password);
         return (
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={[styles.card]}>
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
-               <View className="input-row" style={styles.inputRow}>
+               <View  style={styles.inputRow}>
                     <Text style={styles.label} >
-                     Please provide us your registered email address.
+                     Enter Your New Password.
                     </Text>
-                    <View style={styles.row}>
+                    <View style={styles.inputwrapper}>
                         <Input 
-                            style={[styles.inputline,styles.input,{marginRight:5}]}
-                            value="+965"
-                            editable={false}
-                            />
+                        style={[styles.inputline,styles.input,]}
+                        keyboardType="number-pad"
+                        onChangeText={text=>this.setState({password:text})} 
+                        placeholder="Enter Password"
+                        secureTextEntry={true}
+                        returnKeyType="go"/>
                         <Input 
-                            style={[styles.inputline,styles.input,{flex:4}]}
+                            style={[styles.inputline,styles.input,{marginTop:10}]}
                             keyboardType="number-pad"
-                            onChangeText={text=>this.setState({mobile:text})}
-                            maxLength={8}
+                            placeholder="Re-Enter Password"
+                            secureTextEntry={true}
+                            onChangeText={text=>this.setState({confirm_password:text})}
                             returnKeyType="go"/>
                     </View>
-                </View>
-                <TouchableOpacity 
-                    onPress={this.confirm.bind(this)} 
-                    disabled={submit_disabled} 
+                    <TouchableOpacity 
+                        onPress={this.confirm.bind(this)} 
+                        disabled={submit_disabled} 
                         style={[styles.btn,{backgroundColor:submit_disabled?"#95a5a6":"#2ecc71"}]}>
-                        <Text style={{fontSize:20,color:"white",elevation:6}}>CONFIRM</Text>
-                </TouchableOpacity>
+                           <Text style={{fontSize:20,color:"white",elevation:2}}>SUBMIT</Text>
+                   </TouchableOpacity>
+                </View>
             </View>   
         </View>
         </ImageBackground>
@@ -62,22 +65,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
     },
     input:{
         fontSize:20,
-        paddingRight:10,
+        paddingHorizontal:10,
         paddingTop:1,
-        paddingLeft:10,
-        fontSize:16
-       },
-       inputline:{
+        fontSize:16,       
+    },
+    inputline:{
         borderColor:"#7f8c8d",
         borderBottomWidth:1
-        },
+    },
     inputRow:{
-        display:"flex",
         marginBottom:5,
+      },
+      inputwrapper:{
+        display:"flex"
       },
     row:{
         display:"flex",
@@ -91,16 +95,14 @@ const styles = StyleSheet.create({
     },
     card:{
         backgroundColor:"white",
-        paddingTop:10,
-        paddingBottom:10,
-        paddingLeft:30,
-        paddingRight:30,
+        paddingVertical:10,
+        paddingHorizontal:30,
         elevation:3,
-        borderRadius:5
+        borderRadius:5,
+        marginHorizontal:20
     },
     btn:{
-        paddingBottom:5,
-        paddingTop:5,
+        paddingVertical:5,
         backgroundColor:"green",
         flexDirection:"row",
         justifyContent:"center",
@@ -110,5 +112,4 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
 export default ForgetPassword;
