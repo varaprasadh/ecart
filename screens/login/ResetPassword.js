@@ -8,19 +8,60 @@ class ForgetPassword extends Component {
         this.state={
             submit_disabled:true,
             password:'',
-            confirm_password:''
+            confirm_password:'',
+            mobile: this.props.navigation.getParam('mobile'),
+            otp: this.props.navigation.getParam('otp'),
         }
     }
     
    confirm(){
-        showMessage({
-            message:"TODO",
-            description:"it's not implimented yet",
-            type:"warning"
-        })
+       let obj={
+           otp:this.state.otp, 
+           password:this.state.password,
+           password_confirmation:this.state.confirm_password,
+           phone_number:this.state.mobile
+       }
+      this.setState({
+          loading:true
+      });
+       fetch('http://18.219.157.9/reset_password', {
+           method: "POST",
+           headers: {
+               "content-Type": "application/json"
+           },
+           body: JSON.stringify(obj)
+       }).then(res=>res.json()).then(data=>{
+        if(data.success==true){
+            showMessage({
+                message:"success",
+                description:"password has been reset!",
+                type:"success"
+            });
+        }else{
+             showMessage({
+               message:"Failed",
+               description:"something went wrong,Try Again Later!",
+               type:"danger"
+           });
+        }
+        this.setState({
+            loading:false
+        });
+        this.props.navigation.navigate('Login');
+       }).catch(err=>{
+           this.setState({
+               loading:false
+           });
+           showMessage({
+               message:"Failed",
+               description:"something went wrong,Try Again Later!",
+               type:"danger"
+           });
+           this.props.navigation.navigate('Login');
+       })
    } 
     render() {
-        submit_disabled =!( this.state.password!='' && this.state.password===this.state.confirm_password);
+        submit_disabled =!( this.state.password!='' && this.state.password.length>7 && this.state.password===this.state.confirm_password);
         return (
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
@@ -37,12 +78,14 @@ class ForgetPassword extends Component {
                         onChangeText={text=>this.setState({password:text})} 
                         placeholder="Enter Password"
                         secureTextEntry={true}
+                        value={this.state.password}
                         returnKeyType="go"/>
                         <Input 
                             style={[styles.inputline,styles.input,{marginTop:10}]}
                             keyboardType="number-pad"
                             placeholder="Re-Enter Password"
                             secureTextEntry={true}
+                            value={this.state.confirm_password}
                             onChangeText={text=>this.setState({confirm_password:text})}
                             returnKeyType="go"/>
                     </View>
@@ -65,7 +108,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        // alignItems: 'center',
     },
     input:{
         fontSize:20,

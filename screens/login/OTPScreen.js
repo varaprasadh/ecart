@@ -17,6 +17,7 @@ class MyClass extends Component {
             type:this.props.navigation.getParam('type'),
             loading:false
         }
+        console.log("otp screen",this.state);
         this.handleChange=this.handleChange.bind(this);
         this.handleKeyPress=this.handleKeyPress.bind(this);
         this.inputrefs=[];
@@ -148,6 +149,11 @@ class MyClass extends Component {
               });
           })
       }
+       if(this.state.type === "reset_password") {
+           console.log(this.state.mobile,"debug");
+           otpString = this.passcodes.join("");
+           this.props.navigation.push('ResetPassword',{mobile:this.state.mobile,otp:otpString});
+       }
       
 
     }

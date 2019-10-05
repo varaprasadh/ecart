@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as Input} from 'react-native';
 
 import {showMessage} from 'react-native-flash-message';
+import {connect} from 'react-redux';
+
 class ForgetPassword extends Component {
     constructor(props){
         super(props);
@@ -12,12 +14,42 @@ class ForgetPassword extends Component {
     }
     
    confirm(){
-        showMessage({
-            message:"TODO",
-            description:"it's not implimented yet",
-            type:"warning"
-        });
-        this.props.navigation.push('ResetPassword');
+       this.setState({
+           loading:true
+       });
+        let obj = {
+            phone_number: this.state.mobile
+        }
+       fetch('http://18.219.157.9/generate_otp',{
+            method:"POST",
+            headers:{
+                "content-Type":"application/json"
+            },
+            body:JSON.stringify(obj)
+       }).then(res=>res.json()).then(data=>{
+            if(data.success==false){
+              this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"reset_password"})
+            }else{
+                showMessage({
+                    message:"Failed",
+                    description:data.message,
+                    type:"danger"
+                });
+            }
+        this.setState({
+            loading:false
+        })
+       }).catch(err=>{
+           this.setState({
+               loading:false
+           });
+           showMessage({
+               message:"Failed",
+               description:"Something went wrong",
+               autoHide:true,
+               type:"danger"
+            });
+       })
    } 
     render() {
         submit_disabled = !/^\d{8}$/.test(this.state.mobile);
@@ -41,6 +73,7 @@ class ForgetPassword extends Component {
                             keyboardType="number-pad"
                             onChangeText={text=>this.setState({mobile:text})}
                             maxLength={8}
+                            value={this.state.mobile}
                             returnKeyType="go"/>
                     </View>
                 </View>
@@ -110,5 +143,10 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
-export default ForgetPassword;
+mapState = state => {
+    return {
+        baseUrl: state.Config.base_url,
+    }
+}
+
+export default connect(mapState)(ForgetPassword);
