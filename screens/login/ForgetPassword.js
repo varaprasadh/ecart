@@ -27,7 +27,7 @@ class ForgetPassword extends Component {
             },
             body:JSON.stringify(obj)
        }).then(res=>res.json()).then(data=>{
-            if(data.success==false){
+            if(data.success==true){
               this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"reset_password"})
             }else{
                 showMessage({
