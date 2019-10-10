@@ -81,7 +81,7 @@ class ChangePassword extends Component {
                 <View style={styles.form}>
                     <Text 
                       style={{fontSize:14,fontWeight:"bold",color:"#fff",marginBottom:20}}>
-                       change Password below!
+                       Change Password Below!
                     </Text>
                     <View className="input-row" style={styles.inputRow}>
                         <Text style={styles.label} >Old Password</Text>

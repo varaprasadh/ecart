@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,Dimensions,TouchableWithoutFeedback,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
+import { showMessage } from 'react-native-flash-message';
 // create a component
 
 const d_width=Dimensions.get('window').width;
@@ -23,6 +24,12 @@ class Product extends Component {
        () =>{
             this.props.onValueChange(this.props.productdata.id, this.state.quantity);
        });
+       }else{
+           showMessage({
+               type:"warning",
+               message:"warning",
+               description:"the quantity may not be available right now."
+           })
        }
    }
    decrease(){
@@ -40,23 +47,23 @@ class Product extends Component {
  
 
     render() {
-        currency = Number(this.props.productdata.price).toFixed(3)<1?"fils":"KD"
+        currency = Number(this.props.productdata.price).toFixed(3)<1?"Fils":"KD";
+        title = this.props.productdata.title;
+        title = title.length < 25 ? title : title.substring(0,23)+"...";
         return (  
             <TouchableWithoutFeedback
              onPress={()=>this.props.onClick(this.props.productdata.id)}
             >
           <View style={styles.container} >
-           <View className="p-image" style={[styles.img,{flex:1,maxWidth:200}]}>
+           <View style={[styles.img,{width:150}]}>
                 <Image source={this.props.productdata.img} loadingIndicatorSource={require("./assets/img_loading.gif")}
                 style={{flex:1,width:null,height:null,borderRadius:10,}}
                 /> 
            </View>
            <View style={{flex:4}} style={styles.productInfo}>
-             <View>
-               <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
-                     {this.props.productdata.title}
+                <Text numberOfLines={1} style={{fontSize:18,paddingVertical:10,textTransform:"capitalize"}}>
+                     {title}
                 </Text>
-             </View>
              <View>
                <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
                 {Number(this.props.productdata.price).toFixed(3)} {currency}
@@ -131,7 +138,8 @@ const styles = StyleSheet.create({
         justifyContent:"space-around",
         marginRight:5,
         borderWidth:1,
-        borderColor: "#7f8c8d"
+        borderColor: "#7f8c8d",
+        alignItems:"center"
 
     },
     qtbtn: {

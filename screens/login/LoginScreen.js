@@ -117,9 +117,9 @@ class LoginScreen extends Component {
                                     onChangeText={text=>this.setState({password:text})} 
                                     value={this.state.password}
                                     returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input,{marginBottom:10}]} />
-                                {/* <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{marginTop:10,marginBottom:10,}]}>
+                                <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{paddingVertical:10}]}>
                                   <Text style={{color:"#e74c3c",fontWeight:"bold"}}>Forgot Password?</Text>
-                                </TouchableOpacity> */} 
+                                </TouchableOpacity> 
                             </View> 
                             <TouchableOpacity style={styles.customBtn} onPress={this.signIn.bind(this)}>
                                <Text style={{color:"white",fontWeight:"bold"}}>Sign In</Text>

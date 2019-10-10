@@ -7,6 +7,7 @@ import OTPScreen from "./OTPScreen";
 import SignWithOTP from "./SignWithOTP";
 import ForgetPassword from "./ForgetPassword";
 
+import ResetPassword from "./ResetPassword";
 
 
 const LoginStack =createStackNavigator({
@@ -14,7 +15,8 @@ const LoginStack =createStackNavigator({
     SignUP:SignUpScreen,
     OTP:OTPScreen,
     SignWithOTP:SignWithOTP,
-    ForgetPassword: ForgetPassword
+    ForgetPassword: ForgetPassword,
+    ResetPassword:ResetPassword
 },{ 
     initialRouteName: "Login",
     headerMode:"none"

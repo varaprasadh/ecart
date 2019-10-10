@@ -153,8 +153,7 @@ decreaseQTY(){
     // console.log("main product", Number(this.state.product.price || 0) < 1);
     currency='';
     if(!this.state.loading){
-      console.log(this.state.product.price,"deudgd");
-     currency=Number(this.state.product.price)<1?"fils":"KD";
+     currency=Number(this.state.product.price)<1?"Fils":"KD";
     }
 
     return (

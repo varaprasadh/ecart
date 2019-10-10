@@ -39,10 +39,10 @@ class SignUpScreen extends Component {
           lastname: /^[a-zA-Z]+$/,
           mobile:/^\d{8}$/,
           email:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          area: /^\w+( +\w+)*$/,
-          block: /^\w+( +\w+)*$/,
-          street: /^\w+( +\w+)*$/,
-          lane: /^\w+( +\w+)*$/,
+          area: /^(?!\s*$).+/,
+          block: /^(?!\s*$).+/,
+          street: /^(?!\s*$).+/,
+          lane: /^(?!\s*$).+/,
           password:/^[a-zA-Z0-9]{4,}$/g,
           password_confirmation:/^[a-zA-Z0-9]{4,}$/g
       }

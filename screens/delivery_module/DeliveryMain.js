@@ -166,7 +166,6 @@ loadData(){
                       <Item data={item} index={index} onSelect={this.onSelect.bind(this)}/>
                       }
                    showsVerticalScrollIndicator={false}
-                //    ItemSeparatorComponent={()=><View style={{borderWidth:1,borderBottomColor:"#fff"}}></View>}
                    />
               </View>
           </View>
@@ -205,7 +204,7 @@ class Item extends Component{
             <View style={{flex:4}}>
                 <View style={styles.frow}>
                     <Text style={styles.label}>Order ID:</Text>
-                    <Text style={[styles.text,]} >{this.state.orderId}</Text>
+                    <Text style={[styles.text,]} >BZK{this.state.orderId}</Text>
                 </View>
                 <View style={styles.frow}>
                     <Text style={styles.label}>Customer Name:</Text>
@@ -245,7 +244,8 @@ class Item extends Component{
 const styles=StyleSheet.create({
     container:{
         flex:1,
-        paddingVertical:10
+        paddingVertical:10,
+        paddingHorizontal:10
     },
      title: {
          fontSize:20,

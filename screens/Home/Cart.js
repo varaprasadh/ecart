@@ -96,7 +96,7 @@ class Cart extends Component {
                      />
             )
         });
-        currency=totalPrice<1?"fils":"KD";
+        currency=totalPrice<1?"Fils":"KD";
         return( 
          this.props.loading?
          <Loader/>
