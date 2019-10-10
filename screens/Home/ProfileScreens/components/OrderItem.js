@@ -28,7 +28,7 @@ export default class OrderItem extends Component{
                     <View style={{flex:4}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Order ID:</Text>
-                            <Text style={styles.value}>{this.state.orderinfo.id}</Text>
+                            <Text style={styles.value}>BZK{this.state.orderinfo.id}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.label}>Amount:</Text>  

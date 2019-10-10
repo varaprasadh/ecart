@@ -62,7 +62,7 @@ class Product extends Component {
                 </View> 
                 <View style={{flex:3}} style={styles.productInfo}>
                     <View>
-                         <Text style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
+                         <Text numberOfLines={1} style={{fontSize:20,marginTop:20,marginBottom:10,textTransform:"capitalize"}}>
                             {this.props.productdata.title}
                         </Text>
                     </View> 

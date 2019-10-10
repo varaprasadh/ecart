@@ -204,7 +204,7 @@ class Item extends Component{
             <View style={{flex:4}}>
                 <View style={styles.frow}>
                     <Text style={styles.label}>Order ID:</Text>
-                    <Text style={[styles.text,]} >{this.state.orderId}</Text>
+                    <Text style={[styles.text,]} >BZK{this.state.orderId}</Text>
                 </View>
                 <View style={styles.frow}>
                     <Text style={styles.label}>Customer Name:</Text>

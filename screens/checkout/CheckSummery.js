@@ -146,7 +146,7 @@ export class CheckSummery extends Component {
                     <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff",margin:10,borderRadius:10}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Payment Type :</Text>
-                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"COD"}</Text>
+                            <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"Cash On Delivery"}</Text>
                         </View>
                     </View>
                     <View>

@@ -137,7 +137,7 @@ export class DeliveryDetails extends Component {
                   <View style={{flex:1}}>
                         <View style={styles.frow}>
                             <Text style={styles.label}>Order ID:</Text>
-                            <Text style={styles.text}>{this.state.order.id}</Text>
+                            <Text style={styles.text}>BZK{this.state.order.id}</Text>
                         </View>
                         <View style={styles.frow}>
                             <Text style={styles.label}>Customer Name:</Text>

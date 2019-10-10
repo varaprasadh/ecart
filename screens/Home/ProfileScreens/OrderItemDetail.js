@@ -84,7 +84,7 @@ cancelOrder(){
         <View style={{padding:10}}> 
             <View style={{backgroundColor:"#fff",padding:10,borderRadius:10}}>
                 <View style={styles.jrow}>
-                    <Text style={styles.label}>Order ID:</Text><Text>{this.state.orderInfo.id}</Text>
+                    <Text style={styles.label}>Order ID:</Text><Text>BZK{this.state.orderInfo.id}</Text>
                 </View>
                 <View style={styles.jrow}>
                     <Text style={styles.label}>Ordered On:</Text><Text>{this.state.orderObj.date}</Text>
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     col:{
         flex:1,
         alignItems:"center",
+        textAlign:"center"
     },
     colData:{
        color:"#2c3e50",
@@ -218,7 +219,7 @@ export class OrderItemsTable extends Component{
                     console.log(item);
                 return (
                     <View style={styles.row} key={index}>  
-                        <View style={styles.col}><Text style={[styles.colData]}>{item.product_code}</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData,{textTransform:"uppercase"}]}>BZK{item.product_code||item.id}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.title||item.product_name}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.quantity||item.ordered_quantity}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60"}]}>{item.quantity||item.ordered_quantity} X {item.price.toFixed(3)}</Text></View>
