@@ -69,12 +69,11 @@ class ForgetPassword extends Component {
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View  style={styles.inputRow}>
                     <Text style={styles.label} >
-                     Enter Your New Password.
+                     Enter Your New Password.Password Length Must Be Minimum Of 8 Characters!
                     </Text>
                     <View style={styles.inputwrapper}>
                         <Input 
                         style={[styles.inputline,styles.input,]}
-                        keyboardType="number-pad"
                         onChangeText={text=>this.setState({password:text})} 
                         placeholder="Enter Password"
                         secureTextEntry={true}
@@ -82,7 +81,6 @@ class ForgetPassword extends Component {
                         returnKeyType="go"/>
                         <Input 
                             style={[styles.inputline,styles.input,{marginTop:10}]}
-                            keyboardType="number-pad"
                             placeholder="Re-Enter Password"
                             secureTextEntry={true}
                             value={this.state.confirm_password}

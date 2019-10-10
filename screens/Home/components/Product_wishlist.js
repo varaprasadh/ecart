@@ -35,7 +35,7 @@ class Product extends Component {
        }).then(res => res.json()).then(data => {
            if (data.success == true) {
                this.props.changeCartStatus(this.state.product.id, true);
-               this.props.addToCart({...this.state.product,...{quantity:1}});
+               this.props.addToCart({...this.state.product,...{quantity:1,availableQuantity:this.state.product.quantity}});
                this.props.changeCurrentStatus(this.state.product.id, {
                    isInCart: true
                });
@@ -46,8 +46,8 @@ class Product extends Component {
   
     
     render() {
-    //    console.log("wishlist",this.props.productdata); 
-    currency = Number(this.props.productdata.price)<1?"fils":"KD"
+       console.log("wishlist",this.props.productdata); 
+    currency = Number(this.props.productdata.price)<1?"Fils":"KD"
     quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
         instock = this.props.productdata.quantity > 0 && (this.props.productdata.isActive || this.props.productdata.is_active)

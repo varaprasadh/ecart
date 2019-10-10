@@ -60,7 +60,7 @@ class ForgetPassword extends Component {
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View className="input-row" style={styles.inputRow}>
                     <Text style={styles.label} >
-                     Please provide us your registered email address.
+                     Please provide us your registered mobile number.
                     </Text>
                     <View style={styles.row}>
                         <Input 

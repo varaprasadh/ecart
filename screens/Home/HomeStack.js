@@ -23,7 +23,7 @@ const HomeStack =createMaterialBottomTabNavigator({
       navigationOptions: {  
         tabBarLabel: 'wishlist',
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="ios-bookmark" color={tintColor} size={24} />
+          <Ionicons name="ios-heart" color={tintColor} size={24} />
         )
       }  
     },

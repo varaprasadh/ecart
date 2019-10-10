@@ -13,7 +13,7 @@ class Product_Explore extends Component {
   } 
 
   render() { 
-    currency = Number(this.state.product.price)<1?"fils":"KD"
+    currency = Number(this.state.product.price)<1?"Fils":"KD"
 
     return (
     <TouchableWithoutFeedback onPress={()=>this.props.onProductSelect(this.props.product)}>

@@ -87,7 +87,7 @@ class EditProfile extends Component {
                 <View style={styles.form}>
                     <Text 
                       style={{fontSize:14,fontWeight:"bold",color:"#fff",marginBottom:20}}>
-                       you can edit the below details !
+                       You Can Edit The Details Below!
                     </Text>
                     <View className="input-row" style={styles.inputRow}>
                         <Text style={styles.label} >First Name</Text>

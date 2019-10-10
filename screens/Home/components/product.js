@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Image,Dimensions,TouchableWithoutFeedback,TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
+import { showMessage } from 'react-native-flash-message';
 // create a component
 
 const d_width=Dimensions.get('window').width;
@@ -23,6 +24,12 @@ class Product extends Component {
        () =>{
             this.props.onValueChange(this.props.productdata.id, this.state.quantity);
        });
+       }else{
+           showMessage({
+               type:"warning",
+               message:"warning",
+               description:"the quantity may not be available right now."
+           })
        }
    }
    decrease(){
@@ -40,7 +47,7 @@ class Product extends Component {
  
 
     render() {
-        currency = Number(this.props.productdata.price).toFixed(3)<1?"fils":"KD"
+        currency = Number(this.props.productdata.price).toFixed(3)<1?"Fils":"KD"
         return (  
             <TouchableWithoutFeedback
              onPress={()=>this.props.onClick(this.props.productdata.id)}

@@ -128,7 +128,7 @@ export class DeliveryDetails extends Component {
             this.state.loading?<Loader/>:
             
            <Wrapper>
-             <Header title="delivery details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
+             <Header title="Delivery Details"  backbutton backHandler={()=>this.props.navigation.goBack()}/>
              <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
               <View style={{flex:1}}>
               <ScrollView style={{flex:1}}>
@@ -167,7 +167,7 @@ export class DeliveryDetails extends Component {
                     </View> 
                 </View>
                 <View style={styles.address}>
-                    <Text style={styles.title}>Address:</Text>
+                    <Text style={styles.title}>ADDRESS:</Text>
                     <View>
                        <View style={[styles.frow,styles.adrstyles]}>
                            <Text style={styles.label}>Dno & Area :</Text>
@@ -188,7 +188,7 @@ export class DeliveryDetails extends Component {
                     </View>
                 </View>
                 <View style={styles.itemtable}>
-                    <Text style={styles.title}>Contents :</Text>
+                    <Text style={styles.title}>CONTENTS:</Text>
                     <OrderItemsTable items={this.state.products}/>
                 </View>
                 {
@@ -236,7 +236,8 @@ const styles=StyleSheet.create({
     },
     
     container:{
-        paddingVertical:20
+        paddingVertical:20,
+        paddingHorizontal:10
     },
     itemtable:{
     backgroundColor: "#fff",

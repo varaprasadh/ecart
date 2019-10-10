@@ -4,20 +4,18 @@ import { Text, View,StyleSheet} from 'react-native'
 export class ExpectedDelivery extends Component {
     render() {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        orderDate = this.props.orderDate;
-         
-       
-        dateobj = new Date(orderDate || Date.now());
-        console.log("debug",orderDate);
-        numberOfDaysToAdd = 3;
+        orderDate = this.props.orderDate+'';
+        orderDate=orderDate.split('-').reverse().join();
+        dateobj = new Date(Date.parse(orderDate) || Date.now());
+        numberOfDaysToAdd = 2;
         dateobj.setDate(dateobj.getDate() + numberOfDaysToAdd);
-        
+
         day = days[dateobj.getDay()];
-        day_date=dateobj.getDate();
+        day_date = dateobj.getDate();
         month=(Number(dateobj.getMonth())+1)+"";
         year = dateobj.getFullYear();
         date = day + ", " + day_date+"/"+month+"/"+year;
-        console.log(dateobj);
+
         return (
             <View style={styles.container}>
                <View>

@@ -207,7 +207,7 @@ export class OrderItemsTable extends Component{
         return(
             <View> 
                 <View style={[styles.row,{borderBottomWidth:1,borderBottomColor:"#2c3e50"}]}> 
-                <View style={styles.col}><Text style={[styles.colHead]}>S.No</Text></View>
+                <View style={styles.col}><Text style={[styles.colHead]}>Product Code</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>Product</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>Quantity</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>Price</Text></View>
@@ -215,9 +215,10 @@ export class OrderItemsTable extends Component{
                 { this.state.items.map((item,index)=>{
                     quantity=item.quantity||item.ordered_quantity;
                     totalPrice+=item.price*quantity
+                    console.log(item);
                 return (
                     <View style={styles.row} key={index}>  
-                        <View style={styles.col}><Text style={[styles.colData]}>{index+1}</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData]}>{item.product_code}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.title||item.product_name}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.quantity||item.ordered_quantity}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60"}]}>{item.quantity||item.ordered_quantity} X {item.price.toFixed(3)}</Text></View>

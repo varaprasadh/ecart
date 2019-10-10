@@ -149,7 +149,7 @@ class MyClass extends Component {
               });
           })
       }
-       if(this.state.type === "reset_password") {
+       if(this.state.type == "reset_password") {
            console.log(this.state.mobile,"debug");
            otpString = this.passcodes.join("");
            this.props.navigation.push('ResetPassword',{mobile:this.state.mobile,otp:otpString});
