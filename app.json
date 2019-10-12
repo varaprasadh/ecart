@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bazarkam",
-    "slug": "Bazarkam",
+    "slug": "bazarkam",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.1",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,7 +28,8 @@
       "bundleIdentifier":"com.wilson.bazarkam"
     },
     "android": {
-      "package": "com.wilson.bazarkam"
+      "package": "com.wilson.bazarkam",
+      "versionCode":2
     }
   }
 }
