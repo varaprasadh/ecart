@@ -3,6 +3,8 @@ import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as In
 
 import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
+import Wrapper from '../Home/Wrapper';
+import Header from "../major_components/Header";
 
 class ForgetPassword extends Component {
     constructor(props){
@@ -54,7 +56,9 @@ class ForgetPassword extends Component {
     render() {
         submit_disabled = !/^\d{8}$/.test(this.state.mobile);
         return (
+       <Wrapper>
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
+        <Header backbutton backHandler={this.props.navigation.goBack} color="#fff"/>
         <View style={styles.container}>
             <View style={[styles.card]}>
                <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
@@ -85,7 +89,9 @@ class ForgetPassword extends Component {
                 </TouchableOpacity>
             </View>   
         </View>
+        
         </ImageBackground>
+        </Wrapper>
         );
     }
 }
