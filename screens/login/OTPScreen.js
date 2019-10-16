@@ -6,6 +6,7 @@ import Loader from '../major_components/Loader';
 import {connect} from 'react-redux'
 import Wrapper from '../Home/Wrapper';
 import {showMessage} from "react-native-flash-message";
+import Header from '../major_components/Header';
 
 class MyClass extends Component {
     
@@ -160,6 +161,8 @@ class MyClass extends Component {
     render() {
         return (
         this.state.loading?<Loader/>:
+        <Wrapper>
+        <Header backbutton backHandler={this.props.navigation.goBack} color="#fff"/>
        <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={styles.card}>
@@ -195,6 +198,7 @@ class MyClass extends Component {
             </View>
         </View>
         </ImageBackground>
+        </Wrapper>
         );
     }
 }
