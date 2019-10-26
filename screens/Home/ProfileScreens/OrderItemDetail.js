@@ -219,7 +219,7 @@ export class OrderItemsTable extends Component{
                     console.log(item);
                 return (
                     <View style={styles.row} key={index}>  
-                        <View style={styles.col}><Text style={[styles.colData,{textTransform:"uppercase"}]}>BZK{item.product_code||item.id}</Text></View>
+                        <View style={styles.col}><Text style={[styles.colData,{textTransform:"uppercase"}]}>{item.product_code||item.id}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.title||item.product_name}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData]}>{item.quantity||item.ordered_quantity}</Text></View>
                         <View style={styles.col}><Text style={[styles.colData,{color:"#27ae60"}]}>{item.quantity||item.ordered_quantity} X {item.price.toFixed(3)}</Text></View>
