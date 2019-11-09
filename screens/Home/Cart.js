@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import EmptyItems from '../major_components/EmptyItems';
 import Loader from '../major_components/Loader';
 import Wrapper from './Wrapper';
+import { showMessage } from 'react-native-flash-message';
 
 
 class Cart extends Component {
@@ -39,7 +40,7 @@ class Cart extends Component {
                            price:product.price,
                            img: product.image_url?{uri: product.image_url}:require("./product_images/noimage.jpg")
                        }
-                   };
+                   }; 
                 this.props.addToCart(parsedProduct);
                })
            }
@@ -50,7 +51,17 @@ class Cart extends Component {
   }
 
     componentWillMount(){
-       this.loadCart();
+       if(this.props.AUTH_TOKEN==""){
+          showMessage({
+              description: "Login To Use Full Features",
+              message: "Login Required",
+              type:"danger"
+          })
+          this.props.navigation.navigate('Login');
+       }
+       else{
+          this.loadCart();
+       }
     } 
  removeFromCart(id){ 
     obj = {   

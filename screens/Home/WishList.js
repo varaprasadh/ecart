@@ -8,6 +8,7 @@ import Wrapper from './Wrapper';
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import EmptyItems from '../major_components/EmptyItems';
+import { showMessage } from 'react-native-flash-message';
  
 
 
@@ -40,7 +41,16 @@ class WishList extends Component {
        }).catch(err => console.error(err));
   }
     componentWillMount(){
-       this.loadWishlist();
+        if (this.props.AUTH_TOKEN == "") {
+            showMessage({
+                description: "Login To Use Full Features",
+                message: "Login Required",
+                type: "danger"
+            });
+            this.props.navigation.navigate('Login');
+        }else{
+           this.loadWishlist();
+        }
     }
    openProductPage(id){
        this.props.navigation.navigate('ExploreProduct',{id})
