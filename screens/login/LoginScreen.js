@@ -132,15 +132,22 @@ class LoginScreen extends Component {
                     </View>
                    </View> 
                  <View>
-                 <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20,color:"white"}]}>-OR-</Text>
+                  <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20,color:"white"}]}>-OR-</Text>
+                </View> 
+                <View>
+                  <TouchableOpacity onPress={()=>this.props.navigation.navigate('Main')}
+                      style={[styles.customBtn,{backgroundColor:"#2980b9",borderColor:"#2980b9"}]}>
+                      <Text style={{color:"white",fontWeight:"bold"}}>Login As Guest</Text>
+                  </TouchableOpacity>
                 </View>
                 <View>
-                <TouchableOpacity onPress={()=>{
-                    this.props.navigation.push("SignUP") 
-                   }}
-                 style={[styles.customBtn,{borderColor:"#e74c3c",backgroundColor:"#e74c3c"}]}>
-                    <Text style={{color:"white",fontWeight:"bold"}}>Sign Up</Text>
-                </TouchableOpacity>
+                  <Text style={[styles.centerAlign,{marginTop:20,marginBottom:20,color:"white"}]}>-OR-</Text>
+                </View>
+                <View>
+                  <TouchableOpacity onPress={()=>{this.props.navigation.push("SignUP")}}
+                      style={[styles.customBtn,{borderColor:"#e74c3c",backgroundColor:"#e74c3c"}]}>
+                      <Text style={{color:"white",fontWeight:"bold"}}>Sign Up</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

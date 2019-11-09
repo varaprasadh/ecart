@@ -7,7 +7,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
 
-import axios from 'axios';
+import { showMessage } from 'react-native-flash-message';
 
 class Profile extends Component {
    constructor(props){
@@ -17,8 +17,14 @@ class Profile extends Component {
        }
    }  
    componentWillMount() { 
-       console.log("here....",`${this.props.baseUrl}/profile`);
-       console.log("http://18.219.157.9/profile");
+      if (this.props.AUTHTOKEN == "") {
+          showMessage({
+              description: "Login To Use Full Features",
+              message: "Login Required",
+              type: "danger"
+          });
+          this.props.navigation.navigate('Login');
+      }
 
        fetch(`http://18.219.157.9/profile`, {
               "method": "GET",

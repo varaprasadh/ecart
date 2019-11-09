@@ -1,8 +1,6 @@
 
 const config={ 
-    // base_url: "https://598019a9.ngrok.io",
     base_url: "http://18.219.157.9",
-
     AUTH_TOKEN: "",
 }                   
 

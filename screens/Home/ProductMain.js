@@ -32,6 +32,7 @@ class ProductMain extends Component {
       }).start(); 
  }
  componentWillMount(){
+ 
    fetch(`${this.props.baseUrl}/product/${this.id}`,{
      method:"GET",
      headers:{
@@ -139,7 +140,7 @@ increaseQTY(){
        message:"Info",
        description:"Quantity that you are tryig to set might not be available"
      })
-   }
+   } 
 }
 decreaseQTY(){
   if(this.state.product.quantity>1){
