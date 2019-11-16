@@ -23,7 +23,6 @@ import EmptyItems from '../major_components/EmptyItems';
 import RetryButton from '../major_components/RetryButton';
 import Product_Explore from './components/Product_Explore';
 import { showMessage } from 'react-native-flash-message';
-// import { RecyclerListView,DataProvider } from 'recyclerlistview';
 
 
 class Explore extends Component {
@@ -35,9 +34,6 @@ class Explore extends Component {
             page:1,
             error:false,
             refreshing:false,
-            // dataProvider: new DataProvider((r1, r2) => {
-            //     return r1 !== r2
-            // }).cloneWithRows(this.props.products)
         }
        this.loadCats=this.loadCats.bind(this);
        this.onRefresh=this.onRefresh.bind(this);
@@ -198,6 +194,7 @@ class Explore extends Component {
                         <View style={{flex:1}}>
                         {console.log("hanng onnnn...")}
                             <ScrollView style={{flex:1}}
+                             scrollEventThrottle={16}
                              refreshControl={
                              <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
                             >
@@ -206,30 +203,6 @@ class Explore extends Component {
                                         products={this.props.products}
                                         onProductSelect={this.onProductSelect.bind(this)}
                                     />
-                                    
-                                     {/* <FlatList
-                                        data={this.props.products}
-                                        numColumns={2}
-                                        contentContainerStyle={styles.productContainer}
-                                        keyExtractor={(item)=>item.id}
-                                        removeClippedSubviews={true}
-                                        renderItem={({item})=>
-                                            (<Product_Explore 
-                                                onProductSelect={this.onProductSelect.bind(this)}
-                                                product={item}
-                                            /> )}
-                                        initialNumToRender={5}
-                                        maxToRenderPerBatch={10}
-                                        windowSize={10}
-                                    /> */}
-                                    {/* <RecyclerListView
-                                      dataProvider={this.state.dataProvider}
-                                      rowRenderer={(type,item)=>
-                                            (<Product_Explore 
-                                                onProductSelect={this.onProductSelect.bind(this)}
-                                                product={item}
-                                            /> )}
-                                    /> */}
                                 {
                                     !this.state.hideLoadMoreButton &&
                                       <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>

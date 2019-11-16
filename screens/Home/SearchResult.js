@@ -7,6 +7,7 @@ import Header from '../major_components/Header';
 import {connect} from 'react-redux';
 import Loader from '../major_components/Loader';
 import EmptyItems from '../major_components/EmptyItems';
+import { showMessage } from 'react-native-flash-message';
 
 
 class SearchResult extends Component {
@@ -63,7 +64,17 @@ class SearchResult extends Component {
   }
 
   onProductSelect(product){
-            this.props.navigation.push('ExploreProduct',{id:product.id});
+           if (this.props.AUTH_TOKEN == "") {
+            showMessage({
+                description: "Login To Use Full Features, Click This to Exit Guest Mode",
+                message: "Login Required",
+                type: "danger",
+                onPress: () => this.props.navigation.navigate('Login')
+            });
+            
+        }else{
+           this.props.navigation.push("ExploreProduct",{id:product.id}); 
+        }
   }
   render() {
     console.log("load finieshed,",this.state);

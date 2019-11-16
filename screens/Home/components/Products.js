@@ -5,39 +5,24 @@ import {connect} from "react-redux";
 
 
 class Products extends Component {
-   constructor(props){
-       super(props);
-       this.state={
-           products:this.props.products
-       }
-        console.log("explore product item created once", )
-   }
-
-    renderItem=({item})=>{
-        return(
-         <Product_Explore 
-            onProductSelect={this.props.onProductSelect.bind(this)}
-            product={item}
-            key={item.index}
-            />
-        )
+    constructor(props){
+        super(props);
     }
-   
     render() {
-        console.log("renderinig flatlist ...");
         return (
             <View style={{paddingHorizontal:10}} >
                     <FlatList
                         data={this.props.products}
-                        extraData={this.props}
                         numColumns={2}
+                        extraData={this.props}
                         contentContainerStyle={styles.productContainer}
                         keyExtractor={(item)=>item.id}
-                        removeClippedSubviews={true}
-                        renderItem={this.renderItem}
-                        initialNumToRender={5}
-                        maxToRenderPerBatch={10}
-                        windowSize={10}
+                        renderItem={({item})=> (
+                            <Product_Explore 
+                                onProductSelect={this.props.onProductSelect.bind(this)}
+                                product={item}
+                                />
+                            )}
                     />
             </View>
         )
@@ -49,16 +34,13 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
 });
-// mapState=state=>{
-//      let {products} = state.Explore;
-//      return {
-//          products
-//      }
-// }
-// mapDispatch=dispatch=>{
-//     return {
-//         loadProducts:(products)=>{dispatch({type:"LOAD_EXPLORE",products})},
-//     }
-// }
+mapState=state=>{
+    return {}
+}
+mapDispatch=dispatch=>{
+    return {
+        loadProducts:(products)=>{dispatch({type:"LOAD_EXPLORE",products})},
+    }
+}
 
 export default connect()(Products);
