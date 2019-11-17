@@ -190,26 +190,23 @@ class Explore extends Component {
                             <SearchBar onSearch={this.onSearch.bind(this)}/>
                         </View>
                    </View>     
-                       {this.props.products.length?
+                    {this.props.products.length?
                         <View style={{flex:1}}>
-                        {console.log("hanng onnnn...")}
-                            <ScrollView style={{flex:1}}
-                             scrollEventThrottle={16}
-                             refreshControl={
-                             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
-                            >
-                                <Text style={styles.label}>Latest Products</Text>
+                                <ScrollView style={{flex:1}}
+                                    refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
+                                >
+                                    <Text style={styles.label}>Latest Products</Text>
                                     <Products
                                         products={this.props.products}
                                         onProductSelect={this.onProductSelect.bind(this)}
                                     />
-                                {
-                                    !this.state.hideLoadMoreButton &&
-                                      <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
-                                }
-                            </ScrollView>
-                         </View>:
-                        <EmptyItems message="No products are available!"/>
+                                    {
+                                        !this.state.hideLoadMoreButton &&
+                                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                                    }
+                                </ScrollView>
+                            </View>:
+                            <EmptyItems message="No products are available!"/>
                        }
                 </ImageBackground>
               </Wrapper>

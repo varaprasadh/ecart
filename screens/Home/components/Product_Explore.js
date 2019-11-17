@@ -13,11 +13,11 @@ class Product_Explore extends Component {
   
   } 
   componentDidMount(){
-    console.log("mounted",this.props.product.id);
+    // console.log("mounted",this.props.product.id);
   }
 
   render() { 
-    console.log("rendering product");
+    // console.log("rendering product");
     let product=this.props.product;
     currency = Number(product.price) < 1 ? "Fils" : "KD";
     return (
@@ -43,12 +43,12 @@ const styles=StyleSheet.create({
       paddingBottom:5,
       backgroundColor:"#fff",
       width: ITEM_WIDTH,
-      // flex:1,
       marginVertical:5,
       marginHorizontal:5,
       borderRadius:15,
       overflow:"hidden",
-      elevation:3
+      elevation:3,
+      flex:1
     },
     image:{
        width: ITEM_WIDTH,
