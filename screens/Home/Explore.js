@@ -193,7 +193,6 @@ class Explore extends Component {
                     {this.props.products.length?
                         <View style={{flex:1}}>
                                 <ScrollView style={{flex:1}}
-                                    scrollEventThrottle={16}
                                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
                                 >
                                     <Text style={styles.label}>Latest Products</Text>
