@@ -4,20 +4,11 @@ import { View, Text,StyleSheet,Image,TouchableWithoutFeedback,Dimensions} from '
 const WINDOW_WIDTH=Dimensions.get('window').width;
 const ITEM_WIDTH=Math.floor(WINDOW_WIDTH/2)-15;
 
-class Product_Explore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // product:props.product,
-    }; 
-  
-  } 
-  componentDidMount(){
-    // console.log("mounted",this.props.product.id);
-  }
+class Product_Explore extends React.PureComponent {
+ 
 
   render() { 
-    // console.log("rendering product");
+  
     let product=this.props.product;
     currency = Number(product.price) < 1 ? "Fils" : "KD";
     return (
@@ -48,7 +39,8 @@ const styles=StyleSheet.create({
       borderRadius:15,
       overflow:"hidden",
       elevation:3,
-      flex:1
+      flex:1,
+      maxWidth:ITEM_WIDTH
     },
     image:{
        width: ITEM_WIDTH,

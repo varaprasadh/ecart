@@ -70,7 +70,7 @@ class Product extends Component {
                 </Text>
              </View>
              <View style={styles.ctrlwrapper}>
-             <TouchableWithoutFeedback>
+             
                <View style={styles.qtyControls}>
                    <View style={styles.qtbtn}>
                        <TouchableWithoutFeedback onPress={this.decrease.bind(this)}>
@@ -84,8 +84,7 @@ class Product extends Component {
                        </TouchableWithoutFeedback>
                    </View>
                </View>
-               </TouchableWithoutFeedback>
-               <View>
+               <View style={{flex:1,paddingHorizontal:5}}>
                    <TouchableOpacity onPress={()=>this.props.onRemove(this.props.productdata.id)}>
                        <Text style={styles.remove_btn}>Remove</Text>
                    </TouchableOpacity>
@@ -110,8 +109,7 @@ const styles = StyleSheet.create({
         marginTop:5  
     },
     productInfo:{
-        paddingLeft: 20,
-        paddingRight:20
+        paddingHorizontal:10
     },
     price:{
         color:"green",
@@ -126,9 +124,10 @@ const styles = StyleSheet.create({
     remove_btn:{
         color:"#fff",
         paddingVertical:5,
-        paddingHorizontal:10,
+        paddingHorizontal:5,
         borderRadius:1,
-        backgroundColor: "#e74c3c"
+        backgroundColor: "#e74c3c",
+        textAlign:"center"
     },
     qtyControls: {
         flexDirection: "row",
@@ -156,7 +155,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 20,
-        width: 200
+        width: 200,
+        alignItems:"center"
     }
 });
 

@@ -6,10 +6,14 @@ import {
     StatusBar,
     RefreshControl,
     ScrollView,
+    FlatList,
     ImageBackground,
     TouchableWithoutFeedback,
-    FlatList
 } from 'react-native';
+import noImage from './product_images/noimage.jpg';
+
+// import {OptimizedFlatList as FlatList} from 'react-native-optimized-flatlist';
+
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
 import Products from "./components/Products";
@@ -34,6 +38,7 @@ class Explore extends Component {
             page:1,
             error:false,
             refreshing:false,
+            products:[]
         }
        this.loadCats=this.loadCats.bind(this);
        this.onRefresh=this.onRefresh.bind(this);
@@ -65,24 +70,53 @@ class Explore extends Component {
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
-              this.setState({
-                  page:this.state.page+1,
-                  loading:false
-              });
+              
             if (data.products.length == 0) {
-                console.log("hiding button")
                 this.setState({
                     hideLoadMoreButton: true
                 })
+            }else{
+             let _products = data.products.map(p => this.parseProduct(p))
+             this.setState({
+                 page: this.state.page + 1,
+                 hideLoadMoreButton:data.finished,
+                 loading: false,
+                //  products: [...this.state.products, ..._products],
+             });
+             this.props.loadMore(_products);
             }
-             this.props.loadMore(data.products);
+            
           }
-      }).catch(err=>console.log(err)); 
+      }).catch(err=>{
+          //handle error
+      }); 
        
   }
-  
+   parseProduct(p) {
+      carouselImages = p.images.map(imgurl => {
+          return {
+              uri: imgurl
+          }
+      });
+      let parsedProduct = {
+          id: p.id,
+          title: p.item_name,
+          category: p.category,
+          description: p.category,
+          price: p.price,
+          isInCart: p.is_incart,
+          isinWishlist: p.is_inwishlist,
+          images: carouselImages.length ? carouselImages : [require("./product_images/noimage.jpg")],
+          img: p.images[0] ? {
+              uri: p.images[0]
+          }: require("./product_images/noimage.jpg"),
+          quantity: p.quantity,
+      }
+      return parsedProduct;
+  }
+
   loadInitialProducts(){
-      console.log(this.state.page);
+
 
        this.setState({
           Mloading:true
@@ -94,17 +128,20 @@ class Explore extends Component {
           } 
       }).then(res=>res.json()).then(data=>{
           if(data.success==true){
-              this.setState({
-                  page:this.state.page+1
-              });
-            //   this.props.toggleLoading();
+             
               if(data.products.length<=4){
-                  console.log("hiding button")
+                 
                   this.setState({
                       hideLoadMoreButton:true
                   })
               }
-              this.props.loadProducts(data.products);
+              let _products=data.products.map(p=>this.parseProduct(p))
+              this.setState({
+                  page: this.state.page + 1,
+                //   products:[...this.state.products,..._products]
+                });
+              this.props.loadProducts(_products);
+
           } 
           this.setState({
               Mloading:false,
@@ -135,28 +172,27 @@ class Explore extends Component {
       this.loadInitialProducts();
       this.loadCats();
   }
- 
-  loadCats(){
-        fetch(`${this.props.baseUrl}/category_with_sub_category`, {
-            method: "GET",
-            headers: {
-                "AUTH-TOKEN": this.props.AUTH_TOKEN
-            }
-        }).then(res => res.json()).then(data => {
-            if (data.success == true) {
-                let rawCats = data.categories;
-                let categories = rawCats.map(cat => {
-                    let subcats = cat.sub_categories.map(subcat => {
-                        return subcat.name;
-                    });
-                    return {
-                        name: cat.category.name,
-                        subcategories: subcats
-                    }
+
+  async loadCats(){
+       
+        let categories=[];
+        try{
+            let data = await fetch('http://18.219.157.9/category').then(res => res.json());
+            let _categories=data.categories;
+            _categories.map(async cat=>{
+                var subcats = await fetch(`http://18.219.157.9/sub_category?category_id=${cat.id}`).then(res => res.json());
+                var _subcats = subcats.sub_categories.map(subcat => subcat.name);
+                categories.push({
+                    name:cat.name,
+                    subcategories:_subcats
                 });
-                this.props.setCategories(categories)
-            }
-        }).catch(err => console.log(err));
+            });
+            this.props.setCategories(categories);
+        }
+        catch(err){
+            //handle the error for subcategoris
+        }
+       
   }
   
   onSearch(text){
@@ -192,19 +228,28 @@ class Explore extends Component {
                    </View>     
                     {this.props.products.length?
                         <View style={{flex:1}}>
-                                <ScrollView style={{flex:1}}
-                                    refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
-                                >
-                                    <Text style={styles.label}>Latest Products</Text>
-                                    <Products
-                                        products={this.props.products}
-                                        onProductSelect={this.onProductSelect.bind(this)}
-                                    />
+                                <View style={{flex:1}}>       
+                                    <View style={{paddingHorizontal:10}} >
+                                        <FlatList
+                                            data={this.props.products}
+                                            numColumns={2}
+                                            keyExtractor={(item)=>item.id.toString()}
+                                            renderItem={({item})=> (
+                                                    <Product_Explore 
+                                                        onProductSelect={this.onProductSelect.bind(this)}
+                                                        product={item}
+                                                    />)}
+                                            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
+                                            ListHeaderComponent ={()=>(<Text style={styles.label}>Latest Products</Text>)}
+                                            ListFooterComponent={()=>(!this.state.hideLoadMoreButton &&
+                                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>)}
+                                        />
+
+                                    </View>
                                     {
-                                        !this.state.hideLoadMoreButton &&
-                                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>
+                                        
                                     }
-                                </ScrollView>
+                                </View>
                             </View>:
                             <EmptyItems message="No products are available!"/>
                        }
@@ -231,7 +276,11 @@ const styles = StyleSheet.create({
         left:0,
         display:"flex",
         alignItems:"center"
-    }
+    },
+    productContainer: {
+        flex: 1,
+        alignItems:"center"
+    },
 });
 
 mapStateToProps=state=>{
@@ -243,7 +292,6 @@ mapStateToProps=state=>{
     return {
        products,
        categories,
-       loading,
        baseUrl: state.Config.base_url,
        AUTH_TOKEN: state.Config.AUTH_TOKEN
     } 
@@ -268,4 +316,3 @@ mapDispatchToProps=(dispatch)=> ({
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(Explore);
-connect
