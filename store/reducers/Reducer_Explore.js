@@ -31,17 +31,11 @@ function parseProduct(p){
 export default function(state = explore, action) {
   switch (action.type) {
     case "LOAD_EXPLORE":
-       products=action.products;
-       products=products.map(p=>{
-        return parseProduct(p);
-      })    
+       products=action.products;   
       return {...state,products:[...products]};
  
       case "LOAD_MORE":
         products = action.products;
-        products = products.map(p => {
-          return parseProduct(p);
-        })
         return {...state,products:[...state.products,...products]};
       //need to remove below both
       case "MODIFY_ITEM_CART_STATUS":

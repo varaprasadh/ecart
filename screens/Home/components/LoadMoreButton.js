@@ -5,7 +5,7 @@ class LoadMoreButton extends Component {
  
   render() {
     return (
-        <View style={{alignItems:"center"}}>
+        <View style={{alignItems:"center",minHeight:30}}>
           <TouchableOpacity 
            onPress={()=>this.props.onPress()}
           >
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:20,
         paddingVertical:10,
         borderRadius:10,
-        marginVertical:5
+        marginVertical:5,
     }
 });
 
