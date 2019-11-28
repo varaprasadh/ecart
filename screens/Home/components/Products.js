@@ -8,23 +8,8 @@ class Products extends Component {
     }
     render() {
         return (
-            <View style={{paddingHorizontal:10}} >
-                    <FlatList
-                        data={this.props.products}
-                        numColumns={2}
-                        contentContainerStyle={styles.productContainer}
-                        keyExtractor={(item)=>item.id+""}
-                        renderItem={({item})=> (
-                            <View>
-                                <Product_Explore 
-                                    onProductSelect={this.props.onProductSelect.bind(this)}
-                                    product={item}
-                                />
-                            </View>
-                            )}
-                        initialNumToRender={10}
-                        
-                    />
+            <View style={{paddingHorizontal:10,flex:1}} >
+                    
             </View>
         )
     }
