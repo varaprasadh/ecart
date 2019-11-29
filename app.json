@@ -29,7 +29,7 @@
     },
     "android": {
       "package": "com.wilson.bazarkam",
-      "versionCode":5
+      "versionCode":6
     }
   }
 }
