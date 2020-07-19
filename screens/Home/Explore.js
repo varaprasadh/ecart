@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import noImage from './product_images/noimage.jpg';
 
-// import {OptimizedFlatList as FlatList} from 'react-native-optimized-flatlist';
 
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
@@ -27,6 +26,7 @@ import EmptyItems from '../major_components/EmptyItems';
 import RetryButton from '../major_components/RetryButton';
 import Product_Explore from './components/Product_Explore';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 
 
 class Explore extends Component {
@@ -121,14 +121,19 @@ class Explore extends Component {
        this.setState({
           Mloading:true
       });
-      fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
-          method:"GET",
-          headers:{ 
+      /*
+      fetch(`${this.props.baseUrl}/products?page=${this.state.page}`, {
+          method: "GET",
+          headers: {
               "AUTH-TOKEN": this.props.AUTH_TOKEN
-          } 
-      }).then(res=>res.json()).then(data=>{
+          }
+      }).then(res => res.json()).
+      
+      */
+     console.log(Axios.defaults.baseURL,"damn");
+      Axios.get(`/products`,{params:{page:this.state.page},headers:{ "AUTH-TOKEN": this.props.AUTH_TOKEN}})
+      .then(({data})=>{
           if(data.success==true){
-             
               if(data.products.length<=4){
                  
                   this.setState({
@@ -149,6 +154,7 @@ class Explore extends Component {
               refreshing: false
           })
       }).catch(err=>{
+          console.log(err);
           this.setState({
               page:1,
               Mloading:false,

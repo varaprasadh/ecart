@@ -24,6 +24,12 @@ import FlashMessage from 'react-native-flash-message';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Loader from './screens/major_components/Loader';
 
+
+import Axios from "axios";
+
+// Axios.defaults.baseURL = "https://18.219.157.9";
+Axios.defaults.baseURL = "https://bazarkam.com";
+
 const rootStack=createStackNavigator({
   HomeStack:HomeStack,
   OrderHistory:OrderHistory,
