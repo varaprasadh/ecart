@@ -43,6 +43,9 @@ const rootStack=createStackNavigator({
 
 },{ 
   initialRouteName: "HomeStack",
+  // initialRouteName: "ChangePassword",
+  // initialRouteName: "OrderItemDetail",
+  // initialRouteName: "Checkout",
   headerMode:"none"                                                                                                                                                                                                                                       
 });
 

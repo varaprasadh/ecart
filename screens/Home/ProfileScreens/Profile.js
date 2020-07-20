@@ -14,7 +14,7 @@ class Profile extends Component {
    constructor(props){
        super(props);
        this.state={
-
+          loading:true
        }
    }  
    componentWillMount() { 
@@ -26,6 +26,9 @@ class Profile extends Component {
           });
           this.props.navigation.navigate('Login');
       }
+      this.setState({
+          loading:true
+      })
        Axios.get("/profile",{headers:{"AUTH-TOKEN": this.props.AUTHTOKEN}})
        .then(({data}) => {
            if (data.success == true) {
@@ -40,7 +43,12 @@ class Profile extends Component {
                this.props.setProfile(obj);
             }
 
-       }).catch(err => console.log(err));
+       }).catch(err => console.log(err)).finally(()=>{
+           this.setState({
+               loading:false
+           });
+           
+       })
    }
      
    logout(){
@@ -51,18 +59,17 @@ class Profile extends Component {
           this.props.clearAuthToken();
          setTimeout(()=>{
               this.props.navigation.navigate('LoginStack');
-         },1500);
+         },500);
       }).catch(err => {
           console.log(err);
       }); 
-  
 }
+
     render() {
         return (
             this.state.loading?<Loader/>:
             <Wrapper noBackground>
                <View style={{flex:1}}>
-                    {/* <Header title="Profile"/> */}
                     <View style={styles.profileDataContainer}>
                         <Image style={styles.pro_Icon} source={require("./images/avatar.gif")}/>
                         <View style={styles.details}>

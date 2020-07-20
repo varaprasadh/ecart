@@ -11,13 +11,16 @@ import EmptyItems from '../major_components/EmptyItems';
 import { showMessage } from 'react-native-flash-message';
 import Axios from 'axios';
  
+import {Snackbar,Portal,Provider} from 'react-native-paper';
 
 
 class WishList extends Component {
     constructor(props){
         super(props);
         this.state={
-            refresh:false
+            refresh:false,
+            snackbar:false,
+            snackMessage:""
         }
         this.loadWishlist = this.loadWishlist.bind(this);
     }
@@ -62,7 +65,11 @@ class WishList extends Component {
                 this.props.removeFromWishlist(id);
                 this.props.changeCurrent(id,{isinWishlist:false});
             }
-        }).catch(err=>console.log(err));       
+        }).catch(err=>console.log(err)).finally(()=>{
+             this.setState({
+                 snackMessage:"product removed from wishlist"
+             });
+        }) 
     }
     onRefresh(){
         this.setState({
@@ -90,6 +97,12 @@ class WishList extends Component {
                             {(()=>Items)()}
                         </ScrollView> 
                     </View>
+                    <Snackbar 
+                        visible={this.state.snackbar}
+                        onDismiss={()=>this.setState({snackbar:false})}
+                        >
+                        {this.state.snackMessage}
+                    </Snackbar>
             </Wrapper>:
             <EmptyItems message="Wishlist is Empty!"/>
         )    

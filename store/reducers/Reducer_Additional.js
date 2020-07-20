@@ -2,10 +2,10 @@
 const global={
     currentProduct:null,
     profile:{
-        firstName:"loading...",
+        firstName:"",
         lastName:"",
-        mobile:"loading...",
-        email:"loading...",
+        mobile:"",
+        email:"",
         address:{
             area:"",
             block:"",

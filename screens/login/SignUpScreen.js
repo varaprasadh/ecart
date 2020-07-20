@@ -1,6 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
-import { StyleSheet,ScrollView ,ImageBackground,KeyboardAvoidingView,TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
+import {
+    StyleSheet,
+    ScrollView,
+    ImageBackground,
+    KeyboardAvoidingView,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Platform
+} from 'react-native';
 import {Text,View,Input} from 'native-base';
 import {Ionicons} from '@expo/vector-icons';
 import {Constants,Font,Asset} from "expo";
@@ -12,6 +20,9 @@ import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import { showMessage } from 'react-native-flash-message';
 import Axios from 'axios';
+
+import {TextInput} from 'react-native-paper';
+
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -119,151 +130,151 @@ class SignUpScreen extends Component {
           this.state.loading?<Loader/>:
       <Wrapper>
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
-          <KeyboardAvoidingView enabled behavior="padding" style={{flex:1}}>
+          <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : null} style={{flex:1}}>
             <Header backbutton title="Signup" backHandler={this.props.navigation.goBack}/>
                 <View style={styles.container}>
                   <View style={{flex:1}}>
                     <View className="wrapper" style={styles.wrapper}>
-                        <View className="title">
-                          {/* <Text style={styles.title}>Sign Up</Text> */}
-                        </View>
-                            <ScrollView className="form" showsVerticalScrollIndicator={false} style={{paddingLeft:10,paddingRight:10,height:450}} >
+                            <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal:10,height:450}} >
                                <View style={{paddingBottom:10}}>
-                                    <View className="input-row" style={styles.inputRow}>
-                                        <Text style={styles.label}>First Name</Text>
-                                        <Input  
-                                        ref={firstname=>this.firstname=firstname}
-                                        style={[styles.inputline,styles.input]}
-                                        returnKeyType="next"
-                                        placeholder="Enter First Name"
-                                        placeholderTextColor = "#bdc3c7"
-                                        value={this.state.firstname}
-                                        onSubmitEditing={()=>this.lastname._root.focus()}
-                                        onChangeText={text=>this.setState({firstname:text})}
-                                        /> 
-                                    </View>
-                                    <View className="input-row" style={styles.inputRow}>
-                                        <Text style={styles.label} >Last Name</Text>
-                                        <Input 
-                                        ref={lastname=>this.lastname=lastname} 
-                                        style={[styles.inputline,styles.input]}
-                                        returnKeyType="next"
-                                        placeholder="Enter Last Name"
-                                        placeholderTextColor = "#bdc3c7"
-                                        value={this.state.lastname}
-                                        onSubmitEditing={()=> this.mobile._root.focus()}
-                                        onChangeText={text=>this.setState({lastname:text})}
+                                    <View  style={styles.inputRow}>                              
+                                        <TextInput
+                                            label="First Name"
+                                            mode = "outlined"
+                                            ref={firstname=>this.firstname=firstname}
+                                            returnKeyType="next"
+                                            placeholder="Enter First Name"
+                                            value={this.state.firstname}
+                                            onSubmitEditing={()=>this.lastname._root.focus()}
+                                            onChangeText={text=>this.setState({firstname:text})}
                                         />
                                     </View>
-                                    <View className="input-row" style={styles.inputRow}>
+                                    <View  style={styles.inputRow}>
+                                        <TextInput
+                                            label="Last Name"
+                                            mode = "outlined"
+                                            placeholder = "Enter Last Name"
+                                            ref={lastname=>this.lastname=lastname} 
+                                            returnKeyType="next"
+                                            value={this.state.lastname}
+                                            onSubmitEditing={()=> this.mobile._root.focus()}
+                                            onChangeText={text=>this.setState({lastname:text})}
+                                        />
+                                    </View>
+                                    <View  style={styles.inputRow}>
+                                        <TextInput
+                                            label="Email"
+                                            mode = "outlined"
+                                            returnKeyType="next"
+                                            placeholderTextColor = "#bdc3c7"
+                                            textContentType="emailAddress" 
+                                            keyboardType="email-address"
+                                            placeholder="Enter Email"
+                                            value={this.state.email}
+                                            ref={email=>this.email=email} 
+                                            onSubmitEditing={()=>this.area._root.focus()}
+                                            onChangeText={text=> this.setState({email:text})}
+                                        />
+                                    </View>
+                                    <View  style={styles.inputRow}>
                                         <Text style={styles.label} >Mobile</Text>
                                         <View 
-                                         style={[styles.inputline,styles.input,{flex:4},{display:"flex",flexDirection:"row",paddingLeft:0}]}
+                                            style={[styles.inputline,styles.input,{flex:4},{display:"flex",flexDirection:"row",paddingLeft:0}]}
                                         >
                                             <Input value="+965"
-                                              style={[{flex:1,textAlign:"center",color:"#fff"}]}
-                                              editable = {
-                                                  false
-                                              } 
-                                              />
+                                              style={[{flex:1,textAlign:"center"}]}
+                                              editable = {false} 
+                                            />
                                             <Input 
-                                            ref={mobile=>this.mobile=mobile}
-                                            style={[{flex:4,color:"#fff"}]}
-                                            textContentType="telephoneNumber"
-                                            keyboardType="number-pad"
-                                            returnKeyType="next"
-                                            maxLength={8}
-                                            placeholder="Enter Mobile Number"
-                                            placeholderTextColor = "#bdc3c7"
-                                            value={this.state.mobile}
-                                            onSubmitEditing={()=>this.email._root.focus()} 
-                                            onChangeText={text=>this.setState({mobile:text})}
+                                                ref={mobile=>this.mobile=mobile}
+                                                style={[{flex:4},styles.input]}
+                                                textContentType="telephoneNumber"
+                                                keyboardType="number-pad"
+                                                returnKeyType="next"
+                                                maxLength={8}
+                                                placeholder="Enter Mobile Number"
+                                                placeholderTextColor = "#bdc3c7"
+                                                value={this.state.mobile}
+                                                onSubmitEditing={()=>this.email._root.focus()} 
+                                                onChangeText={text=>this.setState({mobile:text})}
                                             />
                                         </View>
                                     </View>
-                                    <View className="input-row" style={styles.inputRow}>
-                                        <Text style={styles.label} >Email</Text>
-                                        <Input ref={email=>this.email=email} 
-                                        returnKeyType="next"
-                                        placeholderTextColor = "#bdc3c7"
-                                        textContentType="emailAddress" 
-                                        keyboardType="email-address"
-                                        placeholder="Enter Email"
-                                        value={this.state.email}
-                                        style={[styles.inputline,styles.input]}
-                                        onSubmitEditing={()=>this.area._root.focus()}
-                                        onChangeText={text=> this.setState({email:text})}
-                                        />
-                                    </View>
 
-                                    <View className="input-row" style={styles.inputRow}>
+                                    <View  style={styles.inputRow}>
                                         <Text style={styles.label} >Address</Text>
-
-                                        <Input ref={area=>this.area=area} 
-                                        style={[styles.inputline,styles.input]}
-                                        returnKeyType="next"
-                                        placeholderTextColor = "#bdc3c7"
-                                        placeholder="Enter Dno & area"
-                                        onSubmitEditing={()=>this.block._root.focus()}
-                                        value={this.state.area}
-                                        onChangeText={text=>this.setState({area:text})}
+                                        <TextInput
+                                            mode = "outlined"
+                                            label="Door.No & Area"
+                                            ref={area=>this.area=area} 
+                                            returnKeyType="next"
+                                            placeholderTextColor = "#bdc3c7"
+                                            placeholder="Enter Dno & area"
+                                            onSubmitEditing={()=>this.block._root.focus()}
+                                            value={this.state.area}
+                                            onChangeText={text=>this.setState({area:text})}
                                         />
-                                        <Input ref={block=>this.block=block} 
-                                        style={[styles.inputline,styles.input,{marginTop:3}]}
-                                        returnKeyType="next"
-                                        placeholderTextColor = "#bdc3c7"
-                                        placeholder="Enter block"
-                                        onSubmitEditing={()=>this.street._root.focus()}
-                                        value={this.state.block}
-                                        onChangeText={text=>this.setState({block:text})}
+                                        <TextInput
+                                            mode = "outlined"
+                                            label="Block"
+                                            ref={block=>this.block=block} 
+                                            returnKeyType="next"
+                                            placeholderTextColor = "#bdc3c7"
+                                            placeholder="Enter block"
+                                            onSubmitEditing={()=>this.street._root.focus()}
+                                            value={this.state.block}
+                                            onChangeText={text=>this.setState({block:text})}
                                         />
-                                        <Input ref={street=>this.street=street} 
-                                        style={[styles.inputline,styles.input,{marginTop:3}]}
-                                        returnKeyType="next"
-                                        placeholderTextColor = "#bdc3c7"
-                                        placeholder="Enter street"
-                                        value={this.state.street}
-                                        onSubmitEditing={()=> this.lane._root.focus()}
-                                        onChangeText={text=>this.setState({street:text})}
+                                        <TextInput
+                                            mode = "outlined"
+                                            label="Street"
+                                            ref={street=>this.street=street} 
+                                            returnKeyType="next"
+                                            placeholderTextColor = "#bdc3c7"
+                                            placeholder="Enter street"
+                                            value={this.state.street}
+                                            onSubmitEditing={()=> this.lane._root.focus()}
+                                            onChangeText={text=>this.setState({street:text})}
                                         />
-                                        <Input ref={lane=>this.lane=lane} 
-                                        style={[styles.inputline,styles.input,{marginTop:3}]}
-                                        returnKeyType="next"
-                                        placeholderTextColor = "#bdc3c7"
-                                        placeholder="Enter lane"
-                                        value={this.state.lane}
-                                        onSubmitEditing={()=>this.password._root.focus()}
-                                        onChangeText={text=>this.setState({lane:text})}
+                                        <TextInput
+                                            mode = "outlined"
+                                            label="Lane"
+                                            ref={lane=>this.lane=lane} 
+                                            returnKeyType="next"
+                                            placeholderTextColor = "#bdc3c7"
+                                            placeholder="Enter lane"
+                                            value={this.state.lane}
+                                            onSubmitEditing={()=>this.password._root.focus()}
+                                            onChangeText={text=>this.setState({lane:text})}
                                         />
                                     </View>
-                                    <View className="input-row" style={styles.inputRow}>
+                                    <View  style={styles.inputRow}>
                                         <Text style={styles.label} >Password</Text>
-                                        <Input 
-                                         ref={password=>this.password=password}
-                                         style={[styles.inputline,styles.input]}
-                                         returnKeyType="next"
-                                         placeholder="Enter password"
-                                         placeholderTextColor = "#bdc3c7"
-                                         secureTextEntry={true}
-                                         value={this.state.password}
-                                         onSubmitEditing={()=>this.c_password._root.focus()}
-                                         onChangeText={text=> this.setState({password:text})}
-                                         />
+                                        <TextInput
+                                            mode = "outlined"
+                                            label="Password"
+                                            ref={password=>this.password=password}
+                                            returnKeyType="next"
+                                            placeholder="Enter A Password"
+                                            placeholderTextColor = "#bdc3c7"
+                                            secureTextEntry={true}
+                                            value={this.state.password}
+                                            onSubmitEditing={()=>this.c_password._root.focus()}
+                                            onChangeText={text=> this.setState({password:text})}
+                                        />
                                     </View>
-                                    <View className="input-row" style={styles.inputRow}>
-                                        <Text style={styles.label} >Confirm Password</Text>
-                                        <Input
-                                         ref={c_password=>this.c_password=c_password}
-                                         style={[styles.inputline,styles.input]}
-                                         returnKeyType="go"
-                                         placeholder="Confirm password" 
-                                         placeholderTextColor = "#bdc3c7"
-                                         onChangeText={text=>this.setState({password_confirmation:text})}
-                                         secureTextEntry={true}
-                                         value={this.state.password_confirmation}
-                                         onChangeText={text=> {
-                                           this.setState({ password_confirmation :text});
-                                         }}/>  
+                                    <View style={styles.inputRow}>
+                                        <TextInput
+                                            mode = "outlined"
+                                            label = "Confirm Password"
+                                            ref={c_password=>this.c_password=c_password}
+                                            returnKeyType="go"
+                                            placeholder="Confirm password" 
+                                            onChangeText={text=>this.setState({password_confirmation:text})}
+                                            secureTextEntry={true}
+                                            value={this.state.password_confirmation}
+                                            onChangeText={text=>{this.setState({ password_confirmation :text})}}
+                                        />
                                     </View>
                                 </View>
                             </ScrollView>  
@@ -294,28 +305,26 @@ const styles = StyleSheet.create({
     wrapper:{
         flex:1,
         paddingHorizontal:10,
-        borderRadius:10,
-        backgroundColor:"#000000A1",
-        elevation:1
+        borderRadius:5,
+        elevation:1,
+        backgroundColor:"white"
       },
-      input:{
+    input:{
         fontSize:20,
-        paddingRight:10,
-        paddingTop:1,
-        paddingLeft:10,
-        color:"#fff",
-       },
-       inputline:{
-         borderWidth:2,
-         borderColor: "#27ae60",
-         borderRadius: 5,
+        paddingTop: 1,
+        paddingHorizontal:10
+    },
+    inputline:{
+        borderBottomWidth:2,
+        // borderColor: "#27ae60",
+        borderColor: "#646566",
+        borderRadius: 5,
     },
     inputRow:{
         display:"flex",
         marginBottom:5
       },
    btn_signup:{
-       
        height:50,
        backgroundColor:"#2ecc71",
        color:"#fff",
@@ -325,8 +334,6 @@ const styles = StyleSheet.create({
    },
    label:{
        fontWeight:"bold",
-    //    color:"#2ecc71",
-       color: "#fff",
    }
 });
 mapState=state=>{

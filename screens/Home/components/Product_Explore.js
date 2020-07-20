@@ -6,7 +6,9 @@ const ITEM_WIDTH=Math.floor(WINDOW_WIDTH/2)-15;
 
 class Product_Explore extends React.PureComponent {
  
-
+ componentDidMount(){
+   console.log("mounted");
+ }
   render() { 
   
     let product=this.props.product;

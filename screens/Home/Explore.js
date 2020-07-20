@@ -59,7 +59,9 @@ class Explore extends Component {
         }
    }
   loadMoreProducts(){
-
+       if(this.state.loading || this.state.completed){
+           return;
+       }
        this.setState({
            loading:true,
        });
@@ -70,19 +72,17 @@ class Explore extends Component {
               
             if (data.products.length == 0) {
                 this.setState({
-                    hideLoadMoreButton: true
+                    completed: true
                 })
             }else{
              let _products = data.products.map(p => this.parseProduct(p))
              this.setState({
                  page: this.state.page + 1,
-                 hideLoadMoreButton:data.finished,
+                 completed:data.finished,
                  loading: false,
-                //  products: [...this.state.products, ..._products],
              });
              this.props.loadMore(_products);
-            }
-            
+            }            
           }
       }).catch(err=>{
           //handle error
@@ -113,26 +113,21 @@ class Explore extends Component {
   }
 
   loadInitialProducts(){
-
-
        this.setState({
           Mloading:true
       });
 
-     console.log(Axios.defaults.baseURL,"damn");
       Axios.get(`/products`,{params:{page:this.state.page},headers:{ "AUTH-TOKEN": this.props.AUTH_TOKEN}})
       .then(({data})=>{
           if(data.success==true){
               if(data.products.length<=4){
-                 
                   this.setState({
-                      hideLoadMoreButton:true
+                      completed:true
                   })
               }
               let _products=data.products.map(p=>this.parseProduct(p))
               this.setState({
                   page: this.state.page + 1,
-                //   products:[...this.state.products,..._products]
                 });
               this.props.loadProducts(_products);
 
@@ -156,7 +151,8 @@ class Explore extends Component {
   onRefresh(){
       this.setState({
           page:1,
-          refreshing:true
+          refreshing:true,
+          completed:false
       },()=>{
           this.loadInitialProducts();
       });
@@ -229,21 +225,18 @@ class Explore extends Component {
                                             data={this.props.products}
                                             numColumns={2}
                                             keyExtractor={(item)=>item.id.toString()}
+                                            onEndReached={this.loadMoreProducts.bind(this)}
+                                            onEndReachedThreshold={0.5}
                                             renderItem={({item})=> (
                                                     <Product_Explore 
                                                         onProductSelect={this.onProductSelect.bind(this)}
                                                         product={item}
                                                     />)}
+                                            ListFooterComponent={()=>this.state.Mloading && <Text>loading...</Text>}
                                             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
                                             ListHeaderComponent ={()=>(<Text style={styles.label}>Latest Products</Text>)}
-                                            ListFooterComponent={()=>(!this.state.hideLoadMoreButton &&
-                                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>)}
                                         />
-
                                     </View>
-                                    {
-                                        
-                                    }
                                 </View>
                             </View>:
                             <EmptyItems message="No products are available!"/>
