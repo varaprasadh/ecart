@@ -63,12 +63,9 @@ class Explore extends Component {
        this.setState({
            loading:true,
        });
-    fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
-          method:"GET",
-          headers:{ 
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          } 
-      }).then(res=>res.json()).then(data=>{
+       Axios.get("/products",{params:{page:this.state.page},headers:{
+          "AUTH-TOKEN": this.props.AUTH_TOKEN
+       }}).then(({data})=>{
           if(data.success==true){
               
             if (data.products.length == 0) {
@@ -121,15 +118,7 @@ class Explore extends Component {
        this.setState({
           Mloading:true
       });
-      /*
-      fetch(`${this.props.baseUrl}/products?page=${this.state.page}`, {
-          method: "GET",
-          headers: {
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).
-      
-      */
+
      console.log(Axios.defaults.baseURL,"damn");
       Axios.get(`/products`,{params:{page:this.state.page},headers:{ "AUTH-TOKEN": this.props.AUTH_TOKEN}})
       .then(({data})=>{
@@ -183,10 +172,10 @@ class Explore extends Component {
        
         let categories=[];
         try{
-            let data = await fetch('http://18.219.157.9/category').then(res => res.json());
+            let data = await Axios.get("/category").then(({data})=>data);
             let _categories=data.categories;
             _categories.map(async cat=>{
-                var subcats = await fetch(`http://18.219.157.9/sub_category?category_id=${cat.id}`).then(res => res.json());
+                var subcats = await Axios.get("/sub_category",{params:{category_id:cat.id}}).then(({data})=>data);
                 var _subcats = subcats.sub_categories.map(subcat => subcat.name);
                 categories.push({
                     name:cat.name,

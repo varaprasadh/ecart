@@ -6,6 +6,7 @@ import Header from '../../major_components/Header';
 import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
 import Loader from '../../major_components/Loader';
+import Axios from 'axios';
 class EditProfile extends Component {
   constructor(props) {
     super(props);
@@ -37,15 +38,8 @@ class EditProfile extends Component {
     this.setState({
       loading:true
     });
-   
-    fetch(`http://18.219.157.9/profile_edit  `, {
-      method:"POST",
-      headers:{
-        "content-Type":"application/json",
-        "AUTH-TOKEN":this.props.AUTH_TOKEN
-      },
-      body:JSON.stringify(obj)
-    }).then(res=>res.json()).then(data=>{
+    Axios.post("/profile_edit",obj,{headers:{ "AUTH-TOKEN":this.props.AUTH_TOKEN}})
+   .then(({data})=>{
       if(data.success){
        showMessage({
          type:"success", 

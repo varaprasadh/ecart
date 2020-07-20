@@ -6,6 +6,7 @@ import {AsyncStorage} from 'react-native';
 import Loader from '../major_components/Loader';
 
 import {showMessage} from "react-native-flash-message";
+import Axios from 'axios';
 class LoginScreen extends Component {
   constructor(props){
     super(props)
@@ -26,14 +27,7 @@ class LoginScreen extends Component {
        this.setState({
          loading:true
        })
-        fetch(`${this.props.baseUrl}/login_with_password`, {
-          method: "post",
-          body: JSON.stringify(obj),
-          headers: {
-            "content-type": "application/json"
-          }
-        }).then(res => res.json()).then(data => {
-          console.log(data) 
+       Axios.post("/login_with_password",obj).then(({data})=> {
           if (data.success == true) {
             AsyncStorage.setItem('AUTH_TOKEN', data.auth_token,(err)=>{
               AsyncStorage.setItem('ROLE', data.role);

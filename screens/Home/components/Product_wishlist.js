@@ -4,6 +4,7 @@ import { View, Text, StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback}
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from 'react-redux';
+import Axios from 'axios';
 
 class Product extends Component {
    constructor(props){
@@ -25,14 +26,9 @@ class Product extends Component {
            price: this.state.product.price,
            quantity:1
        };
-       fetch(`${this.props.baseUrl}/add_item_to_cart`, {
-           method: "POST",
-           body: JSON.stringify(obj),
-           headers: {
-               "content-Type": "application/json",
-               "AUTH-TOKEN": this.props.AUTH_TOKEN
-           }
-       }).then(res => res.json()).then(data => {
+       Axios.post("/add_item_to_cart",obj,{headers:{
+            "AUTH-TOKEN": this.props.AUTH_TOKEN
+       }}).then(({data})=> {
            if (data.success == true) {
                this.props.changeCartStatus(this.state.product.id, true);
                this.props.addToCart({...this.state.product,...{quantity:1,availableQuantity:this.state.product.quantity}});
@@ -44,9 +40,7 @@ class Product extends Component {
        });  
    }   
   
-    
     render() {
-       console.log("wishlist",this.props.productdata); 
     currency = Number(this.props.productdata.price)<1?"Fils":"KD"
     quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;

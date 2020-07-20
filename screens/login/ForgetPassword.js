@@ -5,6 +5,7 @@ import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
 import Wrapper from '../Home/Wrapper';
 import Header from "../major_components/Header";
+import Axios from 'axios';
 
 class ForgetPassword extends Component {
     constructor(props){
@@ -22,13 +23,8 @@ class ForgetPassword extends Component {
         let obj = {
             phone_number: this.state.mobile
         }
-       fetch('http://18.219.157.9/generate_otp',{
-            method:"POST",
-            headers:{
-                "content-Type":"application/json"
-            },
-            body:JSON.stringify(obj)
-       }).then(res=>res.json()).then(data=>{
+       Axios.post("/generate_otp",obj)
+       .then(({data})=>{
             if(data.success==true){
               this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"reset_password"})
             }else{

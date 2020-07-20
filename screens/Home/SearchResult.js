@@ -8,6 +8,7 @@ import Loader from '../major_components/Loader';
 import EmptyItems from '../major_components/EmptyItems';
 import { showMessage } from 'react-native-flash-message';
 import Product_Explore from './components/Product_Explore';
+import Axios from 'axios';
 
 
 class SearchResult extends Component {
@@ -32,13 +33,8 @@ class SearchResult extends Component {
   }
 
   loadProducts(){
-    fetch(`${this.props.baseUrl}/products?q=${this.state.query}&page=${this.state.page}`, {
-      method: "GET",
-      headers: {
-        "AUTH-TOKEN": this.props.AUTH_TOKEN,
-        "Content-Type":"application/json"
-      }
-    }).then(res => res.json()).then(data => {
+    Axios.get("/products",{params:{page:this.state.page},headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN,}})
+    .then(({data}) => {
        if(data.success==true){
               products=data.products;
               products=products.map(p=>{
@@ -139,8 +135,8 @@ class SearchResult extends Component {
 
 mapState=state=>{
     return {
-       baseUrl: state.Config.base_url,
-         AUTH_TOKEN: state.Config.AUTH_TOKEN
+      baseUrl: state.Config.base_url,
+      AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{

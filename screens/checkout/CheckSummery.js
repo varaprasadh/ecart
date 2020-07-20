@@ -12,6 +12,7 @@ import CheckoutStatus from "./CheckoutStatus";
 import { AuthSession } from 'expo';
 import ExpectedDelivery from '../major_components/ExpectedDelivery';
 import BillingAddress from '../major_components/BillingAddress';
+import Axios from 'axios';
 
 
 export class CheckSummery extends Component {
@@ -67,27 +68,18 @@ export class CheckSummery extends Component {
     }
  
  updatePromises=items.map(item=>{
-      return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
-          method: "POST",
-          body: JSON.stringify(item),
+      return Axios.post("/add_item_to_cart", item, {
           headers: {
-              "content-Type": "application/json",
               "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
-      });
+      })
  }); 
  Promise.all([...updatePromises]).then(successlogs=>{
+      Axios.post("/cart_checkout",obj,{headers:{
+        "AUTH-TOKEN": this.props.AUTH_TOKEN
+      }}).then(({data}) => {
 
-      fetch(`${this.props.baseUrl}/cart_checkout`, {
-          method: "POST",
-          body: JSON.stringify(obj),
-          headers: {
-              'content-type': "application/json",
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).then(data => {
-          console.log("debug data");
-          if (data.success == true) {
+        if (data.success == true) {
               this.setState({
                   loading: false,
                   checkout_done: true,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as Input} from 'react-native';
 
 import {showMessage} from 'react-native-flash-message';
+import Axios from 'axios';
 class ForgetPassword extends Component {
     constructor(props){
         super(props);
@@ -24,13 +25,7 @@ class ForgetPassword extends Component {
       this.setState({
           loading:true
       });
-       fetch('http://18.219.157.9/reset_password', {
-           method: "POST",
-           headers: {
-               "content-Type": "application/json"
-           },
-           body: JSON.stringify(obj)
-       }).then(res=>res.json()).then(data=>{
+      Axios.post("/reset_password",obj).then(({data})=>{
         if(data.success==true){
             showMessage({
                 message:"success",

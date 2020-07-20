@@ -4,6 +4,7 @@ import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input,ImageBackgro
 import {connect} from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
+import Axios from 'axios';
 
 class MyClass extends Component {
      
@@ -47,14 +48,7 @@ class MyClass extends Component {
         this.setState({
             loading:true
         });
-        
-        fetch(`http://18.219.157.9/generate_otp`, {
-            method:"POST",
-            headers:{
-                "content-Type":"application/json"
-            },
-            body:JSON.stringify(obj)
-        }).then(res=>res.json()).then(data=>{
+        Axios.post("/generate_otp",obj).then(({data})=>{
             if(data.success==true){
              this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
             }

@@ -11,6 +11,7 @@ import Loader from "../major_components/Loader";
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 class SignUpScreen extends Component {
     
     constructor(props){
@@ -85,14 +86,7 @@ class SignUpScreen extends Component {
         this.setState({
             loading:true
         });
-        
-        fetch(`http://18.219.157.9/register`, {
-            method:"POST",
-            body:JSON.stringify(obj),
-            headers:{
-                "content-type":"application/json" 
-            }  
-        }).then(res=>res.json()).then(data=>{
+        Axios.post("/register",obj).then(({data})=>{
             console.log("debug dATA",data);
             if(data.success==true){
                 this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"signup"});

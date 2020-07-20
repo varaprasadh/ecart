@@ -7,6 +7,7 @@ import {showMessage} from "react-native-flash-message";
 
 import {connect} from 'react-redux';
 import Loader from '../../major_components/Loader';
+import Axios from 'axios';
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
@@ -38,14 +39,9 @@ class ChangePassword extends Component {
      this.setState({
        loading:true
      })
-     fetch(`${this.props.baseUrl}/change_password`,{
-       method:"POST",
-       headers:{
-         "content-Type":"application/json",
-         "AUTH-TOKEN":this.props.AUTH_TOKEN,
-       },
-       body:JSON.stringify(obj)
-     }).then(res=>res.json()).then(data=>{
+     Axios.post("/change_password",obj,{headers:{
+         "AUTH-TOKEN": this.props.AUTH_TOKEN,
+     }}).then(({data})=>{
         if(data.success){
           showMessage({
             message:"Success!",

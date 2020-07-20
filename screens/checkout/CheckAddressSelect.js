@@ -20,6 +20,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import RetryButton from '../major_components/RetryButton';
+import Axios from 'axios';
 
 class CheckAddressSelect extends Component {
  
@@ -38,13 +39,9 @@ class CheckAddressSelect extends Component {
         this.setState({
             loading: true
         })
-        fetch(`${this.props.baseUrl}/user_billing_address`, {
-            method: "GET",
-            headers: {
-                "content-Type": "application/json",
-                "AUTH-TOKEN": this.props.AUTH_TOKEN
-            }
-        }).then(res => res.json()).then(data => {
+        Axios.get("/user_billing_address",{headers:{
+            "AUTH-TOKEN": this.props.AUTH_TOKEN
+        }}).then(({data}) => {
             if (data.success == true) {
                 if(data.billing_address.length==1){
                     let obj=data.billing_address[0];

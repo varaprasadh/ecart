@@ -8,6 +8,7 @@ import EmptyItems from '../major_components/EmptyItems';
 import Loader from '../major_components/Loader';
 import Wrapper from './Wrapper';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 
 
 class Cart extends Component {
@@ -20,14 +21,8 @@ class Cart extends Component {
        } 
        this.loadCart = this.loadCart.bind(this);
    }
-  loadCart(){
-      fetch(`${this.props.baseUrl}/cart`,{
-           method:"GET",
-           headers:{
-               "content-Type":"application/json",
-               "AUTH-TOKEN":this.props.AUTH_TOKEN
-           }  
-       }).then(res=>res.json()).then(data=>{
+   loadCart(){
+      Axios.get("/cart",{headers:{"AUTH-TOKEN":this.props.AUTH_TOKEN}}).then(({data})=>{
            this.props.toggleLoading(); 
            if(data.success==true){ 
                //add that to cart state,
@@ -67,15 +62,9 @@ class Cart extends Component {
     obj = {   
         product_id:id 
     };
-    fetch(`${this.props.baseUrl}/remove_item_from_cart`,{
-        method:"POST",
-        headers:{
-            "content-Type":"application/json",
-            "AUTH-TOKEN":this.props.AUTH_TOKEN
-        },
-        body:JSON.stringify(obj)
-    }).then(res=>res.json()).then(data=>{
-        if(data.success==true){
+    Axios.post("/remove_item_from_cart",obj,{headers:{ "AUTH-TOKEN":this.props.AUTH_TOKEN}})
+    .then(({data})=>{
+    if(data.success==true){
             this.props.removeFromCart(id);
             this.props.changeCurrent(id,{isInCart:false})
             this.props.changeCartStatus_wishlist(id,{isInCart:false});

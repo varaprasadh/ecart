@@ -8,7 +8,6 @@ class BillingAddress extends Component {
   }
 
   render() {
-      console.log("address mounted..")
       address=this.props.address
     return (
       <View style={styles.container}>

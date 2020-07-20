@@ -9,6 +9,7 @@ import Loader from '../../major_components/Loader';
 import ExpectedDelivery from '../../major_components/ExpectedDelivery';
 import { ScrollView } from 'react-native-gesture-handler';
 import BillingAddress from '../../major_components/BillingAddress';
+import Axios from 'axios';
 
 class OrderItemDetail extends Component {
   constructor(props) {
@@ -33,14 +34,8 @@ cancelOrder(){
    this.setState({
        loading:true
    });
-   fetch(`${this.props.baseUrl}/cancel_order`,{
-       method:"POST",
-       headers:{ 
-           "content-Type":"application/json",
-           "AUTH-TOKEN":this.props.AUTH_TOKEN
-       },
-       body:JSON.stringify(obj)
-   }).then(res=>res.json()).then(data=>{ 
+   Axios.post("/cancel_order",obj,{headers:{"AUTH-TOKEN":this.props.AUTH_TOKEN}})
+   .then(({data})=>{ 
        if(data.success==true){
            showMessage({
                type:"success",

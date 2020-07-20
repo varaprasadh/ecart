@@ -30,6 +30,7 @@ import Axios from "axios";
 // Axios.defaults.baseURL = "https://18.219.157.9";
 Axios.defaults.baseURL = "https://bazarkam.com";
 
+
 const rootStack=createStackNavigator({
   HomeStack:HomeStack,
   OrderHistory:OrderHistory,

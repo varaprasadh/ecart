@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
 
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 
 class Profile extends Component {
    constructor(props){
@@ -25,15 +26,8 @@ class Profile extends Component {
           });
           this.props.navigation.navigate('Login');
       }
-
-       fetch(`http://18.219.157.9/profile`, {
-              "method": "GET",
-              "headers": {
-                  "AUTH-TOKEN": this.props.AUTHTOKEN,
-                  "cache-control": "no-cache",
-              }
-          }).then(res=>res.json()).then(data => {
-           console.log(data);
+       Axios.get("/profile",{headers:{"AUTH-TOKEN": this.props.AUTHTOKEN}})
+       .then(({data}) => {
            if (data.success == true) {
                profile = data.profile;
                let obj = {

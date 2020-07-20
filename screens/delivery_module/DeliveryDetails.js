@@ -16,6 +16,7 @@ import { OrderItemsTable } from '../Home/ProfileScreens/OrderItemDetail';
 import {connect} from "react-redux";
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
+import Axios from 'axios';
 
 
 export class DeliveryDetails extends Component {
@@ -69,14 +70,9 @@ export class DeliveryDetails extends Component {
             this.setState({
                 loading: true
             });
-            fetch(`${this.props.baseUrl}/deliver_order`, {
-                method: "POST",
-                headers: {
-                    "AUTH-TOKEN": this.props.AUTH_TOKEN,
-                    "content-Type":"application/json"
-                 }, 
-                body: JSON.stringify(obj)
-            }).then(res => res.json()).then(data => {
+            Axios.post("/deliver_order",obj,{headers:{
+               "AUTH-TOKEN": this.props.AUTH_TOKEN,
+            }}).then(({data}) => {
                 console.log(data);
                 if (data.success == true) {
                 
@@ -106,14 +102,6 @@ export class DeliveryDetails extends Component {
                     loading:false
                 });
             });
-        //   this.setState({
-        //       loading:false 
-        //   })
-        //   this.props.modifyStatus(this.state.index, status);
-        //     this.setState({
-        //         order:{...this.state.order,status}
-        //     });
-
     }
     render() {
         let first_name=this.state.billing_address.first_name||'';

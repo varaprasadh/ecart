@@ -11,6 +11,7 @@ import BackgroundCarousel from "../major_components/BackgroundCarousel";
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 
 class ProductMain extends Component {
   constructor(props) {
@@ -32,14 +33,8 @@ class ProductMain extends Component {
       }).start(); 
  }
  componentWillMount(){
- 
-   fetch(`${this.props.baseUrl}/product/${this.id}`,{
-     method:"GET",
-     headers:{
-       "content-type":"application/json",
-       "AUTH-TOKEN":this.props.AUTH_TOKEN
-     }
-   }).then(res=>res.json()).then(data=>{
+   Axios.get(`/product/${this.id}`,{headers:{ "AUTH-TOKEN":this.props.AUTH_TOKEN}})
+  .then(({data})=>{
      if(data.success){
       product=data.product;
       carouselImages=product.images.map(imgurl=>{
@@ -77,14 +72,8 @@ addToCart(){
      price: this.state.product.price, 
      quantity: this.state.product.quantity
    }; 
-  fetch(`${this.props.baseUrl}/add_item_to_cart`,{
-   method:"POST",
-   body:JSON.stringify(obj),
-   headers:{
-     "content-Type":"application/json",
-      "AUTH-TOKEN": this.props.AUTH_TOKEN
-   }
-  }).then(res=>res.json()).then(data=>{
+   Axios.post("/add_item_to_cart",obj,{headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN}})
+   .then(({data})=>{
     if(data.success==true){
       this.props.changeCartStatus(this.state.product.id, true);
       this.props.addToCart(this.state.product);
@@ -93,7 +82,7 @@ addToCart(){
       });
     }
   }).catch(err=>{
-    console.log("ebug here",err);
+
   })
 }
 
@@ -110,14 +99,8 @@ addToWishlist(){
   obj = {
     product_id:this.state.product.id
   }
-  fetch(`${this.props.baseUrl}/add_item_to_wish_list`,{
-    method:"POST",
-    headers:{
-      "content-Type":"application/json",
-      "AUTH-TOKEN":this.props.AUTH_TOKEN
-    },
-    body:JSON.stringify(obj)
-  }).then(res=>res.json()).then(data=>{
+  Axios.post("/add_item_to_wish_list",obj,{headers:{"AUTH-TOKEN":this.props.AUTH_TOKEN}})
+  .then(({data})=>{
     if(data.success){
         this.props.changeWishlistStatus(this.state.product.id, true);
         console.log("debug1",this.state.product);

@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import Wrapper from '../Home/Wrapper';
 import {showMessage} from "react-native-flash-message";
 import Header from '../major_components/Header';
+import Axios from 'axios';
 
 class MyClass extends Component {
     
@@ -59,15 +60,8 @@ class MyClass extends Component {
         });
       if(this.state.type=="signup")  {
           console.log("signing up");
-           fetch(`${this.props.baseUrl}/confirm_registration`, {
-               method: "post",
-               body: JSON.stringify(obj),
-               headers: {
-                   "content-type": "application/json"
-               }
-           }).then(res => res.json()).then(data => {
+          Axios.post("/confirm_registration",obj).then(({data}) => {
                if (data.success == true) {
-                  
                   console.log("registration done");
                    showMessage({
                          type:"success",
@@ -112,13 +106,7 @@ class MyClass extends Component {
       }
       if (this.state.type == "signin_with_otp"){
           console.log("login with otp");
-          fetch(`${this.props.baseUrl}/login_with_otp`,{
-              method:"POST",
-              headers:{
-                  "content-Type":"application/json"
-              },
-              body:JSON.stringify(obj)
-          }).then(res=>res.json()).then(data=>{
+          Axios.post("/login_with_otp",obj).then(({data})=>{
               if(data.success==true){
                 
                      let AUTH_TOKEN = data.auth_token;

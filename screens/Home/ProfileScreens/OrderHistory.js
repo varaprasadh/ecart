@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
 import EmptyItems from '../../major_components/EmptyItems';
 import RetryButton from '../../major_components/RetryButton';
+import Axios from 'axios';
 class OrderHistory extends Component {
     constructor(props){
         super(props);
@@ -34,12 +35,8 @@ class OrderHistory extends Component {
          this.setState({
              loading: true && !this.state.refreshing
          });
-         fetch(`${this.props.baseUrl}/orders`, {
-             method: "GET",
-             headers: {
-                 "AUTH-TOKEN": this.props.AUTH_TOKEN
-             }
-         }).then(res => res.json()).then(data => {
+         Axios.get("/orders",{headers:{ "AUTH-TOKEN": this.props.AUTH_TOKEN}})
+         .then(({data}) => {
              if (data.success == true) {
                  myOrders = data.my_orders;
                  myOrders = myOrders.map((orderArray, index) => {
