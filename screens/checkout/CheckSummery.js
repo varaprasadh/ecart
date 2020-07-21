@@ -12,6 +12,7 @@ import CheckoutStatus from "./CheckoutStatus";
 import { AuthSession } from 'expo';
 import ExpectedDelivery from '../major_components/ExpectedDelivery';
 import BillingAddress from '../major_components/BillingAddress';
+import Axios from 'axios';
 
 
 export class CheckSummery extends Component {
@@ -67,27 +68,18 @@ export class CheckSummery extends Component {
     }
  
  updatePromises=items.map(item=>{
-      return fetch(`${this.props.baseUrl}/add_item_to_cart`, {
-          method: "POST",
-          body: JSON.stringify(item),
+      return Axios.post("/add_item_to_cart", item, {
           headers: {
-              "content-Type": "application/json",
               "AUTH-TOKEN": this.props.AUTH_TOKEN
           }
-      });
+      })
  }); 
  Promise.all([...updatePromises]).then(successlogs=>{
+      Axios.post("/cart_checkout",obj,{headers:{
+        "AUTH-TOKEN": this.props.AUTH_TOKEN
+      }}).then(({data}) => {
 
-      fetch(`${this.props.baseUrl}/cart_checkout`, {
-          method: "POST",
-          body: JSON.stringify(obj),
-          headers: {
-              'content-type': "application/json",
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).then(data => {
-          console.log("debug data");
-          if (data.success == true) {
+        if (data.success == true) {
               this.setState({
                   loading: false,
                   checkout_done: true,
@@ -143,7 +135,7 @@ export class CheckSummery extends Component {
                 
                 <View style={{flex:1,padding:10}}>
                  <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
-                    <View style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:"#fff",margin:10,borderRadius:10}}>
+                    <View style={{backgroundColor:"#fff",borderRadius:5}}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Payment Type :</Text>
                             <Text style={styles.styledlabel}>{this.state.payType!="Cash"?"card":"Cash On Delivery"}</Text>
@@ -189,12 +181,11 @@ export class CheckSummery extends Component {
         row:{
             flexDirection:'row',
             justifyContent:"space-between",
-            borderBottomColor:"#95a5a6",
-            borderBottomWidth:1,
-            paddingVertical:5
+            alignItems:"center",
+            paddingVertical:5,
+            paddingHorizontal:10
         },
         label:{
-          fontWeight:"bold",
           fontSize:16,
           paddingVertical:5,
           color:"#2980b9"
@@ -206,12 +197,9 @@ export class CheckSummery extends Component {
           textTransform:"capitalize"
         },
         styledlabel:{
-          paddingHorizontal:10,
-          backgroundColor:"#2980b9",
-          paddingVertical:4,
-          borderRadius:5,
-          color:"#fff",
+          color: "#2980b9",
           fontWeight:"bold",
+          color:"green"
         },
         btn:{
          backgroundColor:"#27ae60",

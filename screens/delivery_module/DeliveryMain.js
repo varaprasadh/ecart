@@ -10,6 +10,7 @@ import EmptyItems from "../major_components/EmptyItems";
 import RetryButton from "../major_components/RetryButton";
 
 import _ from 'lodash';
+import Axios from 'axios';
 
 
 class DeliveryMain extends Component {
@@ -39,12 +40,9 @@ loadData(){
       this.setState({
           loading: true && !this.state.refreshing
       });
-      fetch(`${this.props.baseUrl}/orders`, {
-          method: "GET",
-          headers: {
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          }
-      }).then(res => res.json()).then(data => {
+      Axios.get("/orders",{headers:{
+         "AUTH-TOKEN": this.props.AUTH_TOKEN
+      }}).then(({data}) => {
           if (data.success) {
               myOrders = data.my_orders;
               myOrders = myOrders.map(orderAr => {
@@ -76,12 +74,9 @@ loadData(){
 }
   logout(){
         this.setState({loading:true});
-        fetch(`${this.props.baseUrl}/logout`,{
-            method:"GET",
-            headers:{
-                "AUTH-TOKEN":this.props.AUTH_TOKEN
-            }
-        }).then(res=>res.json()).then(data=>{
+        Axios.get("/logout",{headers:{
+           "AUTH-TOKEN": this.props.AUTH_TOKEN
+        }}).then(({data})=>{
             if(data.success==true){
                 AsyncStorage.clear();
                 this.props.clearAuthToken();
@@ -122,12 +117,6 @@ loadData(){
  retry(){
      this.loadData();
  }
-
-// shouldComponentUpdate(nextProps, nextState){
-//         return (
-//             !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
-//         );
-// }
 
   render() {
     return (

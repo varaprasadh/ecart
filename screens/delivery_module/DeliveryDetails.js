@@ -16,6 +16,7 @@ import { OrderItemsTable } from '../Home/ProfileScreens/OrderItemDetail';
 import {connect} from "react-redux";
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
+import Axios from 'axios';
 
 
 export class DeliveryDetails extends Component {
@@ -23,7 +24,6 @@ export class DeliveryDetails extends Component {
         super(props);
         let Morder=this.props.navigation.getParam('order');
         let index = this.props.navigation.getParam('index');
-        console.log("\n\n\n",index);
         let billing_address=Morder.billing_address||{}
         let order =Morder.order;
         let products= Morder.products;
@@ -42,12 +42,6 @@ export class DeliveryDetails extends Component {
            text:"proceed",
            onPress: () => this.processOrder('Delivered')
        }]);
-       /*
-       {
-           "order_id": 99,
-           "status": "Delivered"
-       }
-       */
     }
     cancelDelivery(){
       Alert.alert("confirmation", "the order will be marked as delivered, do you want to proceed?", [{
@@ -61,7 +55,6 @@ export class DeliveryDetails extends Component {
     }
     processOrder(status){
          console.log(status);
-
             let obj = { 
                 status: status,
                 order_id: this.state.order.id
@@ -69,14 +62,9 @@ export class DeliveryDetails extends Component {
             this.setState({
                 loading: true
             });
-            fetch(`${this.props.baseUrl}/deliver_order`, {
-                method: "POST",
-                headers: {
-                    "AUTH-TOKEN": this.props.AUTH_TOKEN,
-                    "content-Type":"application/json"
-                 }, 
-                body: JSON.stringify(obj)
-            }).then(res => res.json()).then(data => {
+            Axios.post("/deliver_order",obj,{headers:{
+               "AUTH-TOKEN": this.props.AUTH_TOKEN,
+            }}).then(({data}) => {
                 console.log(data);
                 if (data.success == true) {
                 
@@ -106,14 +94,6 @@ export class DeliveryDetails extends Component {
                     loading:false
                 });
             });
-        //   this.setState({
-        //       loading:false 
-        //   })
-        //   this.props.modifyStatus(this.state.index, status);
-        //     this.setState({
-        //         order:{...this.state.order,status}
-        //     });
-
     }
     render() {
         let first_name=this.state.billing_address.first_name||'';

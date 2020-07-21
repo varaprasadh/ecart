@@ -20,6 +20,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import RetryButton from '../major_components/RetryButton';
+import Axios from 'axios';
 
 class CheckAddressSelect extends Component {
  
@@ -38,13 +39,9 @@ class CheckAddressSelect extends Component {
         this.setState({
             loading: true
         })
-        fetch(`${this.props.baseUrl}/user_billing_address`, {
-            method: "GET",
-            headers: {
-                "content-Type": "application/json",
-                "AUTH-TOKEN": this.props.AUTH_TOKEN
-            }
-        }).then(res => res.json()).then(data => {
+        Axios.get("/user_billing_address",{headers:{
+            "AUTH-TOKEN": this.props.AUTH_TOKEN
+        }}).then(({data}) => {
             if (data.success == true) {
                 if(data.billing_address.length==1){
                     let obj=data.billing_address[0];
@@ -137,9 +134,8 @@ class CheckAddressSelect extends Component {
     </EmptyItems>:
     <Wrapper>
      <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
-      <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
+      <Header title="Choose Delivery Address" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
       <View style={{flex:1}}>
-        <Text style={[styles.text,styles.styltext]}>CHOOSE DELIVERY ADDRESS</Text>
        <View style={{flex:1,padding:10}}>
          {  this.state.prevAddress.length?<ScrollView style={{flex:1}}>
                 
@@ -147,14 +143,14 @@ class CheckAddressSelect extends Component {
                   return(
                 <TouchableWithoutFeedback key={id} onPress={()=>this.setSelected(address.id)}>
                    <View style={[styles.Address,styles.row]}>
-                     <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                     <View style={{justifyContent:"center",alignItems:"center"}}>
                         <View>  
                            {address.seleted?
                            <Ionicons name="ios-checkmark-circle" size={30} color="#2ecc71"/>:
                            <Ionicons name="ios-radio-button-off" size={30} color="#2ecc71" />}
                         </View>
                      </View>
-                     <View style={{flex:3}}>
+                     <View style={{flex:1,paddingHorizontal:10}}>
                          <View style={[{flexDirection:"row"},styles.frow]}>
                             <Text style={styles.key}>name :</Text>
                             <Text style={styles.value}>{`${address.first_name} ${address.last_name}`}</Text>
@@ -220,16 +216,15 @@ const styles = StyleSheet.create({
      flexDirection:"row"
    },
    key:{
-    paddingHorizontal:20,
     flex:1,
     color: "#7f8c8d",
     textTransform:"capitalize"
 },
    value:{
-     flex:3
+     flex:1
    },
    frow:{
-     paddingVertical:2
+     paddingVertical:2,
    },
     btn:{
         backgroundColor:"#27ae60",
@@ -252,20 +247,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:20,
         justifyContent:"space-between",
         elevation:3
-    },
-    text: {
-        fontSize:18,
-        textAlign:"center",
-        fontWeight:"bold"
-    },
-    styltext:{
-        borderRadius: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        backgroundColor: "#2ecc71",
-        color: "#fff",
-        marginVertical:10,
-    } 
+    }
 });
 
 mapStateToProps=state=>{
@@ -284,69 +266,3 @@ mapDispatch=dispatch=>{
 }
 export default connect(mapStateToProps, mapDispatch)(CheckAddressSelect);
 
-const response = {
-    "success": true,
-    "billing_address": [{
-            "id": 28,
-            "user_id": 5,
-            "area": "fsfsfs",
-            "block": "gsgsfss",
-            "street": "fsfsfs",
-            "lane": "sgsggs",
-            "city": null,
-            "first_name": "zdgse",
-            "last_name": "sgsgsg",
-            "phone_number": "8106492369",
-            "email": "sgsg.sgs@sgs.com",
-            "country": "Kuwait",
-            "created_at": "2019-08-27T18:35:17.492Z",
-            "updated_at": "2019-08-27T18:35:17.492Z"
-        },
-        {
-            "id": 25,
-            "user_id": 5,
-            "area": "fsfsfs",
-            "block": "gsgsfss",
-            "street": "fsfsfs",
-            "lane": "sgsggs",
-            "city": null,
-            "first_name": "zdgse",
-            "last_name": "sgsgsg",
-            "phone_number": "8106492369",
-            "email": "sgsg.sgs@sgs.com",
-            "country": "Kuwait",
-            "created_at": "2019-08-27T16:44:50.951Z",
-            "updated_at": "2019-08-27T16:44:50.951Z"
-        },
-        {
-            "id": 20,
-            "user_id": 5,
-            "area": "fsfsfs",
-            "block": "gsgs fss ",
-            "street": "fsfsfs",
-            "lane": "sgsggs",
-            "city": null,
-            "first_name": "zdgse",
-            "last_name": "sgsgsg",
-            "phone_number": "8106492369",
-            "email": "sgsg.sgs@sgs.com",
-            "country": "Kuwait",
-            "created_at": "2019-08-25T21:43:26.667Z",
-            "updated_at": "2019-08-25T21:43:26.667Z"
-        }
-    ],
-    "user_details": {
-        "id": 5,
-        "first_name": "santosh",
-        "last_name": "kumar",
-        "phone_number": "8500589739",
-        "email": "korada.santoshkumar611@gmail.com",
-        "password_digest": "$2a$12$BBTEL5xh10wiYyEzgD5PGOBidGvrJ6SYY/P5ej9zvsuxM19qqLRh2",
-        "address": "madhapur,hyderabad",
-        "role": "Customer",
-        "active": true,
-        "created_at": "2019-08-07T11:37:46.399Z",
-        "updated_at": "2019-08-29T19:34:16.085Z",
-        "user_address": null
-    }
-}

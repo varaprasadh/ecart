@@ -22,6 +22,4 @@ const LoginStack =createStackNavigator({
     headerMode:"none"
 });
 
-
-
 export default LoginStack;

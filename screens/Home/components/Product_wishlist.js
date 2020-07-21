@@ -4,6 +4,7 @@ import { View, Text, StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback}
 import {Ionicons} from "@expo/vector-icons";
 
 import {connect} from 'react-redux';
+import Axios from 'axios';
 
 class Product extends Component {
    constructor(props){
@@ -25,14 +26,9 @@ class Product extends Component {
            price: this.state.product.price,
            quantity:1
        };
-       fetch(`${this.props.baseUrl}/add_item_to_cart`, {
-           method: "POST",
-           body: JSON.stringify(obj),
-           headers: {
-               "content-Type": "application/json",
-               "AUTH-TOKEN": this.props.AUTH_TOKEN
-           }
-       }).then(res => res.json()).then(data => {
+       Axios.post("/add_item_to_cart",obj,{headers:{
+            "AUTH-TOKEN": this.props.AUTH_TOKEN
+       }}).then(({data})=> {
            if (data.success == true) {
                this.props.changeCartStatus(this.state.product.id, true);
                this.props.addToCart({...this.state.product,...{quantity:1,availableQuantity:this.state.product.quantity}});
@@ -40,20 +36,19 @@ class Product extends Component {
                    isInCart: true
                });
               this.props.changeCartStatus_wishlist(this.state.product.id,{isInCart:true});
+              this.remove();
            }
        });  
    }   
   
-    
     render() {
-       console.log("wishlist",this.props.productdata); 
     currency = Number(this.props.productdata.price)<1?"Fils":"KD"
     quantity=this.props.productdata.quantity||0;
         isInCart = this.props.productdata.isInCart;
         instock = this.props.productdata.quantity > 0 && (this.props.productdata.isActive || this.props.productdata.is_active)
         return ( 
       <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)}>
-          <View style={{height:150}}>
+          <View style={{height:150,marginVertical:1}}>
             <View style={styles.container}>
                 <View style={[styles.img,{flex:2,minWidth:125,maxWidth:125}]}>
                         <Image source={this.props.productdata.img} 
@@ -72,7 +67,7 @@ class Product extends Component {
                         </Text> 
                     </View>
                     
-                      <View style={{flexDirection:"row",alignItems:"center",marginTop:20}}>
+                      <View style={{flexDirection:"row",alignItems:"center",marginTop:"auto"}}>
                         <TouchableOpacity style={{flex:1,justifyContent:"center",alignItems:"center"}} disabled={!instock|| isInCart} onPress={this.addToCart.bind(this)}> 
                             <Text 
                                     style={[styles.remove_btn_stock,
@@ -101,7 +96,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff', 
         flexDirection:"row",
         elevation:5, 
-        marginTop:5  
+        padding:10,
     },
     productInfo:{
        paddingHorizontal:10,
@@ -111,17 +106,12 @@ const styles = StyleSheet.create({
         color:"green"
     },
     img:{
-        paddingBottom:5,
-        paddingTop:5,
-        paddingLeft:5,
-        paddingRight:5,
         borderRadius:10
     },
     remove_btn:{
         color:"#fff",
         backgroundColor: "#e74c3c",
         paddingVertical:5,
-        paddingHorizontal:10,
         borderRadius:5,
         alignSelf: "stretch",
         textAlign: "center"
@@ -129,8 +119,8 @@ const styles = StyleSheet.create({
     remove_btn_stock:{
         color:"#fff",
         paddingVertical:5,
-        paddingHorizontal:10,
         borderRadius:5,
+        marginHorizontal:3,
         alignSelf:"stretch",
         textAlign:"center"
     }

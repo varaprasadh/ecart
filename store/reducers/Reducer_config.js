@@ -1,6 +1,6 @@
 
 const config={ 
-    base_url: "http://18.219.157.9",
+    base_url: "https://bazarkam.com",
     AUTH_TOKEN: "",
 }                   
 

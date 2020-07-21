@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,ImageBackground,TextInput,TouchableOpacity,KeyboardAvoidingView} from 'react-native';
+import { View, Text,StyleSheet,ImageBackground,TextInput,TouchableOpacity,KeyboardAvoidingView,Platform} from 'react-native';
 import Wrapper from '../Wrapper';
 import Header from '../../major_components/Header';
 
 import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
 import Loader from '../../major_components/Loader';
+import Axios from 'axios';
+
+import { TextInput as MTextInput } from 'react-native-paper'
+
+
 class EditProfile extends Component {
   constructor(props) {
     super(props);
@@ -17,18 +22,18 @@ class EditProfile extends Component {
     };
     this.saveProfile=this.saveProfile.bind(this);
     this.isStateValid=this.isStateValid.bind(this);
-
   }  
 
 
   isStateValid(){
-    let {first_name='',last_name='',mobile}=this.state;
-    if(first_name.trim()!='' && last_name.trim()!==''){
-      return true;
-    }
-    return false;
+    let {first_name='',last_name='',mobile=""}=this.state;
+    return (first_name.trim()!=='' && last_name.trim()!=='' && /^\d{8}$/.test(mobile) );
   }
   saveProfile(){
+    if(!this.isStateValid()){
+      return;
+    }
+
     let obj={
       first_name:this.state.first_name,
       last_name:this.state.last_name,
@@ -37,15 +42,8 @@ class EditProfile extends Component {
     this.setState({
       loading:true
     });
-   
-    fetch(`http://18.219.157.9/profile_edit  `, {
-      method:"POST",
-      headers:{
-        "content-Type":"application/json",
-        "AUTH-TOKEN":this.props.AUTH_TOKEN
-      },
-      body:JSON.stringify(obj)
-    }).then(res=>res.json()).then(data=>{
+    Axios.post("/profile_edit",obj,{headers:{ "AUTH-TOKEN":this.props.AUTH_TOKEN}})
+   .then(({data})=>{
       if(data.success){
        showMessage({
          type:"success", 
@@ -56,7 +54,7 @@ class EditProfile extends Component {
        let localNameObj={
          firstName:this.state.first_name,
          lastName:this.state.last_name,
-         
+         mobile:this.state.mobile
        }
        this.props.updateLocalName(localNameObj);
        this.props.navigation.goBack();
@@ -80,36 +78,50 @@ class EditProfile extends Component {
     return (
       this.state.loading?<Loader/>:
       <Wrapper>
-      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{flex:1}}>
         <ImageBackground source={require("../../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
             <Header title="Edit Profile" backbutton backHandler={this.props.navigation.goBack}/>
             <View style={styles.container}>
                 <View style={styles.form}>
-                    <Text 
-                      style={{fontSize:14,fontWeight:"bold",color:"#fff",marginBottom:20}}>
-                       You Can Edit The Details Below!
-                    </Text>
                     <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >First Name</Text>
-                        <TextInput style={[styles.inputline,styles.input]}
+                        <MTextInput
+                          label="First Name"
                           value={this.state.first_name}
+                          error={this.state.first_name.trim()==""}
                           onChangeText={text=>this.setState({first_name:text})}
                         />
                     </View>
                     <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >Last Name</Text>
-                        <TextInput style={[styles.inputline,styles.input]}
-                          value={this.state.last_name}
-                          onChangeText={text=>this.setState({last_name:text})}
-                        />
+                      <MTextInput
+                        label="Last Name"
+                        value={this.state.last_name}
+                        error={this.state.last_name.trim()==""}
+                        onChangeText={text=>this.setState({last_name:text})}
+                      />
+                    </View>
+                    <View className="input-row" style={[styles.inputRow,{flexDirection:"row"}]}>
+                      <MTextInput
+                        label="Country Code"
+                        value="+956"
+                        style={{flex:1}}
+                        disabled={true}
+                      />
+                      <MTextInput
+                        label="Mobile"
+                        keyboardType="number-pad"
+                        value={this.state.mobile}
+                        error={!/^\d{8}$/.test(this.state.mobile)}
+                        style={{flex:3}}
+                        onChangeText={text=>this.setState({mobile:text})}
+                      />
                     </View>
                     <View style={{flexDirection:"row"}}>
                       <TouchableOpacity 
-                        style={[styles.btn,{backgroundColor:"#e74c3c"}]}
+                        style={[styles.btn,{backgroundColor:"none"}]}
                         onPress={()=>this.props.navigation.goBack()}
                       > 
                         <View>
-                          <Text style={{fontWeight:"bold",color:"#fff",fontSize:20}}>CANCEL</Text>
+                          <Text style={{color:"tomato",fontSize:16}}>CANCEL</Text>
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity 
@@ -118,7 +130,7 @@ class EditProfile extends Component {
                         disabled={!isValid}
                         > 
                         <View>
-                          <Text style={{fontWeight:"bold",color:"#fff",fontSize:20}}>SAVE</Text>
+                          <Text style={{color:"#fff",fontSize:16}}>SAVE</Text>
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -131,49 +143,34 @@ class EditProfile extends Component {
   }
 }
 const styles = StyleSheet.create({
-   container:{
-       paddingHorizontal:10,
-       paddingVertical:20,
-       justifyContent:"center",
-       flex:1
-   },
-    input: {
-        fontSize: 20,
-        paddingVertical:5,
-        paddingHorizontal:10,
-        color:"#fff"
-      },
-      inputline: {
-        borderWidth: 2,
-        borderColor: "#27ae60",
-        borderRadius: 5,
-      },
-      inputRow: {
-        display: "flex",
-        marginBottom: 5
-      },
-       label: {
-         fontWeight: "bold",
-         color: "#fff",
-         fontSize:16
-       },
-      form:{
-        backgroundColor: "#00000066",
-        padding:10,
-        borderRadius:5,
-        borderWidth:1,
-        borderColor:"#fff"
-      },
-       btn: {
-         flex:1,
-         marginTop:20,
-         height: 50,
-         backgroundColor: "#2ecc71",
-         color: "#fff",
-         display: "flex",
-         justifyContent: 'center',
-         alignItems: "center"
-       },
+  container:{
+      paddingHorizontal:10,
+      paddingVertical:20,
+      flex:1
+  },
+  inputRow: {
+    display: "flex",
+    marginBottom: 5
+  },
+  form:{
+    padding:10,
+    borderRadius:5,
+    borderWidth:1,
+    borderColor:"#fff",
+    backgroundColor:"white"
+  },
+    btn: {
+      flex:1,
+      marginTop:20,
+      paddingVertical:10,
+      paddingHorizontal:20,
+      borderRadius:5,
+      backgroundColor: "#2ecc71",
+      color: "#fff",
+      display: "flex",
+      justifyContent: 'center',
+      alignItems: "center"
+    },
 })
 mapState=state=>{
   let {Addition} = state;
@@ -191,7 +188,6 @@ mapState=state=>{
 mapDispatch=dispatch=>{
   return {
     updateLocalName:(obj)=>{dispatch({type:"UPDATE_LOCAL_NAME",obj})},
-   
   }
 } 
 export default connect(mapState,mapDispatch)(EditProfile);

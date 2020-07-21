@@ -9,6 +9,7 @@ import Loader from '../../major_components/Loader';
 import ExpectedDelivery from '../../major_components/ExpectedDelivery';
 import { ScrollView } from 'react-native-gesture-handler';
 import BillingAddress from '../../major_components/BillingAddress';
+import Axios from 'axios';
 
 class OrderItemDetail extends Component {
   constructor(props) {
@@ -33,14 +34,8 @@ cancelOrder(){
    this.setState({
        loading:true
    });
-   fetch(`${this.props.baseUrl}/cancel_order`,{
-       method:"POST",
-       headers:{ 
-           "content-Type":"application/json",
-           "AUTH-TOKEN":this.props.AUTH_TOKEN
-       },
-       body:JSON.stringify(obj)
-   }).then(res=>res.json()).then(data=>{ 
+   Axios.post("/cancel_order",obj,{headers:{"AUTH-TOKEN":this.props.AUTH_TOKEN}})
+   .then(({data})=>{ 
        if(data.success==true){
            showMessage({
                type:"success",
@@ -82,7 +77,7 @@ cancelOrder(){
         <ImageBackground style={{width:"100%",height:"100%"}} source={require("../../images/backgroundimage.jpg")}>
         <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:100}}>
         <View style={{padding:10}}> 
-            <View style={{backgroundColor:"#fff",padding:10,borderRadius:10}}>
+            <View style={{backgroundColor:"#fff",padding:10,borderRadius:5}}>
                 <View style={styles.jrow}>
                     <Text style={styles.label}>Order ID:</Text><Text>BZK{this.state.orderInfo.id}</Text>
                 </View>
@@ -96,14 +91,14 @@ cancelOrder(){
                 <View style={styles.jrow} >
                     <Text style={styles.label}>Delivery Status:</Text>
                     
-                    <Text style={[styles.status,{fontWeight:"bold",color:"#fff",paddingHorizontal:20,paddingVertical:10,marginTop:10},
-                         this.state.cancelled?{backgroundColor:"#e74c3c"}:delivered ? {backgroundColor:"#27ae60"} : pending ?{backgroundColor:"#e67e22"} : cancelled ? {backgroundColor:"#e74c3c"} : {}
+                    <Text style={[styles.status,{fontWeight:"bold"},
+                         this.state.cancelled?{color:"#e74c3c"}:delivered ? {color:"#27ae60"} : pending ?{color:"#e67e22"} : cancelled ? {color:"#e74c3c"} : {}
                         ]}>
                      {this.state.cancelled?"Cancelled":delivered?"Delivered":pending?"Pending":cancelled?"Cancelled":""}</Text>
                 </View>
             </View>
-            <View style={{backgroundColor:"#fff",paddingHorizontal:10,marginTop:10,borderRadius:10}}>
-                <Text style={[styles.label,{color:"#c0392b"}]}>Order Contents:</Text>
+            <View style={{backgroundColor:"#fff",padding:10,marginTop:10,borderRadius:5}}>
+                <Text style={[styles.label,{color:"#e74c3c"}]}>Order Contents:</Text>
                 <OrderItemsTable  items={this.state.products}/>
             </View> 
             <BillingAddress address={this.state.billingAdress}/>
@@ -165,7 +160,6 @@ const styles = StyleSheet.create({
 
     },
     label:{
-      fontSize:16,
       fontWeight:"bold",
       color: "#7f8c8d",
     },
@@ -183,7 +177,7 @@ const styles = StyleSheet.create({
         color:"#fff",
         fontWeight:"bold",
         paddingHorizontal:30,
-        borderRadius:10
+        borderRadius:5
     },
     btn_abs:{
         position:"absolute",
@@ -206,7 +200,7 @@ export class OrderItemsTable extends Component{
     render(){
         totalPrice=0;
         return(
-            <View> 
+            <View style={{paddingHorizontal:10}}> 
                 <View style={[styles.row,{borderBottomWidth:1,borderBottomColor:"#2c3e50"}]}> 
                 <View style={styles.col}><Text style={[styles.colHead]}>Product Code</Text></View>
                 <View style={styles.col}><Text style={[styles.colHead]}>Product</Text></View>

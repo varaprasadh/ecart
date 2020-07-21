@@ -8,12 +8,13 @@ import {connect} from "react-redux";
 import Loader from '../../major_components/Loader';
 
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
 
 class Profile extends Component {
    constructor(props){
        super(props);
        this.state={
-
+          loading:true
        }
    }  
    componentWillMount() { 
@@ -25,15 +26,11 @@ class Profile extends Component {
           });
           this.props.navigation.navigate('Login');
       }
-
-       fetch(`http://18.219.157.9/profile`, {
-              "method": "GET",
-              "headers": {
-                  "AUTH-TOKEN": this.props.AUTHTOKEN,
-                  "cache-control": "no-cache",
-              }
-          }).then(res=>res.json()).then(data => {
-           console.log(data);
+      this.setState({
+          loading:true
+      })
+       Axios.get("/profile",{headers:{"AUTH-TOKEN": this.props.AUTHTOKEN}})
+       .then(({data}) => {
            if (data.success == true) {
                profile = data.profile;
                let obj = {
@@ -46,7 +43,12 @@ class Profile extends Component {
                this.props.setProfile(obj);
             }
 
-       }).catch(err => console.log(err));
+       }).catch(err => console.log(err)).finally(()=>{
+           this.setState({
+               loading:false
+           });
+           
+       })
    }
      
    logout(){
@@ -57,18 +59,17 @@ class Profile extends Component {
           this.props.clearAuthToken();
          setTimeout(()=>{
               this.props.navigation.navigate('LoginStack');
-         },1500);
+         },500);
       }).catch(err => {
           console.log(err);
       }); 
-  
 }
+
     render() {
         return (
             this.state.loading?<Loader/>:
             <Wrapper noBackground>
                <View style={{flex:1}}>
-                    {/* <Header title="Profile"/> */}
                     <View style={styles.profileDataContainer}>
                         <Image style={styles.pro_Icon} source={require("./images/avatar.gif")}/>
                         <View style={styles.details}>

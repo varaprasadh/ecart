@@ -1,62 +1,36 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,TextInput as Input,ImageBackground} from 'react-native';
 
-import {connect} from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '../major_components/Loader';
-
+import Axios from 'axios';
+import Header from '../major_components/Header';
+import Wrapper from '../Home/Wrapper';
 class MyClass extends Component {
      
     constructor(props){
         super(props);
         this.state={
-            number:null,
-            submit_disabled:true
+            mobile:null,
         }
-        this.handleChange=this.handleChange.bind(this);
     }
-
     componentDidMount(){
         this.input.focus();
     }
-
-   
-
-    handleChange(text){ 
-          this.setState({
-              number:text
-          },()=>{
-           if( this.state.number.length==8 ){ 
-               this.input.blur();
-               this.setState({
-                   submit_disabled:false
-               });
-           }else{
-            this.setState({
-                submit_disabled:true
-            });
-           }
-          });
-    
+    isValidMobile(){
+        return /^\d{8}$/.test(this.state.mobile);
     }
+
     continue(){
         let obj={
-            	phone_number:this.state.number
+            	phone_number:this.state.mobile
         }
-
         this.setState({
             loading:true
         });
-        
-        fetch(`http://18.219.157.9/generate_otp`, {
-            method:"POST",
-            headers:{
-                "content-Type":"application/json"
-            },
-            body:JSON.stringify(obj)
-        }).then(res=>res.json()).then(data=>{
+        Axios.post("/generate_otp",obj).then(({data})=>{
             if(data.success==true){
-             this.props.navigation.push('OTP',{mobile:this.state.number,type:"signin_with_otp"})
+             this.props.navigation.push('OTP',{mobile:this.state.mobile,type:"signin_with_otp"})
             }
             else{
                 showMessage({
@@ -85,41 +59,44 @@ class MyClass extends Component {
     render() { 
         return (
               this.state.loading?<Loader/>:
+            <Wrapper>
                <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>    
+               <Header backbutton title="SignIn With Mobile" backHandler={this.props.navigation.goBack}/>
                 <View style={styles.container}>
                     <View style={styles.card}>
                         <View><Text style={styles.label}>Verification</Text></View>
-                        <View style={{width:200}}>
+                        <View>
                             <Text style={styles.text}>Enter your registered mobile number</Text>
                         </View>
                         <View 
-                        style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
+                            style={[styles.inputline,styles.input,{display:"flex",flexDirection:"row",paddingLeft:0}]}
                         > 
                             <Input 
-                            value="+965"
-                            editable={false} 
-                            style={[
-                                {paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
+                                value="+965"
+                                editable={false} 
+                                style={[{paddingVertical:10,paddingHorizontal:5,textAlign:"center"}]} 
                             />
                             <Input 
-                            style={{flex:3,fontSize:20,}}  
-                            maxLength={8}
-                            ref={input=>this.input=input}
-                            onSubmitEditing={()=>this.input.blur()}
-                            returnKeyType="go"
-                            keyboardType="number-pad"
-                            onChangeText={this.handleChange}
+                                style={{flex:1}}  
+                                maxLength={8}
+                                ref={input=>this.input=input}
+                                onSubmitEditing={()=>this.input.blur()}
+                                returnKeyType="go"
+                                keyboardType="number-pad"
+                                value={this.state.mobile}
+                                onChangeText={text=>this.setState({mobile:text.trim()})}
                             />
                         </View>
                         
-                        <TouchableOpacity disabled={this.state.submit_disabled} 
+                        <TouchableOpacity disabled={!this.isValidMobile} 
                             onPress={this.continue.bind(this)}
-                            style={[styles.btn,{backgroundColor:this.state.submit_disabled?"gray":"green"}]}>
+                            style={[styles.btn,{backgroundColor:!this.isValidMobile()?"gray":"green"}]}>
                             <Text style={{fontSize:20,color:"white",elevation:6}}>CONTINUE</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 </ImageBackground>
+            </Wrapper>
         );
     }
 }
@@ -129,7 +106,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#ecf0f1',
     },
    
     inputline:{
@@ -137,12 +113,17 @@ const styles = StyleSheet.create({
          borderColor:"#2ecc71",
          borderRadius: 5,
     },
-    label:{marginBottom:10, fontSize:25,fontWeight:"bold",paddingVertical:10,alignSelf:"flex-start"},
+    label:{
+        marginBottom:10, 
+        fontSize:25,fontWeight:"bold",
+        paddingVertical:10,
+        alignSelf:"flex-start"
+    },
     text:{
-        fontSize:18,
         marginBottom:20,
         textAlign:"justify",
-        textTransform:"capitalize"
+        textTransform:"capitalize",
+        textAlign:"center"
     },
     btn:{
         paddingBottom:5,
@@ -156,18 +137,11 @@ const styles = StyleSheet.create({
     },
     card:{
         backgroundColor:"white",
-        paddingTop:10,
-        paddingBottom:10,
-        paddingLeft:30,
-        paddingRight:30,
+        paddingVertical:10,
+        paddingHorizontal:30,
         elevation:3,
         borderRadius:5
     }
 });
-mapState=state=>{
-    return {
-        baseUrl: state.Config.base_url,
-    }
-}
 
-export default connect(mapState)(MyClass);
+export default MyClass;

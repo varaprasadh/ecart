@@ -9,25 +9,24 @@ import {connect} from "react-redux";
 import Loader from '../major_components/Loader';
 import EmptyItems from '../major_components/EmptyItems';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
  
+import {Snackbar,Portal,Provider} from 'react-native-paper';
 
 
 class WishList extends Component {
     constructor(props){
         super(props);
         this.state={
-            refresh:false
+            refresh:false,
+            snackbar:false,
+            snackMessage:""
         }
         this.loadWishlist = this.loadWishlist.bind(this);
     }
   loadWishlist(){
-       fetch(`${this.props.baseUrl}/wish_list`, {
-           method: "GET",
-           headers: {
-               "content-Type": "application/json",
-               "AUTH-TOKEN": this.props.AUTH_TOKEN
-           }
-       }).then(res => res.json()).then(data => {
+      Axios.get("/wish_list",{headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN}})
+      .then(({data}) => {
            if (data.success == true) {
                let products = data.products;
                this.props.toggleLoading();
@@ -55,23 +54,22 @@ class WishList extends Component {
    openProductPage(id){
        this.props.navigation.navigate('ExploreProduct',{id})
    }
+
     removeItem(id){ 
         obj={
             product_id:id 
         };
-        fetch(`${this.props.baseUrl}/remove_item_from_wish_list`,{
-            method:"DELETE",
-            headers:{
-                "content-Type":"application/json",
-                "AUTH-TOKEN":this.props.AUTH_TOKEN 
-            },
-            body:JSON.stringify(obj)
-        }).then(res=>res.json()).then(data=>{
+        Axios.delete("/remove_item_from_wish_list",{data:obj,headers:{"AUTH-TOKEN":this.props.AUTH_TOKEN }})
+        .then(({data})=>{
             if(data.success==true){
                 this.props.removeFromWishlist(id);
                 this.props.changeCurrent(id,{isinWishlist:false});
             }
-        }).catch(err=>console.log(err));       
+        }).catch(err=>console.log(err)).finally(()=>{
+             this.setState({
+                 snackMessage:"product removed from wishlist"
+             });
+        }) 
     }
     onRefresh(){
         this.setState({
@@ -99,6 +97,12 @@ class WishList extends Component {
                             {(()=>Items)()}
                         </ScrollView> 
                     </View>
+                    <Snackbar 
+                        visible={this.state.snackbar}
+                        onDismiss={()=>this.setState({snackbar:false})}
+                        >
+                        {this.state.snackMessage}
+                    </Snackbar>
             </Wrapper>:
             <EmptyItems message="Wishlist is Empty!"/>
         )    

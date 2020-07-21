@@ -16,7 +16,6 @@ class SearchBar extends Component {
   }
   render() {
     return (
-     
           <View style={styles.container}>
             <TextInput style={styles.searchbar} 
               placeholder="search here"
@@ -37,11 +36,10 @@ class SearchBar extends Component {
 
 const styles=StyleSheet.create({
   container:{
-    height:50,
     backgroundColor:"#fff",
     alignSelf:"stretch",
     flexDirection: 'row',
-    borderRadius:20,
+    borderRadius:5,
     marginHorizontal:10,
     paddingHorizontal:10,
   },

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ImageBackground,TextInput as Input} from 'react-native';
 
 import {showMessage} from 'react-native-flash-message';
+import Axios from 'axios';
+import Loader from '../major_components/Loader';
 class ForgetPassword extends Component {
     constructor(props){
         super(props);
         this.state={
-            submit_disabled:true,
             password:'',
             confirm_password:'',
             mobile: this.props.navigation.getParam('mobile'),
@@ -24,13 +25,7 @@ class ForgetPassword extends Component {
       this.setState({
           loading:true
       });
-       fetch('http://18.219.157.9/reset_password', {
-           method: "POST",
-           headers: {
-               "content-Type": "application/json"
-           },
-           body: JSON.stringify(obj)
-       }).then(res=>res.json()).then(data=>{
+      Axios.post("/reset_password",obj).then(({data})=>{
         if(data.success==true){
             showMessage({
                 message:"success",
@@ -60,21 +55,26 @@ class ForgetPassword extends Component {
            this.props.navigation.navigate('Login');
        })
    } 
+   isValidState(){
+       return this.state.password.length>=4 && this.state.password===this.state.confirm_password;
+   }
+
     render() {
-        submit_disabled =!( this.state.password!='' && this.state.password.length>7 && this.state.password===this.state.confirm_password);
+        let submit_disabled =!this.isValidState();
         return (
+        this.state.loading?<Loader/>:
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={[styles.card]}>
-               <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
+               <Text style={{marginBottom:5,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View  style={styles.inputRow}>
-                    <Text style={styles.label} >
-                     Enter Your New Password.Password Length Must Be Minimum Of 8 Characters!
+                    <Text style={{marginBottom:10,color:"#595957"}} >
+                    Password Length Must Be Minimum Of 4 Characters!
                     </Text>
                     <View style={styles.inputwrapper}>
                         <Input 
                         style={[styles.inputline,styles.input,]}
-                        onChangeText={text=>this.setState({password:text})} 
+                        onChangeText={text=>this.setState({password:text.trim()})} 
                         placeholder="Enter Password"
                         secureTextEntry={true}
                         value={this.state.password}
@@ -84,7 +84,7 @@ class ForgetPassword extends Component {
                             placeholder="Re-Enter Password"
                             secureTextEntry={true}
                             value={this.state.confirm_password}
-                            onChangeText={text=>this.setState({confirm_password:text})}
+                            onChangeText={text=>this.setState({confirm_password:text.trim()})}
                             returnKeyType="go"/>
                     </View>
                     <TouchableOpacity 
@@ -128,11 +128,6 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         marginBottom:5,
       },
-      label:{
-        fontWeight:"bold",
-        color: "#e74c3c",
-        marginBottom:20
-    },
     card:{
         backgroundColor:"white",
         paddingVertical:10,

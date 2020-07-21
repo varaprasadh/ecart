@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import noImage from './product_images/noimage.jpg';
 
-// import {OptimizedFlatList as FlatList} from 'react-native-optimized-flatlist';
 
 import Wrapper from "./Wrapper";
 import SearchBar from  "./components/SearchBar";
@@ -27,6 +26,8 @@ import EmptyItems from '../major_components/EmptyItems';
 import RetryButton from '../major_components/RetryButton';
 import Product_Explore from './components/Product_Explore';
 import { showMessage } from 'react-native-flash-message';
+import Axios from 'axios';
+import BazarKamHeader from '../major_components/BazarKamHeader';
 
 
 class Explore extends Component {
@@ -44,6 +45,7 @@ class Explore extends Component {
        this.onRefresh=this.onRefresh.bind(this);
        this.loadInitialProducts = this.loadInitialProducts.bind(this);
     }
+   
 
    onProductSelect(product){
         if (this.props.AUTH_TOKEN == "") {
@@ -55,43 +57,42 @@ class Explore extends Component {
             });
             
         }else{
+            console.log(product.id);
            this.props.navigation.push("ExploreProduct",{id:product.id}); 
         }
    }
   loadMoreProducts(){
-
+       if(this.state.loading || this.state.completed){
+           return;
+       }
        this.setState({
            loading:true,
        });
-    fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
-          method:"GET",
-          headers:{ 
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          } 
-      }).then(res=>res.json()).then(data=>{
+       Axios.get("/products",{params:{page:this.state.page},headers:{
+          "AUTH-TOKEN": this.props.AUTH_TOKEN
+       }}).then(({data})=>{
           if(data.success==true){
               
             if (data.products.length == 0) {
                 this.setState({
-                    hideLoadMoreButton: true
+                    completed: true
                 })
             }else{
              let _products = data.products.map(p => this.parseProduct(p))
              this.setState({
                  page: this.state.page + 1,
-                 hideLoadMoreButton:data.finished,
+                 completed:data.finished,
                  loading: false,
-                //  products: [...this.state.products, ..._products],
              });
              this.props.loadMore(_products);
-            }
-            
+            }            
           }
       }).catch(err=>{
           //handle error
       }); 
        
   }
+
    parseProduct(p) {
       carouselImages = p.images.map(imgurl => {
           return {
@@ -116,29 +117,21 @@ class Explore extends Component {
   }
 
   loadInitialProducts(){
-
-
        this.setState({
           Mloading:true
       });
-      fetch(`${this.props.baseUrl}/products?page=${this.state.page}`,{
-          method:"GET",
-          headers:{ 
-              "AUTH-TOKEN": this.props.AUTH_TOKEN
-          } 
-      }).then(res=>res.json()).then(data=>{
+
+      Axios.get(`/products`,{params:{page:this.state.page},headers:{ "AUTH-TOKEN": this.props.AUTH_TOKEN}})
+      .then(({data})=>{
           if(data.success==true){
-             
               if(data.products.length<=4){
-                 
                   this.setState({
-                      hideLoadMoreButton:true
+                      completed:true
                   })
               }
               let _products=data.products.map(p=>this.parseProduct(p))
               this.setState({
                   page: this.state.page + 1,
-                //   products:[...this.state.products,..._products]
                 });
               this.props.loadProducts(_products);
 
@@ -149,6 +142,7 @@ class Explore extends Component {
               refreshing: false
           })
       }).catch(err=>{
+          console.log(err);
           this.setState({
               page:1,
               Mloading:false,
@@ -161,11 +155,15 @@ class Explore extends Component {
   onRefresh(){
       this.setState({
           page:1,
-          refreshing:true
+          refreshing:true,
+          completed:false
       },()=>{
           this.loadInitialProducts();
       });
       
+  }
+  componentDidMount(){
+      console.log("nav", this.props.navigation.isFocused());
   }
 
   componentWillMount(){ 
@@ -177,10 +175,10 @@ class Explore extends Component {
        
         let categories=[];
         try{
-            let data = await fetch('http://18.219.157.9/category').then(res => res.json());
+            let data = await Axios.get("/category").then(({data})=>data);
             let _categories=data.categories;
             _categories.map(async cat=>{
-                var subcats = await fetch(`http://18.219.157.9/sub_category?category_id=${cat.id}`).then(res => res.json());
+                var subcats = await Axios.get("/sub_category",{params:{category_id:cat.id}}).then(({data})=>data);
                 var _subcats = subcats.sub_categories.map(subcat => subcat.name);
                 categories.push({
                     name:cat.name,
@@ -207,25 +205,33 @@ class Explore extends Component {
  openDrawer(){ 
      this.props.navigation.openDrawer();
  }
+ renderFooter(){
+     return this.state.loading && (
+        <View>
+            <Text style={{paddingBottom:30,textAlign:"center",color:"white"}}>loading...</Text>
+        </View>
+     )
+ }
     render() { 
        
         return (  
             this.state.Mloading?<Loader/> :
-            this.state.error?<EmptyItems  message="something went wrong">
+            this.state.error?
+            <EmptyItems  message="something went wrong">
                 <RetryButton onRetry={this.handler.bind(this)}/>
             </EmptyItems>:
              <Wrapper noBackground>
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
-                   <View style={{flexDirection:"row",alignItems:"center",paddingLeft:10}}>
+                   <View style={styles.headerTop}>
+                        <BazarKamHeader/>
                         <TouchableWithoutFeedback
-                         onPress={this.openDrawer.bind(this)}
-                         >
-                            <Ionicons name="ios-menu" size={45} color="#fff"/> 
+                            onPress={this.openDrawer.bind(this)}>
+                                <Ionicons name="ios-menu" size={45} color="#fff"/> 
                         </TouchableWithoutFeedback>
-                        <View style={{flex:1}}>
-                            <SearchBar onSearch={this.onSearch.bind(this)}/>
-                        </View>
-                   </View>     
+                   </View>  
+                    <View style={{paddingVertical:5}}>
+                        <SearchBar onSearch={this.onSearch.bind(this)}/>
+                    </View>   
                     {this.props.products.length?
                         <View style={{flex:1}}>
                                 <View style={{flex:1}}>       
@@ -234,21 +240,19 @@ class Explore extends Component {
                                             data={this.props.products}
                                             numColumns={2}
                                             keyExtractor={(item)=>item.id.toString()}
+                                            onEndReached={this.loadMoreProducts.bind(this)}
+                            
+                                            onEndReachedThreshold={0.5}
                                             renderItem={({item})=> (
                                                     <Product_Explore 
                                                         onProductSelect={this.onProductSelect.bind(this)}
                                                         product={item}
                                                     />)}
+                                            ListFooterComponent={this.renderFooter.bind(this)}
                                             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
                                             ListHeaderComponent ={()=>(<Text style={styles.label}>Latest Products</Text>)}
-                                            ListFooterComponent={()=>(!this.state.hideLoadMoreButton &&
-                                            <LoadMoreButton loading={this.state.loading} onPress={this.loadMoreProducts.bind(this)}/>)}
                                         />
-
                                     </View>
-                                    {
-                                        
-                                    }
                                 </View>
                             </View>:
                             <EmptyItems message="No products are available!"/>
@@ -268,6 +272,12 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         paddingVertical:10,
         color:"#fff"
+    },
+    headerTop: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 10
     },
     bottom:{
         position:"absolute",
@@ -292,7 +302,6 @@ mapStateToProps=state=>{
     return {
        products,
        categories,
-       baseUrl: state.Config.base_url,
        AUTH_TOKEN: state.Config.AUTH_TOKEN
     } 
 }

@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,ImageBackground,TextInput,TouchableOpacity,KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import Wrapper from '../Home/Wrapper';
 import Header from '../major_components/Header';
 
@@ -7,6 +16,10 @@ import {showMessage} from "react-native-flash-message";
 import {connect} from 'react-redux';
 
 import Loader from '../major_components/Loader';
+import Axios from 'axios';
+
+import { TextInput as MTextInput } from 'react-native-paper'
+
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
@@ -38,14 +51,9 @@ class ChangePassword extends Component {
      this.setState({
        loading:true
      })
-     fetch(`${this.props.baseUrl}/change_password`,{
-       method:"POST",
-       headers:{
-         "content-Type":"application/json",
-         "AUTH-TOKEN":this.props.AUTH_TOKEN,
-       },
-       body:JSON.stringify(obj)
-     }).then(res=>res.json()).then(data=>{
+     Axios.post("/change_password",obj,{headers:{
+       "AUTH-TOKEN": this.props.AUTH_TOKEN,
+     }}).then(({data})=>{
        console.log(data)
         if(data.success){
           showMessage({
@@ -70,49 +78,50 @@ class ChangePassword extends Component {
   }
   render() {
  
-     isValid=this.isStateValid();
+    isValid=this.isStateValid();
 
     return (
     this.state.loading?<Loader/>:  
     <Wrapper>
-      <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{flex:1}}>
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
             <Header title="Change Password" backbutton backHandler={this.props.navigation.goBack}/>
             <View style={styles.container}>
                 <View style={styles.form}>
-                    <Text 
-                      style={{fontSize:14,fontWeight:"bold",color:"#fff",marginBottom:20}}>
-                       change Password below!
-                    </Text>
                     <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >Old Password</Text>
-                        <TextInput style={[styles.inputline,styles.input]}
-                          value={this.state.first_name}
+                        <MTextInput
+                            label="Old Password"
+                            value={this.state.old_password}
+                            secureTextEntry={true}
+                            error={this.state.old_password.trim()==""}
+                            onChangeText={text=>this.setState({old_password:text.trim()})}
+                          />
+                    </View>
+                    <View className="input-row" style={styles.inputRow}>
+                        <MTextInput
+                          label="New Password"
+                          value={this.state.password}
                           secureTextEntry={true}
-                          onChangeText={text=>this.setState({old_password:text})}
+                          error={this.state.password.length<4}
+                          onChangeText={text=>this.setState({password:text.trim()})}
                         />
                     </View>
                     <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >New Password</Text>
-                        <TextInput style={[styles.inputline,styles.input]}
+                        <MTextInput
+                          label="Confirm Password"
+                          value={this.state.confirm_password}
                           secureTextEntry={true}
-                          onChangeText={text=>this.setState({password:text})}
-                        />
-                    </View>
-                    <View className="input-row" style={styles.inputRow}>
-                        <Text style={styles.label} >Confirm Password</Text>
-                        <TextInput style={[styles.inputline,styles.input]}
-                          secureTextEntry={true}
-                          onChangeText={text=>this.setState({confirm_password:text})}
+                          error={this.state.confirm_password!==this.state.password || this.state.password.length<4}
+                          onChangeText={text=>this.setState({confirm_password:text.trim()})}
                         />
                     </View>
                     <View style={{flexDirection:"row"}}>
                       <TouchableOpacity 
-                        style={[styles.btn,{backgroundColor:"#e74c3c"}]}
+                        style={[styles.btn,{backgroundColor:"none"}]}
                         onPress={()=>this.props.navigation.goBack()}
                       > 
                         <View>
-                          <Text style={{fontWeight:"bold",color:"#fff",fontSize:20}}>CANCEL</Text>
+                          <Text style={{color:"red",fontSize:16}}>CANCEL</Text>
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity 
@@ -121,7 +130,7 @@ class ChangePassword extends Component {
                         disabled={!isValid}
                         > 
                         <View>
-                          <Text style={{fontWeight:"bold",color:"#fff",fontSize:20}}>SAVE</Text>
+                          <Text style={{color:"#fff",fontSize:16}}>SAVE</Text>
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -134,49 +143,34 @@ class ChangePassword extends Component {
   }
 }
 const styles = StyleSheet.create({
-   container:{
-       paddingHorizontal:10,
-       paddingVertical:20,
-       justifyContent:"center",
-       flex:1
-   },
-    input: {
-        fontSize: 20,
-        paddingVertical:5,
-        paddingHorizontal:10,
-        color:"#fff"
-      },
-      inputline: {
-        borderWidth: 2,
-        borderColor: "#27ae60",
-        borderRadius: 5,
-      },
-      inputRow: {
-        display: "flex",
-        marginBottom: 5
-      },
-       label: {
-         fontWeight: "bold",
-         color: "#fff",
-         fontSize:16
-       },
-      form:{
-        backgroundColor: "#00000066",
-        padding:10,
-        borderRadius:5,
-        borderWidth:1,
-        borderColor:"#fff"
-      },
-       btn: {
-         flex:1,
-         marginTop:20,
-         height: 50,
-         backgroundColor: "#2ecc71",
-         color: "#fff",
-         display: "flex",
-         justifyContent: 'center',
-         alignItems: "center"
-       },
+  container: {
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    flex: 1
+  },
+  inputRow: {
+    display: "flex",
+    marginBottom: 5
+  },
+  form: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#fff",
+    backgroundColor: "white"
+  },
+  btn: {
+    flex: 1,
+    marginTop: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: "#2ecc71",
+    color: "#fff",
+    display: "flex",
+    justifyContent: 'center',
+    alignItems: "center"
+  },
 })
 mapState=state=>{
  

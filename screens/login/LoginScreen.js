@@ -6,6 +6,9 @@ import {AsyncStorage} from 'react-native';
 import Loader from '../major_components/Loader';
 
 import {showMessage} from "react-native-flash-message";
+import Axios from 'axios';
+import BazarKamHeader from '../major_components/BazarKamHeader';
+import Wrapper from '../Home/Wrapper';
 class LoginScreen extends Component {
   constructor(props){
     super(props)
@@ -17,23 +20,34 @@ class LoginScreen extends Component {
   }
 
   signIn(){
-   
+    const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/
+    if(!emailRegex.test(this.state.Email_Mobile)){
+      showMessage({
+        type: "warning",
+        message: "invalid email",
+        description: "enter valid email address!",
+        autoHide: true
+      })
+      return;
+    }
+    if(this.state.password.length<4){
+        showMessage({
+          type: "warning",
+          message: "invalid password",
+          description: "please enter valid password",
+          autoHide: true
+        })
+        return;
+    }
     let obj={
-        email: this.state.Email_Mobile.trim().toLowerCase(),
-        password:this.state.password.trim()
+        email: this.state.Email_Mobile.toLowerCase(),
+        password:this.state.password
     };
     if(obj.email!='' && obj.password !=''){
        this.setState({
          loading:true
        })
-        fetch(`${this.props.baseUrl}/login_with_password`, {
-          method: "post",
-          body: JSON.stringify(obj),
-          headers: {
-            "content-type": "application/json"
-          }
-        }).then(res => res.json()).then(data => {
-          console.log(data) 
+       Axios.post("/login_with_password",obj).then(({data})=> {
           if (data.success == true) {
             AsyncStorage.setItem('AUTH_TOKEN', data.auth_token,(err)=>{
               AsyncStorage.setItem('ROLE', data.role);
@@ -92,11 +106,13 @@ class LoginScreen extends Component {
     render() { 
         return (
           this.state.loading?<Loader/>:
+        <Wrapper noBackground>
           <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
           <ScrollView contentContainerStyle={{flex:1}} showsHorizontalScrollIndicator={false}>
             <View className="container" style={styles.container}>  
+              <BazarKamHeader/>
               <View  style={styles.wrapper}>
-                   <View className="signin-container" style={styles.signinContainer}>
+                   <View style={styles.signinContainer}>
                     <View style={{marginLeft:10}}>
                         <Text style={styles.title}>Welcome,</Text> 
                         <Text>Sign in to Continue</Text> 
@@ -106,7 +122,7 @@ class LoginScreen extends Component {
                                 <Text style={styles.formLable}>Email</Text>
                                 <TextInput 
                                    onSubmitEditing={()=>this.passwordInput.focus()}
-                                   onChangeText={text=>this.setState({Email_Mobile:text})}
+                                   onChangeText={text=>this.setState({Email_Mobile:text.trim()})}
                                    keyboardType="email-address"
                                    value={this.state.Email_Mobile}
                                    returnKeyType="next" style={[styles.inputline,styles.input]}/>
@@ -114,7 +130,7 @@ class LoginScreen extends Component {
                             <View className="input-row" style={styles.inputRow} >
                                 <Text style={styles.formLable}>Password</Text>
                                 <TextInput
-                                    onChangeText={text=>this.setState({password:text})} 
+                                    onChangeText={text=>this.setState({password:text.trim()})} 
                                     value={this.state.password}
                                     returnKeyType="go" secureTextEntry={true} style={[styles.inputline,styles.input,{marginBottom:10}]} />
                                 <TouchableOpacity onPress={this.forgetPassword.bind(this)} style={[styles.rightalign,{paddingVertical:10}]}>
@@ -153,6 +169,7 @@ class LoginScreen extends Component {
             </View>
           </ScrollView>
           </ImageBackground>
+        </Wrapper>
         );  
     }
 }
@@ -167,7 +184,6 @@ const styles = StyleSheet.create({
     wrapper:{
       width:"100%",
       padding:10,
-      marginTop: 100
     },
     signinContainer:{ 
         padding:10,

@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import Wrapper from '../Home/Wrapper';
 import {showMessage} from "react-native-flash-message";
 import Header from '../major_components/Header';
+import Axios from 'axios';
 
 class MyClass extends Component {
     
@@ -59,15 +60,8 @@ class MyClass extends Component {
         });
       if(this.state.type=="signup")  {
           console.log("signing up");
-           fetch(`${this.props.baseUrl}/confirm_registration`, {
-               method: "post",
-               body: JSON.stringify(obj),
-               headers: {
-                   "content-type": "application/json"
-               }
-           }).then(res => res.json()).then(data => {
+          Axios.post("/confirm_registration",obj).then(({data}) => {
                if (data.success == true) {
-                  
                   console.log("registration done");
                    showMessage({
                          type:"success",
@@ -111,14 +105,8 @@ class MyClass extends Component {
            }); 
       }
       if (this.state.type == "signin_with_otp"){
-          console.log("login with otp");
-          fetch(`${this.props.baseUrl}/login_with_otp`,{
-              method:"POST",
-              headers:{
-                  "content-Type":"application/json"
-              },
-              body:JSON.stringify(obj)
-          }).then(res=>res.json()).then(data=>{
+          console.log("login with otp",obj);
+          Axios.post("/login_with_otp",obj).then(({data})=>{
               if(data.success==true){
                 
                      let AUTH_TOKEN = data.auth_token;
@@ -162,11 +150,14 @@ class MyClass extends Component {
         return (
         this.state.loading?<Loader/>:
         <Wrapper>
-        <Header backbutton backHandler={this.props.navigation.goBack} color="#fff"/>
+        <Header backbutton  title="Verification" backHandler={this.props.navigation.goBack} color="#fff"/>
        <ImageBackground source={require('../images/backgroundimage.jpg')} style={{width:"100%",height:"100%"}}>
         <View style={styles.container}>
             <View style={styles.card}>
              <Text style={styles.label}>Verification</Text>
+              <View style={{marginBottom:20}}>
+                <Text style={{textAlign:"center",color:"#7f8c8d"}}>Enter The OTP That We have Sent To Your Mobile Number!</Text>
+              </View>
              <View  style={{flexDirection:"row",display:"flex"}}>
                 <OTPBox>
                     <TextInput maxLength={1} keyboardType="number-pad" ref={input1=>this.inputrefs.push(input1)} onChange={e=>this.handleChange(e,1)}  onKeyPress={e=>this.handleKeyPress(e,1)} style={styles.otp_input_style} ></TextInput>
@@ -187,9 +178,6 @@ class MyClass extends Component {
                     <TextInput maxLength={1} keyboardType="number-pad" ref={input6=>this.inputrefs.push(input6)} onChange={e=>this.handleChange(e,6)} onKeyPress={e=>this.handleKeyPress(e,6)} style={styles.otp_input_style} ></TextInput>
                 </OTPBox> 
               </View>
-              <View style={{width:200,marginTop:30}}>
-                <Text style={{textAlign:"center",fontSize:18,fontWeight:"bold",color:"#7f8c8d"}}>we have sent you a OTP to your Mobile Number! Enter here!</Text>
-              </View>
               <TouchableOpacity
                    onPress={this.login.bind(this)}
                    disabled={this.state.btnDisabled}  style={[styles.btn_signup,{backgroundColor:"#2ecc71"}]}>
@@ -207,26 +195,37 @@ class MyClass extends Component {
 const styles = StyleSheet.create({ 
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems:"center",
+        paddingVertical:50,
+        paddingHorizontal:30
     },
     otp_input_style:{
         fontSize:30,
     },
-    label:{marginBottom:10, fontSize:25,fontWeight:"bold",paddingVertical:10,alignSelf:"flex-start"},
-    card:{ alignItems: 'center',backgroundColor:"#fff",
-     elevation:3,paddingHorizontal:10,paddingVertical:20,
-     borderRadius: 5,
+    label:{
+        marginBottom:10, 
+        fontSize:25,fontWeight:"bold",
+        paddingVertical:10,
+        alignSelf:"flex-start"
+    },
+    card:{ 
+        alignItems: 'center',
+        backgroundColor:"#fff",
+        elevation:3,
+        paddingHorizontal:10,
+        paddingVertical:20,
+        borderRadius: 5,
     }, 
     btn_signup:{
-        height:50,
         backgroundColor:"#2ecc71",
         color:"#fff",
         display:"flex",
         justifyContent: 'center',
         alignItems:"center",
         paddingHorizontal:20,
-        marginTop:10
+        paddingVertical:10,
+        marginTop:10,
+        borderRadius:5
     },
 });
  

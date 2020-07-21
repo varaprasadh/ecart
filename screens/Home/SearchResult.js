@@ -8,16 +8,17 @@ import Loader from '../major_components/Loader';
 import EmptyItems from '../major_components/EmptyItems';
 import { showMessage } from 'react-native-flash-message';
 import Product_Explore from './components/Product_Explore';
+import Axios from 'axios';
 
 
 class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        query:props.navigation.getParam('query'),
+        query: props.navigation.getParam('query'),
         loading:false,
         products:[],
-        page:1,
+        page:1, 
         loadignMore:false,
         finished:false
     };
@@ -32,13 +33,8 @@ class SearchResult extends Component {
   }
 
   loadProducts(){
-    fetch(`${this.props.baseUrl}/products?q=${this.state.query}&page=${this.state.page}`, {
-      method: "GET",
-      headers: {
-        "AUTH-TOKEN": this.props.AUTH_TOKEN,
-        "Content-Type":"application/json"
-      }
-    }).then(res => res.json()).then(data => {
+    Axios.get("/products",{params:{page:this.state.page,q:this.state.query},headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN,}})
+    .then(({data}) => {
        if(data.success==true){
               products=data.products;
               products=products.map(p=>{
@@ -99,7 +95,7 @@ class SearchResult extends Component {
     return(
       (this.state.loadignMore) &&
         <View style={{alignItems:"center",paddingVertical:5}}>
-          <Text style={{fontSize:20,color:"#27ae60"}}>Loading...</Text>
+          <Text style={{fontSize:20,color:"white"}}>Loading...</Text>
         </View>
     )
   }
@@ -139,8 +135,8 @@ class SearchResult extends Component {
 
 mapState=state=>{
     return {
-       baseUrl: state.Config.base_url,
-         AUTH_TOKEN: state.Config.AUTH_TOKEN
+      baseUrl: state.Config.base_url,
+      AUTH_TOKEN: state.Config.AUTH_TOKEN
     }
 }
 mapDispatch=dispatch=>{

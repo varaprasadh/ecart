@@ -6,7 +6,8 @@ import {
     TextInput,
     TouchableOpacity,
     KeyboardAvoidingView,
-    ImageBackground
+    ImageBackground,
+    Platform
   } from 'react-native';
 import Header from "../major_components/Header";
 
@@ -69,7 +70,7 @@ class CheckAddress extends Component {
     <Wrapper>
      <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
       <View style={{flex:1}}>
-        <KeyboardAvoidingView behavior="padding" style={{flex:3}}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{flex:3}}>
             <KeyboardAvoidingView  style={{flex:1}}>
                 <Header title="Checkout" backbutton={true} backHandler={()=>this.props.navigation.navigate('Cart')}/> 
                 <View style={{flex:1,paddingHorizontal:10,}}>

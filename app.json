@@ -3,7 +3,6 @@
     "name": "Bazarkam",
     "slug": "bazarkam",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android",
@@ -17,7 +16,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": { 
+    "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
@@ -25,11 +24,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"com.wilson.bazarkam"
+      "bundleIdentifier": "com.wilson.bazarkam"
     },
     "android": {
       "package": "com.wilson.bazarkam",
-      "versionCode":6
+      "versionCode": 6
     }
   }
 }

@@ -18,7 +18,7 @@ const ExplorStack=createDrawerNavigator({
 },{
     initialRouteName: 'ExplorStackRAW',
     contentComponent:Drawer,
-    hideStatusBar: true,
+    hideStatusBar: false,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle'

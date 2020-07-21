@@ -8,7 +8,6 @@ class BillingAddress extends Component {
   }
 
   render() {
-      console.log("address mounted..")
       address=this.props.address
     return (
       <View style={styles.container}>
@@ -49,20 +48,20 @@ const styles=StyleSheet.create({
         // flex:1,
         padding:10,
         backgroundColor:"#fff",
-        borderRadius:10,
-        margin:10
+        borderRadius:5,
+        marginVertical:10
     },
     key:{
-        paddingHorizontal: 20,
         flex: 1,
         color: "#7f8c8d",
-        textTransform: "capitalize"
+        textTransform: "capitalize",
     },
     value: {
-        flex: 3
+        flex: 1
     },
      frow: {
-         paddingVertical: 2
+        paddingVertical: 2,
+
      },
      heading:{
          fontWeight:"bold",
