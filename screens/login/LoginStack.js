@@ -18,7 +18,7 @@ const LoginStack =createStackNavigator({
     ForgetPassword: ForgetPassword,
     ResetPassword:ResetPassword
 },{ 
-    initialRouteName: "SignUP",
+    initialRouteName: "Login",
     headerMode:"none"
 });
 

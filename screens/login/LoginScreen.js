@@ -7,6 +7,8 @@ import Loader from '../major_components/Loader';
 
 import {showMessage} from "react-native-flash-message";
 import Axios from 'axios';
+import BazarKamHeader from '../major_components/BazarKamHeader';
+import Wrapper from '../Home/Wrapper';
 class LoginScreen extends Component {
   constructor(props){
     super(props)
@@ -104,11 +106,13 @@ class LoginScreen extends Component {
     render() { 
         return (
           this.state.loading?<Loader/>:
+        <Wrapper noBackground>
           <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
           <ScrollView contentContainerStyle={{flex:1}} showsHorizontalScrollIndicator={false}>
             <View className="container" style={styles.container}>  
+              <BazarKamHeader/>
               <View  style={styles.wrapper}>
-                   <View className="signin-container" style={styles.signinContainer}>
+                   <View style={styles.signinContainer}>
                     <View style={{marginLeft:10}}>
                         <Text style={styles.title}>Welcome,</Text> 
                         <Text>Sign in to Continue</Text> 
@@ -165,6 +169,7 @@ class LoginScreen extends Component {
             </View>
           </ScrollView>
           </ImageBackground>
+        </Wrapper>
         );  
     }
 }
@@ -179,7 +184,6 @@ const styles = StyleSheet.create({
     wrapper:{
       width:"100%",
       padding:10,
-      marginTop: 100
     },
     signinContainer:{ 
         padding:10,

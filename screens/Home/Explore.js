@@ -27,6 +27,7 @@ import RetryButton from '../major_components/RetryButton';
 import Product_Explore from './components/Product_Explore';
 import { showMessage } from 'react-native-flash-message';
 import Axios from 'axios';
+import BazarKamHeader from '../major_components/BazarKamHeader';
 
 
 class Explore extends Component {
@@ -44,6 +45,7 @@ class Explore extends Component {
        this.onRefresh=this.onRefresh.bind(this);
        this.loadInitialProducts = this.loadInitialProducts.bind(this);
     }
+   
 
    onProductSelect(product){
         if (this.props.AUTH_TOKEN == "") {
@@ -55,6 +57,7 @@ class Explore extends Component {
             });
             
         }else{
+            console.log(product.id);
            this.props.navigation.push("ExploreProduct",{id:product.id}); 
         }
    }
@@ -89,6 +92,7 @@ class Explore extends Component {
       }); 
        
   }
+
    parseProduct(p) {
       carouselImages = p.images.map(imgurl => {
           return {
@@ -158,6 +162,9 @@ class Explore extends Component {
       });
       
   }
+  componentDidMount(){
+      console.log("nav", this.props.navigation.isFocused());
+  }
 
   componentWillMount(){ 
       this.loadInitialProducts();
@@ -198,25 +205,33 @@ class Explore extends Component {
  openDrawer(){ 
      this.props.navigation.openDrawer();
  }
+ renderFooter(){
+     return this.state.loading && (
+        <View>
+            <Text style={{paddingBottom:30,textAlign:"center",color:"white"}}>loading...</Text>
+        </View>
+     )
+ }
     render() { 
        
         return (  
             this.state.Mloading?<Loader/> :
-            this.state.error?<EmptyItems  message="something went wrong">
+            this.state.error?
+            <EmptyItems  message="something went wrong">
                 <RetryButton onRetry={this.handler.bind(this)}/>
             </EmptyItems>:
              <Wrapper noBackground>
                 <ImageBackground style={{width:"100%",height:"100%"}} source={require("../images/backgroundimage.jpg")}>
-                   <View style={{flexDirection:"row",alignItems:"center",paddingLeft:10}}>
+                   <View style={styles.headerTop}>
+                        <BazarKamHeader/>
                         <TouchableWithoutFeedback
-                         onPress={this.openDrawer.bind(this)}
-                         >
-                            <Ionicons name="ios-menu" size={45} color="#fff"/> 
+                            onPress={this.openDrawer.bind(this)}>
+                                <Ionicons name="ios-menu" size={45} color="#fff"/> 
                         </TouchableWithoutFeedback>
-                        <View style={{flex:1}}>
-                            <SearchBar onSearch={this.onSearch.bind(this)}/>
-                        </View>
-                   </View>     
+                   </View>  
+                    <View style={{paddingVertical:5}}>
+                        <SearchBar onSearch={this.onSearch.bind(this)}/>
+                    </View>   
                     {this.props.products.length?
                         <View style={{flex:1}}>
                                 <View style={{flex:1}}>       
@@ -226,13 +241,14 @@ class Explore extends Component {
                                             numColumns={2}
                                             keyExtractor={(item)=>item.id.toString()}
                                             onEndReached={this.loadMoreProducts.bind(this)}
+                            
                                             onEndReachedThreshold={0.5}
                                             renderItem={({item})=> (
                                                     <Product_Explore 
                                                         onProductSelect={this.onProductSelect.bind(this)}
                                                         product={item}
                                                     />)}
-                                            ListFooterComponent={()=>this.state.Mloading && <Text>loading...</Text>}
+                                            ListFooterComponent={this.renderFooter.bind(this)}
                                             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)}/>}
                                             ListHeaderComponent ={()=>(<Text style={styles.label}>Latest Products</Text>)}
                                         />
@@ -257,6 +273,12 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         color:"#fff"
     },
+    headerTop: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 10
+    },
     bottom:{
         position:"absolute",
         bottom:0,
@@ -280,7 +302,6 @@ mapStateToProps=state=>{
     return {
        products,
        categories,
-       baseUrl: state.Config.base_url,
        AUTH_TOKEN: state.Config.AUTH_TOKEN
     } 
 }

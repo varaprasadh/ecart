@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import Wrapper from '../Home/Wrapper';
 import Header from "../major_components/Header";
 import Axios from 'axios';
+import Loader from '../major_components/Loader';
 
 class ForgetPassword extends Component {
     constructor(props){
@@ -52,15 +53,16 @@ class ForgetPassword extends Component {
     render() {
         submit_disabled = !/^\d{8}$/.test(this.state.mobile);
         return (
+            this.state.loading?<Loader/>:
        <Wrapper>
         <ImageBackground source={require("../images/backgroundimage.jpg")} style={{width:"100%",height:"100%"}}>
-        <Header backbutton backHandler={this.props.navigation.goBack} color="#fff"/>
+        <Header backbutton title="Reset Password" backHandler={this.props.navigation.goBack} color="#fff"/>
         <View style={styles.container}>
             <View style={[styles.card]}>
-               <Text style={{marginBottom:20,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
+               <Text style={{paddingVertical:5,fontWeight:"bold",fontSize:20}}>Reset Password</Text>     
                <View className="input-row" style={styles.inputRow}>
                     <Text style={styles.label} >
-                     Please provide us your registered mobile number.
+                     Enter The Registered Mobile Number!
                     </Text>
                     <View style={styles.row}>
                         <Input 
@@ -103,37 +105,33 @@ const styles = StyleSheet.create({
         paddingTop:1,
         paddingLeft:10,
         fontSize:16
-       },
-       inputline:{
+    },
+    inputline:{
         borderColor:"#7f8c8d",
         borderBottomWidth:1
-        },
+    },
     inputRow:{
         display:"flex",
         marginBottom:5,
-      },
+    },
     row:{
         display:"flex",
         flexDirection:"row",
         marginBottom:5,
       },
-      label:{
-        fontWeight:"bold",
-        color: "#e74c3c",
+    label:{
+        color: "#595957",
         marginBottom:20
     },
     card:{
         backgroundColor:"white",
-        paddingTop:10,
-        paddingBottom:10,
-        paddingLeft:30,
-        paddingRight:30,
+        paddingVertical:10,
+        paddingHorizontal:30,
         elevation:3,
         borderRadius:5
     },
     btn:{
-        paddingBottom:5,
-        paddingTop:5,
+        paddingVertical:5,
         backgroundColor:"green",
         flexDirection:"row",
         justifyContent:"center",

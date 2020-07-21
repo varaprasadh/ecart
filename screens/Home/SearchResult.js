@@ -15,10 +15,10 @@ class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        query:props.navigation.getParam('query'),
+        query: props.navigation.getParam('query'),
         loading:false,
         products:[],
-        page:1,
+        page:1, 
         loadignMore:false,
         finished:false
     };
@@ -33,7 +33,7 @@ class SearchResult extends Component {
   }
 
   loadProducts(){
-    Axios.get("/products",{params:{page:this.state.page},headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN,}})
+    Axios.get("/products",{params:{page:this.state.page,q:this.state.query},headers:{"AUTH-TOKEN": this.props.AUTH_TOKEN,}})
     .then(({data}) => {
        if(data.success==true){
               products=data.products;
@@ -95,7 +95,7 @@ class SearchResult extends Component {
     return(
       (this.state.loadignMore) &&
         <View style={{alignItems:"center",paddingVertical:5}}>
-          <Text style={{fontSize:20,color:"#27ae60"}}>Loading...</Text>
+          <Text style={{fontSize:20,color:"white"}}>Loading...</Text>
         </View>
     )
   }

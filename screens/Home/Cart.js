@@ -9,6 +9,7 @@ import Loader from '../major_components/Loader';
 import Wrapper from './Wrapper';
 import { showMessage } from 'react-native-flash-message';
 import Axios from 'axios';
+import BazarKamHeader from '../major_components/BazarKamHeader';
 
 
 class Cart extends Component {

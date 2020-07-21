@@ -41,7 +41,6 @@ class ChangePassword extends Component {
        return true;
      }
      return false;
-
   }
   changePassword(){
      let {old_password,password,confirm_password}=this.state;
@@ -79,7 +78,7 @@ class ChangePassword extends Component {
   }
   render() {
  
-     isValid=this.isStateValid();
+    isValid=this.isStateValid();
 
     return (
     this.state.loading?<Loader/>:  

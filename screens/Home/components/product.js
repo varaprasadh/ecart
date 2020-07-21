@@ -50,26 +50,26 @@ class Product extends Component {
         title = this.props.productdata.title;
         title = title.length < 25 ? title : title.substring(0,23)+"...";
         return (  
-            <TouchableWithoutFeedback
-             onPress={()=>this.props.onClick(this.props.productdata.id)}
-            >
+            <TouchableWithoutFeedback>
                 <View style={styles.container} >
-                    <View style={[styles.img,{width:125}]}>
+                    <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)} >
+                        <View style={[styles.img,{width:125}]}>
                             <Image source={this.props.productdata.img} loadingIndicatorSource={require("./assets/img_loading.gif")}
-                            style={{flex:1,width:null,height:null,borderRadius:10,}}
+                                style={{flex:1,width:null,height:null,borderRadius:10,}}
                             /> 
-                    </View>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <View style={[styles.productInfo,{flex:1}]}>
-                            <View>
-                                <Text numberOfLines={1} style={{fontSize:18,paddingVertical:10,textTransform:"capitalize"}}>
-                                {title}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
-                                    {Number(this.props.productdata.price).toFixed(3)} {currency}
-                                </Text>
-                            </View>
+                           <TouchableWithoutFeedback onPress={()=>this.props.onClick(this.props.productdata.id)} >
+                                <View>
+                                    <Text numberOfLines={1} style={{fontSize:18,paddingVertical:10,textTransform:"capitalize"}}>
+                                    {title}
+                                    </Text>
+                                    <Text style={[styles.price,{fontWeight:"bold",fontSize:18}]}>
+                                        {Number(this.props.productdata.price).toFixed(3)} {currency}
+                                    </Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                             <View style={styles.ctrlwrapper}>
                                 <View style={styles.qtyControls}>
                                     <View style={styles.qtbtn}>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         height:150,
         flexDirection:"row",
         elevation:5, 
-        marginTop:5,
+        marginTop:2,
         padding:5
     },
     productInfo:{
